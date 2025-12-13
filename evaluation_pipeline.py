@@ -260,7 +260,7 @@ class StudentMasteryAnalyzer:
         """
         os.makedirs(output_dir, exist_ok=True)
         
-        flagged_students = results[results['flagged'] == True]
+        flagged_students = results[results['flagged']]
         
         if len(flagged_students) > 0:
             filename = f"{model_name}_flagged_students.csv"
@@ -292,10 +292,28 @@ class HTMLReportGenerator:
             # Get model diagnostics
             summary = fit.summary()
             
+            # Check convergence using R-hat values
+            converged = True
+            convergence_msg = "✓ Converged"
+            try:
+                if 'R_hat' in summary.columns:
+                    max_rhat = summary['R_hat'].max()
+                    if max_rhat > 1.1:
+                        converged = False
+                        convergence_msg = f"✗ Not Converged (max R-hat: {max_rhat:.3f})"
+            except Exception:
+                convergence_msg = "? Unknown"
+            
             # Calculate key metrics
             n_flagged = mastery_results['flagged'].sum()
             n_total = len(mastery_results)
             pct_flagged = (n_flagged / n_total * 100) if n_total > 0 else 0
+            
+            # Convert summary to HTML safely
+            try:
+                summary_html = summary.to_html(max_rows=20)
+            except Exception:
+                summary_html = "<p>Summary not available</p>"
             
             section = f"""
             <div class="model-section">
@@ -312,13 +330,13 @@ class HTMLReportGenerator:
                     </tr>
                     <tr>
                         <td><strong>Convergence:</strong></td>
-                        <td>{"✓ Converged" if fit.converged else "✗ Not Converged"}</td>
+                        <td>{convergence_msg}</td>
                     </tr>
                 </table>
                 
                 <h3>Parameter Summary</h3>
                 <div class="summary-table">
-                    {summary.to_html(max_rows=20)}
+                    {summary_html}
                 </div>
                 
                 <h3>Mastery Distribution</h3>
