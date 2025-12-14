@@ -80,10 +80,18 @@ q = pd.DataFrame({'hold1': [1, 1, 1, 1, 1, 0, 0, 0, 0, 0],
 
 stan_quiz = quiz_df.filter(regex = "^item")
 
-# pd.DataFrame({'value': np.random.beta(3, 1, 300)}).mean()
+pn.ggplot.show(
+  pn.ggplot(pd.DataFrame({'value': np.random.beta(1, 1, 300)}),
+            pn.aes('value'))
+  + pn.geom_histogram(color = 'black',
+                      fill = 'gray',
+                      alpha = .3,
+                      bins = 30)
+  + pn.theme_minimal()
+)
 
 pn.ggplot.show(
-  pn.ggplot(pd.DataFrame({'value': np.random.beta(2, 1, 300)}),
+  pn.ggplot(pd.DataFrame({'value': np.random.beta(15, 15, 300)}),
             pn.aes('value'))
   + pn.geom_histogram(color = 'black',
                       fill = 'gray',
@@ -115,7 +123,7 @@ stan_fit = stan_model.sample(data = stan_dict,
                         iter_sampling = 2000)
 (
   joblib.dump([stan_model, stan_fit],
-              'stan_models/stan_output/lcdm.joblib',
+              'stan_models/stan_output/lcdm_quiz1_fit.joblib',
               compress = 3)
 )
 
