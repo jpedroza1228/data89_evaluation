@@ -48,26 +48,6 @@ alpha = pd.DataFrame([(x, y) for x in np.arange(2) for y in np.arange(2)])
 alpha = alpha.rename(columns = {0: 'hold1',
                                 1: 'hold2'})
 
-pn.ggplot.show(
-  pn.ggplot(pd.DataFrame({'value': np.random.beta(1, 1, 300)}),
-            pn.aes('value'))
-  + pn.geom_histogram(color = 'black',
-                      fill = 'gray',
-                      alpha = .3,
-                      bins = 30)
-  + pn.theme_minimal()
-)
-
-pn.ggplot.show(
-  pn.ggplot(pd.DataFrame({'value': np.random.beta(15, 15, 300)}),
-            pn.aes('value'))
-  + pn.geom_histogram(color = 'black',
-                      fill = 'gray',
-                      alpha = .3,
-                      bins = 30)
-  + pn.theme_minimal()
-)
-
 # stan dictionary data
 stan_dict = {
   'J': y.shape[0],
@@ -79,20 +59,89 @@ stan_dict = {
   'alpha': np.array(alpha)
 }
 
-stan_file = os.path.join(here('stan_models/lcdm.stan'))
-stan_model = CmdStanModel(stan_file = stan_file,
-                         cpp_options={'STAN_THREADS': 'TRUE'})
 
-np.random.seed(12345)
-stan_fit = stan_model.sample(data = stan_dict,
-                        show_console = True,
-                        chains = 4,
-                        iter_warmup = 2000,
-                        iter_sampling = 2000)
+model, fit = joblib.load(here('stan_models/stan_output/lcdm_quiz1_fit.joblib'))
 
-(
-  joblib.dump([stan_model, stan_fit],
-              'stan_models/stan_output/lcdm_quiz1_fit.joblib',
-              compress = 3)
+idata = az.from_cmdstanpy(
+    posterior = fit,
+    posterior_predictive = ['Y_rep'],
+    observed_data = {'Y': y})
+
+name_mapping = {'Y_rep': 'Y'}
+idata = idata.rename(name_dict = name_mapping, groups = ["posterior_predictive"])
+
+az.plot_density(idata,
+                var_names = 'nu')
+plt.show()
+plt.clf()
+
+az.plot_ppc(idata,
+            data_pairs = {'Y': 'Y'},
+            num_pp_samples = 1000,
+            alpha = .05)
+plt.show()
+plt.clf()
+
+az.plot_ppc(idata,
+            data_pairs = {'Y': 'Y'},
+            alpha = .05,
+            num_pp_samples = 1000,
+            kind = 'cumulative')
+plt.show()
+plt.clf()
+
+az.plot_bpv(idata,
+            kind = 't_stat', 
+            t_stat = 'mean')
+plt.show()
+plt.clf()
+
+az.plot_bpv(idata,
+            kind = 't_stat', 
+            t_stat = 'std')
+plt.show()
+plt.clf()
+
+az.plot_bpv(idata,
+            kind = 'p_value')
+plt.show()
+plt.clf()
+
+az.plot_forest(idata,
+               var_names = 'prob_resp_class',
+               colors = 'seagreen')
+plt.show()
+plt.clf()
+
+df_fit = fit.draws_pd()
+df_fit.head()
+
+df_fit.columns.tolist()
+
+prob_class_df = df_fit.filter(regex = 'prob_resp_class').mean().reset_index()
+prob_class_df.head()
+prob_class_df[['stu', 'class']] = prob_class_df['index'].str.split(',', expand = True)
+prob_class_df[['drop', 'stu']] = prob_class_df['stu'].str.split('\\[', expand = True)
+prob_class_df['class'] = prob_class_df['class'].str.replace(']', '')
+
+prob_class_df = prob_class_df[['stu', 'class', 0]].rename(columns = {0: 'prob'})
+
+prob_class_df[['stu', 'class']] = prob_class_df[['stu', 'class']].astype(int)
+
+prob_class_max = (
+  prob_class_df
+  .groupby('stu')['prob']
+  .max()
 )
 
+prob_final_class = prob_class_df.merge(prob_class_max).sort_values('stu')
+prob_final_class = prob_final_class.round(2)
+
+gt.show(
+  gt(
+    prob_final_class
+  )
+)
+
+# alpha
+prob_final_class['class'].value_counts(normalize = True)

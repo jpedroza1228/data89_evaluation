@@ -59,27 +59,100 @@ irt_dict = {
   'Y': np.array(y)
 }
 
-# irt_dict
+model, fit = joblib.load(here('stan_models/stan_output/irt_quiz1_fit.joblib'))
 
-# https://mc-stan.org/learn-stan/case-studies/tutorial_twopl.html
-# 2pl IRT Model
-# irt_file = os.path.join(here('stan_models/irt_1pl.stan'))
-# irt_file = os.path.join(here('stan_models/irt_2pl.stan'))
-irt_file = os.path.join(here('stan_models/irt_3pl.stan'))
-irt_model = CmdStanModel(stan_file = irt_file,
-                         cpp_options={'STAN_THREADS': 'TRUE'})
+idata = az.from_cmdstanpy(
+    posterior = irt_fit,
+    posterior_predictive = ['y_rep'],
+    observed_data = {'Y': y})
 
-np.random.seed(12345)
-irt_fit = irt_model.sample(data = irt_dict,
-                        show_console = True,
-                        chains = 4,
-                        iter_warmup = 2000,
-                        iter_sampling = 2000)
+name_mapping = {'y_rep': 'Y'}
+idata = idata.rename(name_dict = name_mapping, groups = ["posterior_predictive"])
 
-pd.Series(irt_fit.summary()['R_hat'].sort_values(ascending = False)).to_csv(here('stan_models/stan_output/irt3pl_rhat_values.csv'))
+df_fit = irt_fit.draws_pd()
+df_fit.head()
 
-(
-  joblib.dump([irt_model, irt_fit],
-              'stan_models/stan_output/irt_quiz1_fit.joblib',
-              compress = 3)
+# low difficulty = easy
+# high difficulty = hard
+diff = df_fit.filter(regex = '^b')
+diff_avg = diff.mean().round(2).reset_index()
+diff_avg = diff_avg.rename(columns = {0: 'difficulty'})
+
+pn.ggplot.show(
+  pn.ggplot(diff_avg,
+            pn.aes('index',
+                   'difficulty'))
+  + pn.geom_col(color = 'black',
+                fill = 'seagreen')
+  + pn.coord_flip()
+  + pn.theme_minimal()
 )
+
+# dis < .5 = poor items
+# dis > 4 = extremely good at distinguishing between low and high ability
+dis = df_fit.filter(regex = '^a\\[')
+dis_avg = dis.mean().round(2).reset_index()
+dis_avg = dis_avg.rename(columns = {0: 'discrimination'})
+
+pn.ggplot.show(
+  pn.ggplot(dis_avg,
+            pn.aes('index',
+                   'discrimination'))
+  + pn.geom_col(color = 'black',
+                fill = 'seagreen')
+  + pn.coord_flip()
+  + pn.theme_minimal()
+)
+
+az.plot_density(idata,
+                var_names = 'a')
+plt.show()
+plt.clf()
+
+az.plot_density(idata,
+                var_names = 'b')
+plt.show()
+plt.clf()
+
+# this prints out a plot for every stu/item combo
+# az.plot_forest(idata,
+#                var_names = 'eta')
+# plt.show()
+# plt.clf()
+
+az.plot_ppc(idata,
+            data_pairs = {'Y': 'Y'},
+            num_pp_samples = 1000,
+            alpha = .05)
+plt.show()
+plt.clf()
+
+az.plot_ppc(idata,
+            data_pairs = {'Y': 'Y'},
+            alpha = .05,
+            num_pp_samples = 1000,
+            kind = 'cumulative')
+plt.show()
+plt.clf()
+
+az.plot_bpv(idata,
+            kind = 't_stat', 
+            t_stat = 'mean')
+plt.show()
+plt.clf()
+
+az.plot_bpv(idata,
+            kind = 't_stat', 
+            t_stat = 'std')
+plt.show()
+plt.clf()
+
+az.plot_bpv(idata,
+            kind = 'p_value')
+plt.show()
+plt.clf()
+
+az.plot_bpv(idata,
+            kind = 'u_value')
+plt.show()
+plt.clf()
