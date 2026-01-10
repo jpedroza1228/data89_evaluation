@@ -69,43 +69,39 @@ pn.ggplot.show(
 stan_dict = {
   'J': y.shape[0],
   'I': y.shape[1],
-  'K': q.shape[1],
   'C': alpha.shape[0],
+  'K': q.shape[1],
   'Y': np.array(y),
-  'Q': np.array(q), 
+  'Q': np.array(q),
   'alpha': np.array(alpha)
 }
 
-stan_file = os.path.join(here('stan_models/lcdm.stan'))
+stan_dict
+
+stan_file = os.path.join(here('other/other.stan'))
 stan_model = CmdStanModel(stan_file = stan_file,
                          cpp_options={'STAN_THREADS': 'TRUE'})
 
 np.random.seed(12345)
 stan_fit = stan_model.sample(data = stan_dict,
                         show_console = True,
-                        # adapt_delta = .99,
                         chains = 4,
+                        adapt_delta = .90,
                         iter_warmup = 2000,
                         iter_sampling = 2000)
 
-(
-  pd
-  .Series(stan_fit
-          .summary()['R_hat']
-          .sort_values(ascending = False))
-  .head()
-  .to_csv(here('rhat_evaluation/lcdm_rhat_values.csv'))
-)
+pd.Series(stan_fit.summary()['R_hat'].sort_values(ascending = False)).head()
+# .to_csv(here('stan_models/stan_output/rhat_values/lcdm_rhat_values.csv'))
 
-(
-  joblib.dump([stan_model, stan_fit],
-              'joblib_models/lcdm_quiz1_fit.joblib',
-              compress = 3)
-)
+# (
+#   joblib.dump([stan_model, stan_fit],
+#               'stan_models/stan_output/bn_linear_quiz1_fit.joblib',
+#               compress = 3)
+# )
 
 
 idata = az.from_cmdstanpy(
-    posterior = stan_fit,
+    posterior = stan_fit, #fit
     posterior_predictive = ['Y_rep'],
     observed_data = {'Y': y})
 
@@ -121,12 +117,12 @@ az.mcse(idata) # markov chain standard error statistic
 
 # plotting variables/ppc
 az.plot_density(idata,
-                var_names = 'nu')
+                var_names = 'attr_lp')
 plt.show()
 plt.clf()
 
 az.plot_density(idata,
-                var_names = 'log_nu')
+                var_names = 'pi')
 plt.show()
 plt.clf()
 
@@ -163,11 +159,49 @@ az.plot_forest(idata,
 plt.show()
 plt.clf()
 
+
+
 # put draws/samples into pandas dataframe
 df_fit = stan_fit.draws_pd()
+# df_fit = fit.draws_pd()
 df_fit.head()
 
 df_fit.columns.tolist()
+
+# pi matrix (item x latent attribute mastery (0 | 1))
+pi_df = df_fit.filter(regex = 'pi')
+pi_df.loc[:, ['pi[1,1]', 'pi[1,2]']].mean()
+
+pi_df = pi_df.melt()
+pi_df[['item', 'attr']] = pi_df['variable'].str.split(',', expand = True)
+pi_df['item'] = pi_df['item'].str.replace('pi[', '').astype(int)
+pi_df['attr'] = pi_df['attr'].str.replace(']', '').astype(int)
+pi_df = pi_df[['item', 'attr', 'value']]
+
+pi_df.groupby(['item', 'attr'])['value'].mean().round(2).reset_index()
+
+
+attr_df = df_fit.filter(regex = '^attr_lp')
+np.exp(attr_df.head())
+
+attr_df = attr_df.melt()
+
+attr_df['variable'] = attr_df['variable'].str.replace('attr_lp', '')
+attr_df['variable'] = attr_df['variable'].str.replace('[', '')
+attr_df['variable'] = attr_df['variable'].str.replace(']', '')
+attr_df['variable'] = attr_df['variable'].astype(int)
+
+attr_df['prob'] = np.exp(attr_df['value'])
+
+pn.ggplot.show(
+  pn.ggplot(attr_df,
+            pn.aes('prob'))
+  + pn.geom_histogram(color = 'black',
+                      fill = 'seagreen')
+  + pn.facet_wrap('variable')
+  + pn.scale_x_continuous(limits = [.5, 1])
+  + pn.theme_light()
+)
 
 # PPP Value
 # y replicated datasets
@@ -363,3 +397,10 @@ pn.ggplot.show(
   + pn.theme_light()
   + pn.theme(legend_position = None)
 )
+
+
+
+
+
+
+
