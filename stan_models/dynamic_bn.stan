@@ -6,7 +6,8 @@ data{
   int<lower=1> T; // time points
   int<lower=1> K; // attributes
   int<lower=1> C; // latent classes
-  array[J, I, T] real<lower=0, upper=1> Y;  // responses
+  matrix<lower=0, upper=1> [J, I] Y_t1;
+  matrix<lower=0, upper=1> [J, I] Y_t2;
   matrix<lower=0,upper=1> [I,K] Q;
   matrix<lower=0,upper=1> [C,K] alpha;
 }
@@ -93,7 +94,7 @@ model{
     for (c in 1:C){
       for (i in 1:I){
         real p_t1 = fmin(fmax(pi_t1[i,c], 1e-9), 1 - 1e-9);
-        eta_t1[i] = Y[j,i,1] * log(p_t1) + (1 - Y[j,i,1]) * log1m(p_t1);
+        eta_t1[i] = Y_t1[j,i] * log(p_t1) + (1 - Y_t1[j,i]) * log1m(p_t1);
       }
       ps_t1[c] = sum(attr_lp) + sum(eta_t1); 
     }
@@ -104,7 +105,7 @@ model{
       }
       for (i in 1:I){
         real p_t2 = fmin(fmax(pi_t2[i,d], 1e-9), 1 - 1e-9);
-        eta_t2[i] = Y[j,i,2] * log(p_t2) + (1 - Y[j,i,2]) * log1m(p_t2);
+        eta_t2[i] = Y_t2[j,i] * log(p_t2) + (1 - Y_t2[j,i]) * log1m(p_t2);
       }
       // find out why sum(attr_lp) is not working
       ps_t2[d] = sum(attr_lp2) + sum(eta_t2); 

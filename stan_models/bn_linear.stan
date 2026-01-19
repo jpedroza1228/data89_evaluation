@@ -66,4 +66,40 @@ model{
     target += log_sum_exp(ps);
     }
 }
+generated quantities{
+   matrix[J,C] prob_resp_class;      // posterior probabilities of respondent j being in latent class c 
+  matrix[J,K] prob_resp_attr;       // posterior probabilities of respondent j being a master of attribute k 
+  array[I] real eta;
+  row_vector[C] prob_joint;
+  array[C] real prob_attr_class;
+  matrix[J,I] Y_rep;
 
+  for (j in 1:J){
+    for (c in 1:C){
+      for (k in 1:K){
+      for (i in 1:I){
+        // eta[i] = bernoulli_lpmf(Y[j,i] | pi[i,c]);
+        real p = fmin(fmax(pi[i,c], 1e-9), 1 - 1e-9);
+        eta[i] = Y[j,i] * log(p) + (1 - Y[j,i]) * log1m(p);
+      }
+      prob_joint[c] = exp(attr_lp[k]) * exp(sum(eta));
+      }
+    }
+    prob_resp_class[j] = prob_joint/sum(prob_joint);
+  }
+  for (j in 1:J){
+    for (k in 1:K){
+      for (c in 1:C){
+        prob_attr_class[c] = prob_resp_class[j,c] * alpha[c,k];
+      }
+      prob_resp_attr[j,k] = sum(prob_attr_class);
+    }
+  }
+  
+  for (j in 1:J) {
+    int z = categorical_rng(attr_lp);  // sample class for person j
+    for (i in 1:I) {
+      Y_rep[j, i] = bernoulli_rng(pi[i, z]);  // generate response from item-by-class probability
+    }
+  }
+}

@@ -70,6 +70,41 @@ survey_df = pd.DataFrame({'attend1': np.random.binomial(n = 1,
 
 quiz_df.head()
 
+
+
+retake_df = pd.DataFrame({'stu_id': pd.Series(np.arange(1, 301)).sample(n = 180),
+                        'item1': np.random.binomial(n = 1,
+                                                    p = .7,
+                                                    size = 180),
+                        'item2': np.random.binomial(n = 1,
+                                                    p = .7,
+                                                    size = 180),
+                        'item3': np.random.binomial(n = 1,
+                                                    p = .7,
+                                                    size = 180),
+                        'item4': np.random.binomial(n = 1,
+                                                    p = .7,
+                                                    size = 180),
+                        'item5': np.random.binomial(n = 1,
+                                                    p = .7,
+                                                    size = 180),
+                        'item6': np.random.binomial(n = 1,
+                                                    p = .7,
+                                                    size = 180),
+                        'item7': np.random.binomial(n = 1,
+                                                    p = .7,
+                                                    size = 180),
+                        'item8': np.random.binomial(n = 1,
+                                                    p = .7,
+                                                    size = 180),
+                        'item9': np.random.binomial(n = 1,
+                                                    p = .7,
+                                                    size = 180),
+                        'item10': np.random.binomial(n = 1,
+                                                    p = .7,
+                                                    size = 180)})
+retake_df.head()
+
 # attribute mastery matrix
 alpha = pd.DataFrame([(x, y) for x in np.arange(2) for y in np.arange(2)])
 alpha = alpha.rename(columns = {0: 'hold1',
@@ -78,32 +113,45 @@ alpha = alpha.rename(columns = {0: 'hold1',
 q = pd.DataFrame({'hold1': [1, 1, 1, 1, 1, 0, 0, 0, 0, 0],
                   'hold2': [0, 0, 0, 0, 0, 1, 1, 1, 1, 1]})
 
-stan_quiz = quiz_df.filter(regex = "^item")
+combo_quiz = quiz_df.merge(retake_df, how = 'inner', on = 'stu_id')
 
-# pd.DataFrame({'value': np.random.beta(3, 1, 300)}).mean()
+quiz_sub = combo_quiz.filter(regex = '_x$')
+quiz_retake = combo_quiz.filter(regex = '_y$')
 
-pn.ggplot.show(
-  pn.ggplot(pd.DataFrame({'value': np.random.beta(2, 1, 300)}),
-            pn.aes('value'))
-  + pn.geom_histogram(color = 'black',
-                      fill = 'gray',
-                      alpha = .3,
-                      bins = 30)
-  + pn.theme_minimal()
-)
+# pn.ggplot.show(
+#   pn.ggplot(pd.DataFrame({'value': np.random.beta(1, 1, 300)}),
+#             pn.aes('value'))
+#   + pn.geom_histogram(color = 'black',
+#                       fill = 'gray',
+#                       alpha = .3,
+#                       bins = 30)
+#   + pn.theme_minimal()
+# )
+
+# pn.ggplot.show(
+#   pn.ggplot(pd.DataFrame({'value': np.random.beta(15, 15, 300)}),
+#             pn.aes('value'))
+#   + pn.geom_histogram(color = 'black',
+#                       fill = 'gray',
+#                       alpha = .3,
+#                       bins = 30)
+#   + pn.theme_minimal()
+# )
 
 # stan dictionary data
 stan_dict = {
-  'J': stan_quiz.shape[0],
-  'I': stan_quiz.shape[1],
+  'J': quiz_retake.shape[0],
+  'I': quiz_retake.shape[1],
+  'T': 2, # number of time points (first quiz --> retake)
   'K': q.shape[1],
   'C': alpha.shape[0],
-  'Y': np.array(stan_quiz),
+  'Y_t1': np.array(quiz_sub),
+  'Y_t2': np.array(quiz_retake),
   'Q': np.array(q), 
   'alpha': np.array(alpha)
 }
 
-stan_file = os.path.join(here('stan_models/lcdm.stan'))
+stan_file = os.path.join(here('stan_models/dynamic_bn.stan'))
 stan_model = CmdStanModel(stan_file = stan_file,
                          cpp_options={'STAN_THREADS': 'TRUE'})
 
@@ -115,7 +163,7 @@ stan_fit = stan_model.sample(data = stan_dict,
                         iter_sampling = 2000)
 (
   joblib.dump([stan_model, stan_fit],
-              'stan_models/stan_output/lcdm.joblib',
+              'stan_models/stan_output/dynamic_quiz1_fit.joblib',
               compress = 3)
 )
 
