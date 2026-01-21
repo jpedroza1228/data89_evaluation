@@ -19,12 +19,6 @@ pd.options.mode.copy_on_write = True
 matplotlib.rcParams.update({'savefig.bbox': 'tight'})
 pn.theme_set(pn.theme_light())
 
-# fake name and email address list
-contact = pd.read_csv(here('fake_names_emails.csv'))
-contact[['first_name', 'last_name']] = contact['name'].str.split(' ', expand = True)
-contact = contact.sort_values(['last_name', 'first_name'])
-contact = contact[['name', 'email']]
-
 # correct/incorrect responses to each quiz item
 y = pd.read_csv(here('data/quiz/y.csv')).drop(columns = {'Unnamed: 0'})
 y = contact.join(y)
