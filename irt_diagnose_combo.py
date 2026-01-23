@@ -11,17 +11,28 @@ from scipy import stats
 import os
 from cmdstanpy import CmdStanModel
 from great_tables import GT as gt
+import plotly.express as px
+import plotly.io as pio
+
+jpcolor = 'seagreen'
 
 os.environ['QT_API'] = 'PyQt6'
-
 pd.set_option('display.max_columns', None)
 pd.options.mode.copy_on_write = True
 matplotlib.rcParams.update({'savefig.bbox': 'tight'})
 pn.theme_set(pn.theme_light())
+pio.templates.default = 'simple_white' # 'plotly_white'
+
+contact = pd.read_csv(here('fake_names_emails.csv'))
+contact.head()
 
 # correct/incorrect responses to each quiz item
 y = pd.read_csv(here('data/quiz/y.csv')).drop(columns = {'Unnamed: 0'})
-y = contact.join(y)
+y['name'] = contact['name']
+# y = contact.join(y)
+
+np.random.seed(12345)
+y_sub = y.sample(n = 113)
 
 # q-matrix
 q = pd.read_csv(here('data/q_matrix/q.csv')).drop(columns = {'Unnamed: 0'})
@@ -33,17 +44,18 @@ alpha = alpha.rename(columns = {0: 'hold1',
 
 # stan dictionary data
 irt_dict = {
-  'J': y.drop(columns = ['name', 'email']).shape[0],
-  'I': y.drop(columns = ['name', 'email']).shape[1],
-  'Y': np.array(y.drop(columns = ['name', 'email']))
+  'J': y_sub.drop(columns = 'name').shape[0],
+  'I': y_sub.drop(columns = 'name').shape[1],
+  'Y': np.array(y_sub.drop(columns = 'name'))
 }
 
 # https://mc-stan.org/learn-stan/case-studies/tutorial_twopl.html
+# irt_file = here('stan_models/irt_1pl.stan')
 irt_file = os.path.join(here('stan_models/irt_1pl.stan'))
 # irt_file = os.path.join(here('stan_models/irt_2pl.stan'))
 # irt_file = os.path.join(here('stan_models/irt_3pl.stan'))
 irt_model = CmdStanModel(stan_file = irt_file,
-                         cpp_options={'STAN_THREADS': 'TRUE'})
+                         cpp_options = {'STAN_THREADS': 'TRUE'})
 
 np.random.seed(12345)
 irt_fit = irt_model.sample(data = irt_dict,
@@ -53,16 +65,12 @@ irt_fit = irt_model.sample(data = irt_dict,
                         iter_warmup = 2000,
                         iter_sampling = 2000)
 
-(
-  pd
-  .Series(irt_fit
-          .summary()['R_hat']
-          .sort_values(ascending = False))
-  .head()
-  .to_csv(here('rhat_evaluation/1pl_irt_quiz1.csv'))
-  # .to_csv(here('rhat_evaluation/2pl_irt_quiz1.csv'))
-  # .to_csv(here('rhat_evaluation/3pl_irt_quiz1.csv'))
-)
+irt_diagnose = pd.DataFrame(irt_fit.summary())
+irt_diagnose.to_csv(here('diagnostics/1pl_irt_quiz1.csv'))
+# irt_diagnose.to_csv(here('diagnostics/2pl_irt_quiz1.csv'))
+# irt_diagnose.to_csv(here('diagnostics/3pl_irt_quiz1.csv'))
+
+irt_diagnose['R_hat'].sort_values(ascending = False).head()
 
 (
   joblib.dump([irt_model, irt_fit],
@@ -73,14 +81,14 @@ irt_fit = irt_model.sample(data = irt_dict,
 iirt = az.from_cmdstanpy(
     posterior = irt_fit,
     posterior_predictive = ['Y_rep'],
-    observed_data = {'Y': y.drop(columns = ['name', 'email'])})
+    observed_data = {'Y': y.drop(columns = 'name')})
 
 name_mapping = {'Y_rep': 'Y'}
 iirt = iirt.rename(name_dict = name_mapping, groups = ["posterior_predictive"])
 
 # plotting variables/ppc
 az.plot_density(iirt,
-                var_names = 'theta')
+                var_names = 'beta')
 plt.show()
 plt.clf()
 
@@ -111,7 +119,7 @@ plt.clf()
 
 az.plot_forest(iirt,
                var_names = 'prob_correct',
-               colors = 'seagreen')
+               colors = jpcolor)
 plt.show()
 plt.clf()
 
@@ -129,7 +137,7 @@ pn.ggplot.show(
             pn.aes('index',
                    'ability'))
   + pn.geom_point(alpha = .5,
-                  color = 'seagreen')
+                  color = jpcolor)
   + pn.geom_hline(yintercept = 0,
                   color = 'black')
   + pn.labs(title = 'Ability Parameter for Each Student',
@@ -148,7 +156,7 @@ pn.ggplot.show(
             pn.aes('index',
                    'difficulty'))
   + pn.geom_point(alpha = .5,
-                  color = 'seagreen')
+                  color = jpcolor)
   + pn.geom_hline(yintercept = 0,
                   color = 'black')
   + pn.labs(title = 'Difficulty Parameter for Each Item',
@@ -221,11 +229,11 @@ y_describe
 
 # diagnostic model
 stan_dict = {
-  'J': y.drop(columns = ['name', 'email']).shape[0],
-  'I': y.drop(columns = ['name', 'email']).shape[1],
+  'J': y_sub.drop(columns = 'name').shape[0],
+  'I': y_sub.drop(columns = 'name').shape[1],
   'C': alpha.shape[0],
   'K': q.shape[1],
-  'Y': np.array(y.drop(columns = ['name', 'email'])),
+  'Y': np.array(y_sub.drop(columns = 'name')),
   'Q': np.array(q),
   'alpha': np.array(alpha)
 }
@@ -242,14 +250,10 @@ dcm_fit = dcm_model.sample(data = stan_dict,
                         iter_warmup = 2000,
                         iter_sampling = 2000)
 
-(
-  pd
-  .Series(dcm_fit
-          .summary()['R_hat']
-          .sort_values(ascending = False))
-  .head()
-  .to_csv(here('rhat_evaluation/lcdm_quiz1.csv'))
-)
+dcm_diagnose = pd.DataFrame(dcm_fit.summary())
+# dcm_diagnose.to_csv(here('diagnostics/lcdm_quiz1.csv'))
+
+irt_diagnose['R_hat'].sort_values(ascending = False).head()
 
 (
   joblib.dump([dcm_model, dcm_fit],
@@ -310,7 +314,7 @@ plt.clf()
 
 az.plot_forest(idcm,
                var_names = 'prob_resp_attr',
-               colors = 'seagreen')
+               colors = jpcolor)
 plt.show()
 plt.clf()
 
@@ -338,6 +342,17 @@ pidf.head()
 
 pidf_calc = pidf.groupby(['item', 'lat_class', 'variable'])['value'].mean().round(2).reset_index()
 
+pidf_calc['lat_class'] = pd.Categorical(pidf_calc['lat_class'])
+pidf_calc['item'] = pd.Categorical(pidf_calc['item'])
+
+px.bar(pidf_calc.loc[pidf_calc['variable'] == 'mean'],
+           x = 'item',
+           y = 'value',
+           color = 'lat_class',
+           barmode = 'group',
+           title = 'Pi matrix: [items, classes]')
+
+
 pn.ggplot.show(
   pn.ggplot(pidf_calc,
             pn.aes('item',
@@ -348,6 +363,8 @@ pn.ggplot.show(
                           breaks = np.arange(1, 11, 1))
   + pn.facet_wrap('variable')
 )
+
+
 
 attrdf = dcm_fit.filter(regex = '^prob_resp_attr')
 
@@ -362,12 +379,13 @@ attrdf['stu'] = attrdf['stu'].str.replace('prob_resp_attr[', '').astype(int)
 attrdf['attr'] = attrdf['attr'].str.replace(']', '').astype(int)
 attrdf = attrdf[['stu', 'attr', 'variable', 'value']]
 
+mastery_prob = .8
 attrdf_bi = attrdf.loc[attrdf['variable'] == 'mean', ['stu', 'attr', 'value']]
-attrdf_bi['prof'] = np.where(attrdf_bi['value'] >= .5, 1, 0)
-attrdf_bi['master'] = np.where(attrdf_bi['value'] >= .8, 1, 0)
+# attrdf_bi['prof'] = np.where(attrdf_bi['value'] >= .5, 1, 0)
+attrdf_bi['master'] = np.where(attrdf_bi['value'] >= mastery_prob, 1, 0)
 attrdf_bi.head()
 
-attrdf_bi.groupby('attr')['prof'].value_counts().reset_index()
+# attrdf_bi.groupby('attr')['prof'].value_counts().reset_index()
 attrdf_bi.groupby('attr')['master'].value_counts().reset_index()
 
 attr_calc = attrdf.groupby(['stu', 'attr', 'variable'])['value'].mean().round(2).reset_index()
@@ -377,12 +395,114 @@ pn.ggplot.show(
   pn.ggplot(attr_calc.loc[attr_calc['variable'] == 'mean'],
             pn.aes('stu',
                    'value'))
-  + pn.geom_point(color = 'seagreen')
+  + pn.geom_point(color = jpcolor)
+  + pn.geom_hline(yintercept = mastery_prob,
+                  color = 'red',
+                  linetype = 'dotted')
   + pn.scale_y_continuous(limits = [0, 1],
                           breaks = np.arange(0, 1.1, .1))
-  + pn.facet_grid('variable',
-                  'attr')
+  + pn.facet_wrap('attr')
 )
+
+
+stu_att_mastery = pd.DataFrame({
+  'parameters': dcm_fit.filter(regex = '^prob_resp_attr').columns,
+  'mean': dcm_fit.filter(regex = '^prob_resp_attr').mean().reset_index(drop = True)
+})
+
+stu_att_mastery[['drop', 'other']] = stu_att_mastery['parameters'].str.split(pat = '[', expand = True)
+stu_att_mastery[['stu', 'att']] = stu_att_mastery['other'].str.split(pat = ',', expand = True)
+stu_att_mastery['att'] = stu_att_mastery['att'].str.replace(']', '')
+stu_att_mastery = stu_att_mastery.drop(columns = ['parameters', 'drop', 'other'])
+stu_att_mastery['stu'] = stu_att_mastery['stu'].astype(int)
+
+stu_att_mastery = (
+  stu_att_mastery
+  .pivot(index = 'stu', columns = 'att', values = 'mean')
+  .reset_index()
+  .sort_values(by = 'stu')
+)
+
+# # can choose what you consider the threshold for mastery
+stu_att_mastery['att1_master'] = pd.Series(np.where(stu_att_mastery['1'] >= mastery_prob, 1, 0))
+stu_att_mastery['att2_master'] = pd.Series(np.where(stu_att_mastery['2'] >= mastery_prob, 1, 0))
+
+# stu_att_mastery['att1_prof'] = pd.Series(np.where(stu_att_mastery['1'] >= .5, 1, 0))
+# stu_att_mastery['att2_prof'] = pd.Series(np.where(stu_att_mastery['2'] >= .5, 1, 0))
+
+stu_att_mastery['profile_master'] = (
+  stu_att_mastery['att1_master'].astype(str)
+  + stu_att_mastery['att2_master'].astype(str)
+)
+
+# stu_att_mastery['profile_prof'] = (
+#   stu_att_mastery['att1_prof'].astype(str)
+#   + stu_att_mastery['att2_prof'].astype(str)
+# )
+
+stu_att_mastery = stu_att_mastery.rename(columns = {'1': 'att1_prob', '2': 'att2_prob'})
+
+# # attribute level probabilities (att\\d) & classifications (bi)
+stu_att_mastery.head()
+
+# for i in ['att1_master', 'att2_master']:
+#   print(stu_att_mastery[i].value_counts(normalize = True))
+
+# for i in ['att1_prof', 'att2_prof']:
+#   print(stu_att_mastery[i].value_counts(normalize = True))
+
+stu_att_mastery['profile_master'].value_counts(normalize = True)
+# stu_att_mastery['profile_prof'].value_counts(normalize = True)
+
+# # attribute reliability per skill
+att_rel = (
+  stu_att_mastery[['att1_prob',
+                   'att2_prob']]
+  .mean()
+  .reset_index()
+)
+
+att_rel = att_rel.rename(columns = {0: 'avg_prob'})
+
+att_uncertain_rel = (
+  stu_att_mastery[['att1_prob',
+                   'att2_prob']]
+  .quantile([.025, .975])
+  .reset_index()
+  .melt(id_vars = 'index', value_vars = ['att1_prob', 'att2_prob'])
+  .pivot(index = 'att', columns = 'index', values = 'value')
+  .rename(columns = {0.025: 'lower_ci95', 0.975: 'upper_ci95'})
+  .reset_index()
+)
+
+att_uncertain_rel = att_uncertain_rel.merge(att_rel, how = 'left', on = 'att')
+
+# # classification reliability
+att_uncertain_rel
+
+pn.ggplot.show(
+  pn.ggplot(att_uncertain_rel,
+            pn.aes('att', 'avg_prob'))
+  + pn.geom_errorbar(pn.aes(ymin = 'lower_ci95',
+                            ymax = 'upper_ci95'),
+                     color = jpcolor,
+                     alpha = .7,
+                     size = 1)
+  + pn.geom_point(color = jpcolor,
+                  size = 3)
+  + pn.scale_y_continuous(limits = [0, 1])
+  + pn.theme_light()
+  + pn.theme(legend_position = None)
+)
+
+
+
+
+
+
+
+
+
 
 # PPP Value
 # y replicated datasets
@@ -440,7 +560,7 @@ y_describe
 
 pn.ggplot.show(
   pn.ggplot(ppp_dcm, pn.aes('item', 'means'))
-  + pn.geom_point(color = 'seagreen',
+  + pn.geom_point(color = jpcolor,
                   size = 2)
   + pn.geom_hline(yintercept = .5, linetype = 'dashed')
   + pn.geom_hline(yintercept = .025, linetype = 'dotted')
@@ -454,7 +574,7 @@ pn.ggplot.show(
 
 pn.ggplot.show(
   pn.ggplot(ppp_dcm, pn.aes('item', 'stds'))
-  + pn.geom_point(color = 'seagreen',
+  + pn.geom_point(color = jpcolor,
                   size = 2)
   + pn.geom_hline(yintercept = .5, linetype = 'dashed')
   + pn.geom_hline(yintercept = .025, linetype = 'dotted')
@@ -466,88 +586,3 @@ pn.ggplot.show(
   + pn.theme_light()
 )
 
-
-# stu_att_mastery = pd.DataFrame({
-#   'parameters': df_fit.filter(regex = '^prob_resp_attr').columns,
-#   'mean': df_fit.filter(regex = '^prob_resp_attr').mean().reset_index(drop = True)
-# })
-
-# stu_att_mastery[['drop', 'other']] = stu_att_mastery['parameters'].str.split(pat = '[', expand = True)
-# stu_att_mastery[['stu', 'att']] = stu_att_mastery['other'].str.split(pat = ',', expand = True)
-# stu_att_mastery['att'] = stu_att_mastery['att'].str.replace(']', '')
-
-# stu_att_mastery = stu_att_mastery.drop(columns = ['parameters', 'drop', 'other'])
-
-# stu_att_mastery['stu'] = stu_att_mastery['stu'].astype(int)
-
-# stu_att_mastery = (
-#   stu_att_mastery
-#   .pivot(index = 'stu', columns = 'att', values = 'mean')
-#   .reset_index()
-#   .sort_values(by = 'stu')
-# )
-
-# # can choose what you consider the threshold for mastery
-# stu_att_mastery['att1_master'] = pd.Series(np.where(stu_att_mastery['1'] >= .8, 1, 0))
-# stu_att_mastery['att2_master'] = pd.Series(np.where(stu_att_mastery['2'] >= .8, 1, 0))
-
-# stu_att_mastery['att1_prof'] = pd.Series(np.where(stu_att_mastery['1'] >= .5, 1, 0))
-# stu_att_mastery['att2_prof'] = pd.Series(np.where(stu_att_mastery['2'] >= .5, 1, 0))
-
-# stu_att_mastery['profile_master'] = (
-#   stu_att_mastery['att1_master'].astype(str)
-#   + stu_att_mastery['att2_master'].astype(str)
-# )
-
-# stu_att_mastery['profile_prof'] = (
-#   stu_att_mastery['att1_prof'].astype(str)
-#   + stu_att_mastery['att2_prof'].astype(str)
-# )
-
-# stu_att_mastery = stu_att_mastery.rename(columns = {'1': 'att1_prob', '2': 'att2_prob'})
-
-# # attribute level probabilities (att\\d) & classifications (bi)
-# stu_att_mastery.head()
-
-# for i in ['att1_master', 'att2_master']:
-#   print(stu_att_mastery[i].value_counts(normalize = True))
-
-# for i in ['att1_prof', 'att2_prof']:
-#   print(stu_att_mastery[i].value_counts(normalize = True))
-
-# stu_att_mastery['profile_master'].value_counts(normalize = True)
-# stu_att_mastery['profile_prof'].value_counts(normalize = True)
-
-# # attribute reliability per skill
-# att_rel = (
-#   stu_att_mastery[['att1_prob',
-#                    'att2_prob']]
-#   .mean()
-#   .reset_index()
-# )
-
-# att_rel = att_rel.rename(columns = {0: 'avg_prob'})
-
-# att_uncertain_rel = (
-#   stu_att_mastery[['att1_prob',
-#                    'att2_prob']]
-#   .quantile([.025, .975])
-#   .reset_index()
-#   .melt(id_vars = 'index', value_vars = ['att1_prob', 'att2_prob'])
-#   .pivot(index = 'att', columns = 'index', values = 'value')
-#   .rename(columns = {0.025: 'lower_ci95', 0.975: 'upper_ci95'})
-#   .reset_index()
-# )
-
-# att_uncertain_rel = att_uncertain_rel.merge(att_rel, how = 'left', on = 'att')
-
-# # classification reliability
-# att_uncertain_rel
-
-# pn.ggplot.show(
-#   pn.ggplot(att_uncertain_rel, pn.aes('att', 'avg_prob'))
-#   + pn.geom_errorbar(pn.aes(ymin = 'lower_ci95', ymax = 'upper_ci95'), alpha = .3)
-#   + pn.geom_point(pn.aes(color = 'avg_prob'), size = 4)
-#   + pn.theme_light()
-#   + pn.theme(legend_position = None)
-# )

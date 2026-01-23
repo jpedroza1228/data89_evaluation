@@ -39,10 +39,10 @@ model {
   // Priors
   raw_nu ~ normal(0, 1); // if label switching happens    
   // nu  ~ dirichlet(rep_vector(1.0, C));
-  beta0 ~ normal(0, 1);
-  beta1 ~ normal(0, 1);
-  beta2 ~ normal(0, 1);
-  beta12 ~ normal(0, 1);
+  beta0 ~ normal(0, 2);
+  beta1 ~ normal(0, 2);
+  beta2 ~ normal(0, 2);
+  beta12 ~ normal(0, 2);
 
   for (j in 1:J) {
     for (c in 1:C){
