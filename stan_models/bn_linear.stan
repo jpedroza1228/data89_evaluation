@@ -72,7 +72,7 @@ generated quantities{
   array[I] real eta;
   row_vector[C] prob_joint;
   array[C] real prob_attr_class;
-  matrix[J,I] Y_rep;
+  matrix[J,I] y_rep;
 
   for (j in 1:J){
     for (c in 1:C){
@@ -99,7 +99,7 @@ generated quantities{
   for (j in 1:J) {
     int z = categorical_rng(attr_lp);  // sample class for person j
     for (i in 1:I) {
-      Y_rep[j, i] = bernoulli_rng(pi[i, z]);  // generate response from item-by-class probability
+      y_rep[j, i] = bernoulli_rng(pi[i, z]);  // generate response from item-by-class probability
     }
   }
 }

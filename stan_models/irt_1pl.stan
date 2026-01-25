@@ -34,11 +34,11 @@ model {
 }
 generated quantities {
   matrix[J,I] prob_correct;
-  matrix[J,I] Y_rep;
+  matrix[J,I] y_rep;
   for (j in 1:J) {
     for (i in 1:I) {
       prob_correct[j,i] = inv_logit(theta[j] - b[i]);
-      Y_rep[j,i] = bernoulli_rng(prob_correct[j,i]);
+      y_rep[j,i] = bernoulli_rng(prob_correct[j,i]);
     }
   }
 }
