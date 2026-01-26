@@ -33,8 +33,19 @@ model {
   }
 }
 generated quantities {
+  array[J] real log_lik;
   matrix[J,I] prob_correct;
   matrix[J,I] y_rep;
+
+  // Likelihood
+  for (j in 1:J) {
+    log_lik[j] = 0;
+    for (i in 1:I) {
+      real p = fmin(fmax(eta[j,i], 1e-9), 1 - 1e-9);
+      log_lik[j] += Y[j,i] * log(p) + (1 - Y[j,i]) * log1m(p);
+    }
+  }
+
   for (j in 1:J) {
     for (i in 1:I) {
       prob_correct[j,i] = inv_logit(theta[j] - b[i]);

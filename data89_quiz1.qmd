@@ -1,3 +1,38 @@
+---
+title: "Quiz 1 Findings"
+author: Jonathan A. Pedroza
+format:
+  html:
+    toc: true
+    toc-depth: 2
+    grid:
+      #sidebar-width: 0px
+      body-width: 1300px
+      #margin-width: 0px
+      gutter-width: 1.5rem
+    theme: lumen
+    code-fold: true
+jupyter: python3
+execute:
+  echo: true
+  eval: true
+  warning: false
+  message: false
+params:
+---
+
+```{python}
+#| tags: [parameters]
+
+jpcolor = 'seagreen'
+quiz_num = 'quiz1'
+irt_num = '1'
+dcm_type = 'lcdm'
+mastery_prob = .8
+prof_prob = .5
+```
+
+```{python}
 import numpy as np
 import pandas as pd
 import plotnine as pn
@@ -14,33 +49,12 @@ from great_tables import GT as gt
 import plotly.express as px
 import plotly.io as pio
 
-jpcolor = 'seagreen'
-
 os.environ['QT_API'] = 'PyQt6'
 pd.set_option('display.max_columns', None)
 pd.options.mode.copy_on_write = True
 matplotlib.rcParams.update({'savefig.bbox': 'tight'})
 pn.theme_set(pn.theme_light())
-pio.templates.default = 'simple_white' # 'plotly_white'
-
-contact = pd.read_csv(here('fake_names_emails.csv'))
-contact.head()
-
-# correct/incorrect responses to each quiz item
-y = pd.read_csv(here('data/quiz/y.csv')).drop(columns = {'Unnamed: 0'})
-y['name'] = contact['name']
-# y = contact.join(y)
-
-np.random.seed(12345)
-y_sub = y.sample(n = 113)
-
-# q-matrix
-q = pd.read_csv(here('data/q_matrix/q.csv')).drop(columns = {'Unnamed: 0'})
-
-# attribute mastery matrix
-alpha = pd.DataFrame([(x, y) for x in np.arange(2) for y in np.arange(2)])
-alpha = alpha.rename(columns = {0: 'hold1',
-                                1: 'hold2'})
+# pio.templates.default = 'simple_white' # 'plotly_white'
 
 def overall_ppp(df, stat):
     thresh = np.array(y_describe.loc[y_describe['index'] == stat, 'item1':'item10'].mean(axis = 1))[0]
@@ -59,10 +73,29 @@ def q_lower(x):
   
 def q_upper(x):
     return x.quantile(.975)
+```
 
-y_describe = y_sub.filter(regex = 'item').agg(['mean', 'std']).reset_index()
-y_describe.drop(columns = 'index').transpose()
-actual_avg = y_describe.loc[y_describe['index'] == 'mean', 'item1':'item10'].mean(axis = 1)[0]
+```{python}
+#| echo: false
+
+# imported data
+contact = pd.read_csv(here('fake_names_emails.csv'))
+contact.head()
+
+# correct/incorrect responses to each quiz item
+y = pd.read_csv(here('data/quiz/y.csv')).drop(columns = {'Unnamed: 0'})
+y['name'] = contact['name']
+
+np.random.seed(12345)
+y_sub = y.sample(n = 113)
+
+# q-matrix
+q = pd.read_csv(here('data/q_matrix/q.csv')).drop(columns = {'Unnamed: 0'})
+
+# attribute mastery matrix
+alpha = pd.DataFrame([(x, y) for x in np.arange(2) for y in np.arange(2)])
+alpha = alpha.rename(columns = {0: 'hold1',
+                                1: 'hold2'})
 
 # stan dictionary data
 irt_dict = {
@@ -71,14 +104,26 @@ irt_dict = {
   'Y': np.array(y_sub.drop(columns = 'name'))
 }
 
-# https://mc-stan.org/learn-stan/case-studies/tutorial_twopl.html
-# irt_file = here('stan_models/irt_1pl.stan')
+y_describe = y_sub.filter(regex = 'item').agg(['mean', 'std']).reset_index()
+y_describe.drop(columns = 'index').transpose()
+actual_avg = y_describe.loc[y_describe['index'] == 'mean', 'item1':'item10'].mean(axis = 1)[0]
+```
+
+# IRT Model
+
+```{python}
 # irt_file = os.path.join(here('stan_models/irt_1pl.stan'))
 irt_file = os.path.join(here('stan_models/irt_2pl.stan'))
 # irt_file = os.path.join(here('stan_models/irt_3pl.stan'))
+
 irt_model = CmdStanModel(stan_file = irt_file,
                          cpp_options = {'STAN_THREADS': 'TRUE'})
+```
 
+```{python}
+#| include: false
+
+#running bayesian IRT model
 np.random.seed(12345)
 irt_fit = irt_model.sample(data = irt_dict,
                         show_console = True,
@@ -87,20 +132,27 @@ irt_fit = irt_model.sample(data = irt_dict,
                         iter_warmup = 2000,
                         iter_sampling = 2000)
 
-# irt_diagnose = pd.DataFrame(irt_fit.summary())
+irt_diagnose = pd.DataFrame(irt_fit.summary())
+```
 
-# irt_diagnose.to_csv(here('diagnostics/1pl_irt_quiz1.csv'))
-# irt_diagnose.to_csv(here('diagnostics/2pl_irt_quiz1.csv'))
-# irt_diagnose.to_csv(here('diagnostics/3pl_irt_quiz1.csv'))
+```{python}
+#| eval: false
+#| echo: true
 
-# irt_diagnose['R_hat'].sort_values(ascending = False).head()
+irt_diagnose.to_csv(here(f'diagnostics/{irt_num}pl_irt_{quiz_num}.csv'))
 
-# (
-#   joblib.dump([irt_model, irt_fit],
-#               here('joblib_models/1pl_irt_quiz1_modfit.joblib'),
-#               compress = 3)
-# )
+(
+  joblib.dump([irt_model, irt_fit],
+              here(f'joblib_models/{irt_num}pl_irt_{quiz_num}_modfit.joblib'),
+              compress = 3)
+)
+```
 
+```{python}
+irt_diagnose['R_hat'].sort_values(ascending = False).head()
+```
+
+```{python}
 iirt = az.from_cmdstanpy(
     posterior = irt_fit,
     posterior_predictive = ['y_rep'],
@@ -109,76 +161,133 @@ iirt = az.from_cmdstanpy(
 
 name_mapping = {'y_rep': 'Y'}
 iirt = iirt.rename(name_dict = name_mapping, groups = ["posterior_predictive"])
+```
 
-# plotting variables/ppc
+## Model Fit
+
+```{python}
+az.loo(iirt)
+```
+
+```{python}
+az.waic(iirt)
+```
+
+## Difficulty Visuals
+
+```{python}
 az.plot_trace(iirt,
-                var_names = 'a')
+              var_names = ('^b'),
+              filter_vars = 'regex'
+)
 plt.show()
-plt.clf()
+# plt.clf()
+```
+
+## Discrimination Visuals
+
+```{python}
+#| eval: false
+#| echo: true
+
+# only for 2pl | 3pl
 
 az.plot_trace(iirt,
-                var_names = 'b')
+              var_names = ('^a'),
+              filter_vars = 'regex'
+)
 plt.show()
-plt.clf()
+# plt.clf()
+```
+
+## Guessing Visuals
+
+```{python}
+# only for 3pl
 
 # az.plot_trace(iirt,
 #                 var_names = 'c')
 # plt.show()
 # plt.clf()
+```
 
-az.plot_trace(iirt.isel(eta_dim_0 = slice(0, 10),
-                        eta_dim_1 = slice(None)),
-                var_names = 'eta')
+## Eta Visuals
+
+```{python}
+az.plot_trace(iirt.posterior["eta"].isel(eta_dim_0 = slice(0, 4),
+                                          eta_dim_1 = slice(None)),
+               var_names = 'eta')
 plt.show()
-plt.clf()
+# plt.clf()
+```
 
+## Student Ability (Theta) Visuals
+
+```{python}
+az.plot_trace(iirt,
+              var_names = ('^theta'),
+              filter_vars = 'regex'
+)
+plt.show()
+# plt.clf()
+```
+
+## PPP Value Visuals
+
+```{python}
 az.plot_ppc(iirt,
             data_pairs = {'Y': 'Y'},
             num_pp_samples = 1000)
 plt.show()
-plt.clf()
+# plt.clf()
+```
 
+```{python}
 az.plot_ppc(iirt,
             data_pairs = {'Y': 'Y'},
             num_pp_samples = 1000,
             kind = 'cumulative')
 plt.show()
-plt.clf()
+# plt.clf()
+```
 
+```{python}
 az.plot_bpv(iirt,
             kind = 't_stat', 
             t_stat = 'mean')
 plt.show()
-plt.clf()
+# plt.clf()
+```
 
+```{python}
 az.plot_bpv(iirt,
             kind = 't_stat', 
             t_stat = 'std')
 plt.show()
-plt.clf()
+# plt.clf()
+```
 
-az.plot_forest(iirt,
+## Number of Items Correct Visual
+
+```{python}
+az.plot_forest(iirt.posterior["prob_correct"].isel(prob_correct_dim_0 = slice(0, 4),
+                                                    prob_correct_dim_1 = slice(None)
+                                                    ),
                var_names = 'prob_correct',
                colors = jpcolor)
 plt.show()
-plt.clf()
+# plt.clf()
+```
 
-# Loo
-az.loo(iirt)
+## IRT DataFrame
 
-# waic
-az.waic(iirt)
-
-
-
+```{python}
 irtdf = irt_fit.draws_pd()
-irtdf.head()
-irtdf.columns.tolist()
+```
 
-# item infit/outfit: > 1.3 --> might need removal, < .7 --> not add new info
-# person infit/outfit: > 2 --> responses too unpredictable, < .8 --> too predictable
+## Student Ability & Uncertainty
 
-
+```{python}
 ability = irtdf.filter(regex = 'theta')
 ability = pd.DataFrame({
   'mean': ability.mean(),
@@ -210,10 +319,61 @@ pn.ggplot.show(
             y = 'Ability')
   + pn.theme(axis_text_x = pn.element_blank())
 )
+```
 
-# a = discrimination (differentiate between individuals w/ different ability levels (theta))
-# high value = strong discrimination, low value = weak discrimination
-# negative = low theta individuals more likely to get responses correct
+## Difficulty & Uncertainty
+
+b = difficulty 
+
+0 = average difficulty, 2+ = very hard, -2 = very easy
+
+```{python}
+diff = irtdf.filter(regex = '^b.*]$')
+diff = pd.DataFrame({
+  'mean': diff.mean(),
+  'std': diff.std(),
+  'q_lower': q_lower(diff),
+  'q_upper': q_upper(diff)
+}).reset_index()
+
+diff['item'] = diff['index'].str.replace('b[', '')
+diff['item'] = diff['item'].str.replace(']', '')
+diff = diff.drop(columns = 'index')
+diff.head()
+
+pn.ggplot.show(
+  pn.ggplot(diff,
+            pn.aes('item',
+                   'mean'))
+  + pn.geom_point(alpha = .5,
+                  color = jpcolor)
+  + pn.geom_errorbar(pn.aes(ymin = 'q_lower',
+                            ymax = 'q_upper'),
+                     alpha = .3,
+                     color = jpcolor)
+  # + pn.geom_hline(yintercept = 0,
+  #                 color = 'black',
+  #                 linetype = 'dashed')
+  + pn.labs(title = 'Difficulty Parameter for Each Item',
+            x = 'Item',
+            y = 'Difficulty')
+  + pn.theme(axis_text_x = pn.element_blank())
+)
+```
+
+## Discrimination & Uncertainty
+
+For 2pl & 3pl IRT models
+
+a = discrimination (differentiate between individuals w/ different ability levels (theta))
+
+high value = strong discrimination, low value = weak discrimination
+
+negative = low theta individuals more likely to get responses correct
+
+```{python}
+#| eval: false
+#| echo: true
 
 dis = irtdf.filter(regex = '^a.*]$')
 dis = pd.DataFrame({
@@ -246,44 +406,18 @@ pn.ggplot.show(
             y = 'Discrimination')
   + pn.theme(axis_text_x = pn.element_blank())
 )
+```
 
-# b = difficulty 
-# 0 = average difficulty, 2+ = very hard, -2 = very easy
+## Guessing
 
-diff = irtdf.filter(regex = '^b.*]$')
-diff = pd.DataFrame({
-  'mean': diff.mean(),
-  'std': diff.std(),
-  'q_lower': q_lower(diff),
-  'q_upper': q_upper(diff)
-}).reset_index()
+3pl models only
 
-diff['item'] = diff['index'].str.replace('b[', '')
-diff['item'] = diff['item'].str.replace(']', '')
-diff = diff.drop(columns = 'index')
-diff.head()
+higher value = easier to guess
 
-pn.ggplot.show(
-  pn.ggplot(diff,
-            pn.aes('item',
-                   'mean'))
-  + pn.geom_point(alpha = .5,
-                  color = jpcolor)
-  + pn.geom_errorbar(pn.aes(ymin = 'q_lower',
-                            ymax = 'q_upper'),
-                     alpha = .3,
-                     color = jpcolor)
-  # + pn.geom_hline(yintercept = 0,
-  #                 color = 'black',
-  #                 linetype = 'dashed')
-  + pn.labs(title = 'Difficulty Parameter for Each Item',
-            x = 'Item',
-            y = 'Difficulty')
-  + pn.theme(axis_text_x = pn.element_blank())
-)
+```{python}
+#| eval: false
+#| echo: true
 
-# c = guessing
-# higher value = easy to guess
 guess = irtdf.filter(regex = '^c.*]$')
 guess = pd.DataFrame({
   'mean': guess.mean(),
@@ -315,7 +449,11 @@ pn.ggplot.show(
             y = 'Difficulty')
   + pn.theme(axis_text_x = pn.element_blank())
 )
+```
 
+## Replicated Data
+
+```{python}
 yirt = irtdf.filter(regex = '^y_rep')
 yirt.head()
 
@@ -354,7 +492,9 @@ pn.ggplot.show(
             y = 'Probability')
   + pn.theme(axis_text_x = pn.element_blank())
 )
+```
 
+```{python}
 yirt_wide = (
   yirt_prob
   .pivot(
@@ -368,15 +508,10 @@ yirt_wide.columns = [f'item{i+1}' for i in np.arange(yirt_wide.shape[1])]
 yirt_wide = yirt_wide.reset_index()
 yirt_wide = yirt_wide.rename(columns = {'index': 'stu'})
 yirt_wide['stu'] = yirt_wide['stu'] + 1
-yirt_wide.head()
+# yirt_wide.head()
+```
 
-# necessary if leading zero on item names
-# y_describe.columns = y_describe.columns.str.replace('item0', 'item')
-
-yirt_prob.loc[yirt_prob['item'] == 1, 'mean']
-y_describe.loc[y_describe['index'] == 'mean', 'item1']
-
-
+```{python}
 irt_means = [ppp_func(df = yirt_prob, item_num = i, stat = 'mean') for i in np.arange(1, (y_describe.shape[1]))]
 irt_stds = [ppp_func(df = yirt_prob, item_num = i, stat = 'std') for i in np.arange(1, (y_describe.shape[1]))]
 
@@ -387,9 +522,11 @@ ppp_irt = ppp_irt.reset_index()
 ppp_irt = ppp_irt.rename(columns = {'index': 'item'})
 ppp_irt['item'] = ppp_irt['item'] + 1
 
-ppp_irt.head()
-y_describe
+# ppp_irt.head()
+# y_describe
+```
 
+```{python}
 pn.ggplot.show(
   pn.ggplot(ppp_irt, pn.aes('item', 'means'))
   + pn.geom_point(color = jpcolor,
@@ -403,7 +540,9 @@ pn.ggplot.show(
                           breaks = np.arange(0, 1.01, .1))
   + pn.theme_light()
 )
+```
 
+```{python}
 pn.ggplot.show(
   pn.ggplot(ppp_irt, pn.aes('item', 'stds'))
   + pn.geom_point(color = jpcolor,
@@ -417,10 +556,13 @@ pn.ggplot.show(
                           breaks = np.arange(0, 1.01, .1))
   + pn.theme_light()
 )
+```
 
+# Diagnostic Model
 
+```{python}
+#| include: false
 
-# diagnostic model
 stan_dict = {
   'J': y_sub.drop(columns = 'name').shape[0],
   'I': y_sub.drop(columns = 'name').shape[1],
@@ -443,17 +585,27 @@ dcm_fit = dcm_model.sample(data = stan_dict,
                         iter_warmup = 2000,
                         iter_sampling = 2000)
 
-# dcm_diagnose = pd.DataFrame(dcm_fit.summary())
-# dcm_diagnose.to_csv(here('diagnostics/lcdm_quiz1.csv'))
+dcm_diagnose = pd.DataFrame(dcm_fit.summary())
+```
 
-# dcm_diagnose['R_hat'].sort_values(ascending = False).head()
+```{python}
+#| eval: true
+#| echo: true
 
-# (
-#   joblib.dump([dcm_model, dcm_fit],
-#               here('joblib_models/lcdm_quiz1_modfit.joblib'),
-#               compress = 3)
-# )
+dcm_diagnose.to_csv(here(f'diagnostics/{dcm_type}_{quiz_num}.csv'))
 
+(
+  joblib.dump([dcm_model, dcm_fit],
+              here(f'joblib_models/{dcm_type}_{quiz_num}_modfit.joblib'),
+              compress = 3)
+)
+```
+
+```{python}
+dcm_diagnose['R_hat'].sort_values(ascending = False).head()
+```
+
+```{python}
 idcm = az.from_cmdstanpy(
     posterior = dcm_fit,
     posterior_predictive = ['y_rep'],
@@ -462,90 +614,134 @@ idcm = az.from_cmdstanpy(
 
 idcm = idcm.rename(name_dict = name_mapping, groups = ["posterior_predictive"])
 
-# model fit
+```
+
+### Model Fit
+
+```{python}
 az.loo(idcm)
+```
 
+```{python}
+az.waic(idcm)
+```
 
-# plotting variables/ppc
+## Class Membership Visuals
+
+```{python}
 az.plot_trace(idcm,
                 var_names = 'nu')
 plt.show()
-plt.clf()
+# plt.clf()
+```
 
+## Pi Matrix Visuals
+
+```{python}
 az.plot_trace(idcm,
                 var_names = 'pi')
 plt.show()
-plt.clf()
+# plt.clf()
+```
 
+## Beta Coefficient Visuals
+
+```{python}
 az.plot_trace(idcm,
                 var_names = 'beta0')
 plt.show()
-plt.clf()
+# plt.clf()
+```
 
+```{python}
 az.plot_trace(idcm,
                 var_names = 'beta1')
 plt.show()
-plt.clf()
+# plt.clf()
+```
 
+```{python}
 az.plot_trace(idcm,
                 var_names = 'beta2')
 plt.show()
-plt.clf()
+# plt.clf()
+```
 
+```{python}
 az.plot_trace(idcm,
                 var_names = 'beta12')
 plt.show()
-plt.clf()
+# plt.clf()
+```
 
+### Attribute Mastery Per Class Visual
+
+```{python}
 az.plot_forest(idcm.posterior["prob_resp_class"].isel(prob_resp_class_dim_0 = slice(0, 4),
                                                     prob_resp_class_dim_1 = slice(None)
                                                     ),
                var_names = 'prob_resp_class',
                colors = jpcolor)
 plt.show()
-plt.clf()
+# plt.clf()
+```
 
+### Attribute Mastery Per Student Visual
+
+```{python}
 az.plot_forest(idcm.posterior["prob_resp_attr"].isel(prob_resp_attr_dim_0 = slice(0, 4),
                                                     prob_resp_attr_dim_1 = slice(None)
                                                     ),
                var_names = 'prob_resp_attr',
                colors = jpcolor)
 plt.show()
-plt.clf()
+# plt.clf()
+```
 
+## PPP Visuals
 
+```{python}
 az.plot_ppc(idcm,
             data_pairs = {'Y': 'Y'},
             num_pp_samples = 1000)
 plt.show()
-plt.clf()
+# plt.clf()
+```
 
+```{python}
 az.plot_ppc(idcm,
             data_pairs = {'Y': 'Y'},
             num_pp_samples = 1000,
             kind = 'cumulative')
 plt.show()
-plt.clf()
+# plt.clf()
+```
 
+```{python}
 az.plot_bpv(idcm,
             kind = 't_stat', 
             t_stat = 'mean')
 plt.show()
-plt.clf()
+# plt.clf()
+```
 
+```{python}
 az.plot_bpv(idcm,
             kind = 't_stat', 
             t_stat = 'std')
 plt.show()
-plt.clf()
+# plt.clf()
+```
 
+## Pandas Dataframe
 
-# put draws/samples into pandas dataframe
+```{python}
 dcmdf = dcm_fit.draws_pd()
-dcmdf.head()
+```
 
+## Pi Matrix
 
-# pi matrix (item x latent attribute mastery (0 | 1))
+```{python}
 pi_mat = dcmdf.filter(regex = 'pi')
 pi_mat = pd.DataFrame({
   'mean': pi_mat.mean(),
@@ -578,7 +774,9 @@ pn.ggplot.show(
             x = 'Item',
             y = 'Probability')
 )
+```
 
+```{python}
 pn.ggplot.show(
   pn.ggplot(pi_mat,
             pn.aes('factor(item)',
@@ -590,6 +788,11 @@ pn.ggplot.show(
             x = 'Item',
             y = 'Standard Deviation')
 )
+```
+
+### Beta Coefficients
+
+```{python}
 
 beta_df = dcmdf.filter(regex = 'beta')
 beta_df = pd.DataFrame({
@@ -619,7 +822,9 @@ pn.ggplot.show(
             x = 'Item',
             y = 'Coefficient')
 )
+```
 
+```{python}
 pn.ggplot.show(
   pn.ggplot(beta_df,
             pn.aes('factor(item)',
@@ -631,8 +836,11 @@ pn.ggplot.show(
             x = 'Item',
             y = 'Standard Deviation')
 )
+```
 
+### Attribute Mastery & Uncertainty
 
+```{python}
 attr_df = dcmdf.filter(regex = '^prob_resp_attr')
 attr_df = pd.DataFrame({
   'mean': attr_df.mean(),
@@ -646,10 +854,7 @@ attr_df['index'] = attr_df['index'].str.replace(']', '')
 attr_df[['stu', 'attr']] = attr_df['index'].str.split(',', expand = True)
 attr_df[['stu', 'attr']] = attr_df[['stu', 'attr']].astype(int)
 attr_df = attr_df[['stu', 'attr', 'mean', 'std', 'q_lower', 'q_upper']]
-attr_df.head()
-
-mastery_prob = .8
-prof_prob = .5
+# attr_df.head()
 
 pn.ggplot.show(
   pn.ggplot(attr_df,
@@ -667,7 +872,9 @@ pn.ggplot.show(
             x = 'Students',
             y = 'Probability')
 )
+```
 
+```{python}
 pn.ggplot.show(
   pn.ggplot(attr_df,
             pn.aes('stu',
@@ -679,11 +886,13 @@ pn.ggplot.show(
             x = 'Students',
             y = 'Standard Deviation')
 )
+```
 
+```{python}
 attr_df['mastery'] = np.where(attr_df['mean'] > mastery_prob, 1, 0)
 attr_df['proficiency'] = np.where(attr_df['mean'] > prof_prob, 1, 0)
 
-attr_df.head()
+# attr_df.head()
 
 attr_df.groupby('attr')['mastery'].value_counts().reset_index()
 attr_df.groupby('attr')['proficiency'].value_counts().reset_index()
@@ -693,25 +902,41 @@ attr_mastery = attr_df.pivot(index = 'stu',
               values = 'mastery').reset_index()
 attr_mastery = attr_mastery.rename(columns = {1: 'attr1',
                                               2: 'attr2'})
-attr_mastery.head()
+# attr_mastery.head()
+```
+
+```{python}
+#| eval: true
+#| echo: true
 
 # INCLUDE THE NAMES FOR THE ATTRIBUTES HERE FOR MASTERY
-# attr_mastery['attr1'] = np.where(attr_mastery['attr1'] == 1, '', '')
-# attr_mastery['attr2'] = np.where(attr_mastery['attr2'] == 1, '', '')
-# attr_mastery.to_csv('student_data/attribute_mastery_quiz1.csv')
+attr_mastery['attr1'] = np.where(attr_mastery['attr1'] == 1, '', '')
+attr_mastery['attr2'] = np.where(attr_mastery['attr2'] == 1, '', '')
+attr_mastery.to_csv(f'student_data/attribute_mastery_{quiz_num}.csv')
+```
 
+```{python}
 attr_prof = attr_df.pivot(index = 'stu',
               columns = 'attr',
               values = 'mastery').reset_index()
 attr_prof = attr_prof.rename(columns = {1: 'attr1',
                                         2: 'attr2'})
-attr_prof.head()
+# attr_prof.head()
+```
+
+```{python}
+#| eval: true
+#| echo: true
 
 # INCLUDE THE NAMES FOR THE ATTRIBUTES HERE FOR PROFICIENCY
-# attr_prof['attr1'] = np.where(attr_prof['attr1'] == 1, '', '')
-# attr_prof['attr2'] = np.where(attr_prof['attr2'] == 1, '', '')
-# attr_prof.to_csv('student_data/attribute_proficiency_quiz1.csv')
+attr_prof['attr1'] = np.where(attr_prof['attr1'] == 1, '', '')
+attr_prof['attr2'] = np.where(attr_prof['attr2'] == 1, '', '')
+attr_prof.to_csv(f'student_data/attribute_proficiency_{quiz_num}.csv')
+```
 
+### Attribute Mastery Per Class
+
+```{python}
 attr_class_df = dcmdf.filter(regex = '^prob_resp_class')
 attr_class_df = pd.DataFrame({
   'mean': attr_class_df.mean(),
@@ -725,7 +950,7 @@ attr_class_df['index'] = attr_class_df['index'].str.replace(']', '')
 attr_class_df[['stu', 'lat_class']] = attr_class_df['index'].str.split(',', expand = True)
 attr_class_df[['stu', 'lat_class']] = attr_class_df[['stu', 'lat_class']].astype(int)
 attr_class_df = attr_class_df[['stu', 'lat_class', 'mean', 'std', 'q_lower', 'q_upper']]
-attr_class_df.head()
+# attr_class_df.head()
 
 pn.ggplot.show(
   pn.ggplot(attr_class_df,
@@ -744,7 +969,9 @@ pn.ggplot.show(
             x = 'Students',
             y = 'Probability')
 )
+```
 
+```{python}
 pn.ggplot.show(
   pn.ggplot(attr_class_df,
             pn.aes('stu',
@@ -756,10 +983,11 @@ pn.ggplot.show(
             x = 'Students',
             y = 'Standard Deviation')
 )
+```
 
+## PPP Calculations
 
-# PPP Value
-# y replicated datasets
+```{python}
 ydcm = dcmdf.filter(regex = '^y_rep')
 
 ydcm_prob = pd.DataFrame({
@@ -794,8 +1022,9 @@ pn.ggplot.show(
             y = 'Probability')
   + pn.theme(axis_text_x = pn.element_blank())
 )
+```
 
-
+```{python}
 ydcm_wide = (
   ydcm_prob
   .pivot(
@@ -809,8 +1038,11 @@ ydcm_wide.columns = [f'item{i+1}' for i in np.arange(ydcm_wide.shape[1])]
 ydcm_wide = ydcm_wide.reset_index()
 ydcm_wide = ydcm_wide.rename(columns = {'index': 'stu'})
 ydcm_wide['stu'] = ydcm_wide['stu'] + 1
-ydcm_wide.head()
+# ydcm_wide.head()
+```
 
+
+```{python}
 ydcm_wide['total_correct'] = ydcm_wide.drop(columns = 'stu').sum(axis = 1)
 ydcm_wide['actual_correct'] = y_sub.drop(columns = 'name').sum(axis = 1)
 
@@ -823,7 +1055,9 @@ pn.ggplot.show(
                    'count'))
   + pn.geom_point(pn.aes(color = 'variable'))
 )
+```
 
+```{python}
 ydcm_compare_actual = ydcm_compare.loc[ydcm_compare['variable'] == 'actual_correct', 'value'].sort_values()
 ydcm_compare_predict = ydcm_compare.loc[ydcm_compare['variable'] == 'total_correct', 'value'].sort_values()
 
@@ -833,16 +1067,28 @@ ydcm_compare_predict = pd.Categorical(ydcm_compare_predict, ordered = True)
 
 count_tabs = pd.crosstab(ydcm_compare_actual,
                          ydcm_compare_predict)
-count_tabs
+# count_tabs
 
 # from scipy.stats import chisquare
 from scipy.stats import chi2_contingency
 chi2_contingency(observed = count_tabs)
+```
 
-# overall, model fits pretty well
+### Overall PPP Values
+
+```{python}
 overall_ppp(ydcm_prob, 'mean')
-overall_ppp(ydcm_prob, 'std')
+```
 
+```{python}
+# overall, model fits pretty well
+
+overall_ppp(ydcm_prob, 'std')
+```
+
+### Item Specific PPP Values
+
+```{python}
 dcm_means = [ppp_func(df = ydcm_prob,
                       item_num = i,
                       stat = 'mean') for i in np.arange(1,
@@ -859,8 +1105,10 @@ ppp_dcm = ppp_dcm.reset_index()
 ppp_dcm = ppp_dcm.rename(columns = {'index': 'item'})
 ppp_dcm['item'] = ppp_dcm['item'] + 1
 
-ppp_dcm
+gt.show(gt(ppp_dcm))
+```
 
+```{python}
 pn.ggplot.show(
   pn.ggplot(ppp_dcm, pn.aes('item', 'means'))
   + pn.geom_point(color = jpcolor,
@@ -874,6 +1122,9 @@ pn.ggplot.show(
                           breaks = np.arange(0, 1.01, .1))
   + pn.theme_light()
 )
+```
+
+```{python}
 
 pn.ggplot.show(
   pn.ggplot(ppp_dcm, pn.aes('item', 'stds'))
@@ -888,3 +1139,4 @@ pn.ggplot.show(
                           breaks = np.arange(0, 1.01, .1))
   + pn.theme_light()
 )
+```

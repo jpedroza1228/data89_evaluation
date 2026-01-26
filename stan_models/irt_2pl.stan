@@ -36,8 +36,17 @@ model {
 }
 
 generated quantities {
+  array[J] real log_lik;
   matrix[J,I] prob_correct;         // probability of correct response
   matrix[J,I] y_rep;             // expected total score for each student
+
+  for (j in 1:J) {
+    log_lik[j] = 0;
+    for (i in 1:I) {
+      real p = fmin(fmax(eta[j,i], 1e-9), 1 - 1e-9);
+      log_lik[j] += Y[j,i] * log(p) + (1 - Y[j,i]) * log1m(p);
+    }
+  }
   
   for (j in 1:J) {
     for (i in 1:I) {

@@ -1,0 +1,2189 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.8.26">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Jonathan A. Pedroza">
+
+<title>Quiz 1 Findings</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js" integrity="sha384-ZvpUoO/+PpLXR1lu4jmpXWu80pZlYUAfxl5NsBMWOEPSjUn/6Z/hRTt8+pR6L4N2" crossorigin="anonymous"></script><script src="data89_quiz1_files/libs/clipboard/clipboard.min.js"></script>
+<script src="data89_quiz1_files/libs/quarto-html/quarto.js" type="module"></script>
+<script src="data89_quiz1_files/libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="data89_quiz1_files/libs/quarto-html/axe/axe-check.js" type="module"></script>
+<script src="data89_quiz1_files/libs/quarto-html/popper.min.js"></script>
+<script src="data89_quiz1_files/libs/quarto-html/tippy.umd.min.js"></script>
+<script src="data89_quiz1_files/libs/quarto-html/anchor.min.js"></script>
+<link href="data89_quiz1_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="data89_quiz1_files/libs/quarto-html/quarto-syntax-highlighting-587c61ba64f3a5504c4d52d930310e48.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="data89_quiz1_files/libs/bootstrap/bootstrap.min.js"></script>
+<link href="data89_quiz1_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="data89_quiz1_files/libs/bootstrap/bootstrap-df64302f2de92f6b6e3a52a0f46d3506.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script src="https://cdn.jsdelivr.net/npm/requirejs@2.3.6/require.min.js" integrity="sha384-c9c+LnTbwQ3aujuU7ULEPVvgLs+Fn6fJUvIGTsuu1ZcCf11fiEubah0ttpca4ntM sha384-6V1/AdqZRWk1KAlWbKBlGhN7VG4iE/yAZcO6NZPMF8od0vukrvr0tg4qY6NSrItx" crossorigin="anonymous"></script>
+
+<script type="application/javascript">define('jquery', [],function() {return window.jQuery;})</script>
+
+
+</head>
+
+<body class="quarto-light">
+
+<div id="quarto-content" class="page-columns page-rows-contents page-layout-article">
+<div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+  <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul class="collapse">
+  <li><a href="#irt-model" id="toc-irt-model" class="nav-link active" data-scroll-target="#irt-model">IRT Model</a>
+  <ul class="collapse">
+  <li><a href="#model-fit" id="toc-model-fit" class="nav-link" data-scroll-target="#model-fit">Model Fit</a></li>
+  <li><a href="#difficulty-visuals" id="toc-difficulty-visuals" class="nav-link" data-scroll-target="#difficulty-visuals">Difficulty Visuals</a></li>
+  <li><a href="#discrimination-visuals" id="toc-discrimination-visuals" class="nav-link" data-scroll-target="#discrimination-visuals">Discrimination Visuals</a></li>
+  <li><a href="#guessing-visuals" id="toc-guessing-visuals" class="nav-link" data-scroll-target="#guessing-visuals">Guessing Visuals</a></li>
+  <li><a href="#eta-visuals" id="toc-eta-visuals" class="nav-link" data-scroll-target="#eta-visuals">Eta Visuals</a></li>
+  <li><a href="#student-ability-theta-visuals" id="toc-student-ability-theta-visuals" class="nav-link" data-scroll-target="#student-ability-theta-visuals">Student Ability (Theta) Visuals</a></li>
+  <li><a href="#ppp-value-visuals" id="toc-ppp-value-visuals" class="nav-link" data-scroll-target="#ppp-value-visuals">PPP Value Visuals</a></li>
+  <li><a href="#number-of-items-correct-visual" id="toc-number-of-items-correct-visual" class="nav-link" data-scroll-target="#number-of-items-correct-visual">Number of Items Correct Visual</a></li>
+  <li><a href="#irt-dataframe" id="toc-irt-dataframe" class="nav-link" data-scroll-target="#irt-dataframe">IRT DataFrame</a></li>
+  <li><a href="#student-ability-uncertainty" id="toc-student-ability-uncertainty" class="nav-link" data-scroll-target="#student-ability-uncertainty">Student Ability &amp; Uncertainty</a></li>
+  <li><a href="#difficulty-uncertainty" id="toc-difficulty-uncertainty" class="nav-link" data-scroll-target="#difficulty-uncertainty">Difficulty &amp; Uncertainty</a></li>
+  <li><a href="#discrimination-uncertainty" id="toc-discrimination-uncertainty" class="nav-link" data-scroll-target="#discrimination-uncertainty">Discrimination &amp; Uncertainty</a></li>
+  <li><a href="#guessing" id="toc-guessing" class="nav-link" data-scroll-target="#guessing">Guessing</a></li>
+  <li><a href="#replicated-data" id="toc-replicated-data" class="nav-link" data-scroll-target="#replicated-data">Replicated Data</a></li>
+  </ul></li>
+  <li><a href="#diagnostic-model" id="toc-diagnostic-model" class="nav-link" data-scroll-target="#diagnostic-model">Diagnostic Model</a>
+  <ul class="collapse">
+  <li><a href="#class-membership-visuals" id="toc-class-membership-visuals" class="nav-link" data-scroll-target="#class-membership-visuals">Class Membership Visuals</a></li>
+  <li><a href="#pi-matrix-visuals" id="toc-pi-matrix-visuals" class="nav-link" data-scroll-target="#pi-matrix-visuals">Pi Matrix Visuals</a></li>
+  <li><a href="#beta-coefficient-visuals" id="toc-beta-coefficient-visuals" class="nav-link" data-scroll-target="#beta-coefficient-visuals">Beta Coefficient Visuals</a></li>
+  <li><a href="#ppp-visuals" id="toc-ppp-visuals" class="nav-link" data-scroll-target="#ppp-visuals">PPP Visuals</a></li>
+  <li><a href="#pandas-dataframe" id="toc-pandas-dataframe" class="nav-link" data-scroll-target="#pandas-dataframe">Pandas Dataframe</a></li>
+  <li><a href="#pi-matrix" id="toc-pi-matrix" class="nav-link" data-scroll-target="#pi-matrix">Pi Matrix</a></li>
+  <li><a href="#ppp-calculations" id="toc-ppp-calculations" class="nav-link" data-scroll-target="#ppp-calculations">PPP Calculations</a></li>
+  </ul></li>
+  </ul>
+</nav>
+</div>
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Quiz 1 Findings</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p>Jonathan A. Pedroza </p>
+          </div>
+  </div>
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<div id="7dc09d6d" class="cell" data-tags="[&quot;parameters&quot;]" data-execution_count="1">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>jpcolor <span class="op">=</span> <span class="st">'seagreen'</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>quiz_num <span class="op">=</span> <span class="st">'quiz1'</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>irt_num <span class="op">=</span> <span class="st">'1'</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>dcm_type <span class="op">=</span> <span class="st">'lcdm'</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>mastery_prob <span class="op">=</span> <span class="fl">.8</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>prof_prob <span class="op">=</span> <span class="fl">.5</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+</div>
+<div id="30bce216" class="cell" data-execution_count="2">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> plotnine <span class="im">as</span> pn</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> janitor <span class="im">import</span> clean_names</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> pyhere <span class="im">import</span> here</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib</span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> arviz <span class="im">as</span> az</span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> joblib</span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> scipy <span class="im">import</span> stats</span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> os</span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> cmdstanpy <span class="im">import</span> CmdStanModel</span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> great_tables <span class="im">import</span> GT <span class="im">as</span> gt</span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> plotly.express <span class="im">as</span> px</span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> plotly.io <span class="im">as</span> pio</span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a>os.environ[<span class="st">'QT_API'</span>] <span class="op">=</span> <span class="st">'PyQt6'</span></span>
+<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a>pd.set_option(<span class="st">'display.max_columns'</span>, <span class="va">None</span>)</span>
+<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a>pd.options.mode.copy_on_write <span class="op">=</span> <span class="va">True</span></span>
+<span id="cb2-20"><a href="#cb2-20" aria-hidden="true" tabindex="-1"></a>matplotlib.rcParams.update({<span class="st">'savefig.bbox'</span>: <span class="st">'tight'</span>})</span>
+<span id="cb2-21"><a href="#cb2-21" aria-hidden="true" tabindex="-1"></a>pn.theme_set(pn.theme_light())</span>
+<span id="cb2-22"><a href="#cb2-22" aria-hidden="true" tabindex="-1"></a><span class="co"># pio.templates.default = 'simple_white' # 'plotly_white'</span></span>
+<span id="cb2-23"><a href="#cb2-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-24"><a href="#cb2-24" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> overall_ppp(df, stat):</span>
+<span id="cb2-25"><a href="#cb2-25" aria-hidden="true" tabindex="-1"></a>    thresh <span class="op">=</span> np.array(y_describe.loc[y_describe[<span class="st">'index'</span>] <span class="op">==</span> stat, <span class="st">'item1'</span>:<span class="st">'item10'</span>].mean(axis <span class="op">=</span> <span class="dv">1</span>))[<span class="dv">0</span>]</span>
+<span id="cb2-26"><a href="#cb2-26" aria-hidden="true" tabindex="-1"></a>    cond <span class="op">=</span> df.loc[:, stat] <span class="op">&gt;</span> thresh</span>
+<span id="cb2-27"><a href="#cb2-27" aria-hidden="true" tabindex="-1"></a>    ppp_val <span class="op">=</span> np.where(cond, <span class="dv">1</span>, <span class="dv">0</span>).mean()</span>
+<span id="cb2-28"><a href="#cb2-28" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> ppp_val</span>
+<span id="cb2-29"><a href="#cb2-29" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-30"><a href="#cb2-30" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> ppp_func(df, item_num, stat):</span>
+<span id="cb2-31"><a href="#cb2-31" aria-hidden="true" tabindex="-1"></a>    thresh <span class="op">=</span> np.array(y_describe.loc[y_describe[<span class="st">'index'</span>] <span class="op">==</span> stat, <span class="ss">f'item</span><span class="sc">{</span>item_num<span class="sc">}</span><span class="ss">'</span>])[<span class="dv">0</span>]</span>
+<span id="cb2-32"><a href="#cb2-32" aria-hidden="true" tabindex="-1"></a>    cond <span class="op">=</span> df.loc[df[<span class="st">'item'</span>] <span class="op">==</span> item_num, stat] <span class="op">&gt;</span> thresh</span>
+<span id="cb2-33"><a href="#cb2-33" aria-hidden="true" tabindex="-1"></a>    ppp_val <span class="op">=</span> np.where(cond, <span class="dv">1</span>, <span class="dv">0</span>).mean()</span>
+<span id="cb2-34"><a href="#cb2-34" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> ppp_val</span>
+<span id="cb2-35"><a href="#cb2-35" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-36"><a href="#cb2-36" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> q_lower(x):</span>
+<span id="cb2-37"><a href="#cb2-37" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> x.quantile(<span class="fl">.025</span>)</span>
+<span id="cb2-38"><a href="#cb2-38" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb2-39"><a href="#cb2-39" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> q_upper(x):</span>
+<span id="cb2-40"><a href="#cb2-40" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> x.quantile(<span class="fl">.975</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+</div>
+<section id="irt-model" class="level1">
+<h1>IRT Model</h1>
+<div id="df999ed6" class="cell" data-execution_count="4">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># irt_file = os.path.join(here('stan_models/irt_1pl.stan'))</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>irt_file <span class="op">=</span> os.path.join(here(<span class="st">'stan_models/irt_2pl.stan'</span>))</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="co"># irt_file = os.path.join(here('stan_models/irt_3pl.stan'))</span></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>irt_model <span class="op">=</span> CmdStanModel(stan_file <span class="op">=</span> irt_file,</span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>                         cpp_options <span class="op">=</span> {<span class="st">'STAN_THREADS'</span>: <span class="st">'TRUE'</span>})</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+</div>
+<div id="b25b71a9" class="cell" data-execution_count="6">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>irt_diagnose.to_csv(here(<span class="ss">f'diagnostics/</span><span class="sc">{</span>irt_num<span class="sc">}</span><span class="ss">pl_irt_</span><span class="sc">{</span>quiz_num<span class="sc">}</span><span class="ss">.csv'</span>))</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>(</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>  joblib.dump([irt_model, irt_fit],</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>              here(<span class="ss">f'joblib_models/</span><span class="sc">{</span>irt_num<span class="sc">}</span><span class="ss">pl_irt_</span><span class="sc">{</span>quiz_num<span class="sc">}</span><span class="ss">_modfit.joblib'</span>),</span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>              compress <span class="op">=</span> <span class="dv">3</span>)</span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+</div>
+<div id="51b2507b" class="cell" data-execution_count="7">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>irt_diagnose[<span class="st">'R_hat'</span>].sort_values(ascending <span class="op">=</span> <span class="va">False</span>).head()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-display" data-execution_count="72">
+<pre><code>theta[64]     1.00258
+theta[79]     1.00239
+theta[102]    1.00225
+theta[40]     1.00205
+theta[53]     1.00196
+Name: R_hat, dtype: float64</code></pre>
+</div>
+</div>
+<div id="f3821712" class="cell" data-execution_count="8">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>iirt <span class="op">=</span> az.from_cmdstanpy(</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>    posterior <span class="op">=</span> irt_fit,</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>    posterior_predictive <span class="op">=</span> [<span class="st">'y_rep'</span>],</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>    observed_data <span class="op">=</span> {<span class="st">'Y'</span>: y_sub.drop(columns <span class="op">=</span> <span class="st">'name'</span>)},</span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>    log_likelihood <span class="op">=</span> {<span class="st">'Y'</span>: <span class="st">'log_lik'</span>})</span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>name_mapping <span class="op">=</span> {<span class="st">'y_rep'</span>: <span class="st">'Y'</span>}</span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>iirt <span class="op">=</span> iirt.rename(name_dict <span class="op">=</span> name_mapping, groups <span class="op">=</span> [<span class="st">"posterior_predictive"</span>])</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+</div>
+<section id="model-fit" class="level2">
+<h2 class="anchored" data-anchor-id="model-fit">Model Fit</h2>
+<div id="87679eaa" class="cell" data-execution_count="9">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>az.loo(iirt)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-display" data-execution_count="74">
+<pre><code>Computed from 8000 posterior samples and 113 observations log-likelihood matrix.
+
+         Estimate       SE
+elpd_loo -9534.78    64.47
+p_loo     8736.13        -
+
+There has been a warning during the calculation. Please check the results.
+------
+
+Pareto k diagnostic values:
+                         Count   Pct.
+(-Inf, 0.70]   (good)        0    0.0%
+   (0.70, 1]   (bad)         0    0.0%
+   (1, Inf)   (very bad)  113  100.0%</code></pre>
+</div>
+</div>
+<div id="43ec98be" class="cell" data-execution_count="10">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>az.waic(iirt)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-display" data-execution_count="75">
+<pre><code>Computed from 8000 posterior samples and 113 observations log-likelihood matrix.
+
+          Estimate       SE
+elpd_waic -20558.34   185.41
+p_waic    19759.69        -
+
+There has been a warning during the calculation. Please check the results.</code></pre>
+</div>
+</div>
+</section>
+<section id="difficulty-visuals" class="level2">
+<h2 class="anchored" data-anchor-id="difficulty-visuals">Difficulty Visuals</h2>
+<div id="d939c0b9" class="cell" data-execution_count="11">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>az.plot_trace(iirt,</span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>              var_names <span class="op">=</span> (<span class="st">'^b'</span>),</span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>              filter_vars <span class="op">=</span> <span class="st">'regex'</span></span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>plt.show()</span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a><span class="co"># plt.clf()</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="data89_quiz1_files/figure-html/cell-12-output-1.png" width="912" height="209" class="figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="discrimination-visuals" class="level2">
+<h2 class="anchored" data-anchor-id="discrimination-visuals">Discrimination Visuals</h2>
+<div id="521a34b3" class="cell" data-execution_count="12">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="co"># only for 2pl | 3pl</span></span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>az.plot_trace(iirt,</span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>              var_names <span class="op">=</span> (<span class="st">'^a'</span>),</span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>              filter_vars <span class="op">=</span> <span class="st">'regex'</span></span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a>plt.show()</span>
+<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a><span class="co"># plt.clf()</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+</div>
+</section>
+<section id="guessing-visuals" class="level2">
+<h2 class="anchored" data-anchor-id="guessing-visuals">Guessing Visuals</h2>
+<div id="7142c5f6" class="cell" data-execution_count="13">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="co"># only for 3pl</span></span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a><span class="co"># az.plot_trace(iirt,</span></span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a><span class="co">#                 var_names = 'c')</span></span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a><span class="co"># plt.show()</span></span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a><span class="co"># plt.clf()</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+</div>
+</section>
+<section id="eta-visuals" class="level2">
+<h2 class="anchored" data-anchor-id="eta-visuals">Eta Visuals</h2>
+<div id="351764d3" class="cell" data-execution_count="14">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>az.plot_trace(iirt.posterior[<span class="st">"eta"</span>].isel(eta_dim_0 <span class="op">=</span> <span class="bu">slice</span>(<span class="dv">0</span>, <span class="dv">4</span>),</span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>                                          eta_dim_1 <span class="op">=</span> <span class="bu">slice</span>(<span class="va">None</span>)),</span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>               var_names <span class="op">=</span> <span class="st">'eta'</span>)</span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>plt.show()</span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a><span class="co"># plt.clf()</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="data89_quiz1_files/figure-html/cell-15-output-1.png" width="912" height="209" class="figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="student-ability-theta-visuals" class="level2">
+<h2 class="anchored" data-anchor-id="student-ability-theta-visuals">Student Ability (Theta) Visuals</h2>
+<div id="eba95996" class="cell" data-execution_count="15">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>az.plot_trace(iirt,</span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>              var_names <span class="op">=</span> (<span class="st">'^theta'</span>),</span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>              filter_vars <span class="op">=</span> <span class="st">'regex'</span></span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a>plt.show()</span>
+<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a><span class="co"># plt.clf()</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="data89_quiz1_files/figure-html/cell-16-output-1.png" width="912" height="209" class="figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="ppp-value-visuals" class="level2">
+<h2 class="anchored" data-anchor-id="ppp-value-visuals">PPP Value Visuals</h2>
+<div id="02b88b84" class="cell" data-execution_count="16">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>az.plot_ppc(iirt,</span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>            data_pairs <span class="op">=</span> {<span class="st">'Y'</span>: <span class="st">'Y'</span>},</span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>            num_pp_samples <span class="op">=</span> <span class="dv">1000</span>)</span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>plt.show()</span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a><span class="co"># plt.clf()</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="data89_quiz1_files/figure-html/cell-17-output-1.png" width="540" height="442" class="figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+<div id="51ad459f" class="cell" data-execution_count="17">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb18"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>az.plot_ppc(iirt,</span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>            data_pairs <span class="op">=</span> {<span class="st">'Y'</span>: <span class="st">'Y'</span>},</span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>            num_pp_samples <span class="op">=</span> <span class="dv">1000</span>,</span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a>            kind <span class="op">=</span> <span class="st">'cumulative'</span>)</span>
+<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a>plt.show()</span>
+<span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a><span class="co"># plt.clf()</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="data89_quiz1_files/figure-html/cell-18-output-1.png" width="571" height="436" class="figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+<div id="f399652b" class="cell" data-execution_count="18">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb19"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>az.plot_bpv(iirt,</span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>            kind <span class="op">=</span> <span class="st">'t_stat'</span>, </span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>            t_stat <span class="op">=</span> <span class="st">'mean'</span>)</span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a>plt.show()</span>
+<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a><span class="co"># plt.clf()</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="data89_quiz1_files/figure-html/cell-19-output-1.png" width="540" height="440" class="figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+<div id="0c6b4ec3" class="cell" data-execution_count="19">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb20"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>az.plot_bpv(iirt,</span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>            kind <span class="op">=</span> <span class="st">'t_stat'</span>, </span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a>            t_stat <span class="op">=</span> <span class="st">'std'</span>)</span>
+<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a>plt.show()</span>
+<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a><span class="co"># plt.clf()</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="data89_quiz1_files/figure-html/cell-20-output-1.png" width="540" height="440" class="figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="number-of-items-correct-visual" class="level2">
+<h2 class="anchored" data-anchor-id="number-of-items-correct-visual">Number of Items Correct Visual</h2>
+<div id="83a262b8" class="cell" data-execution_count="20">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb21"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>az.plot_forest(iirt.posterior[<span class="st">"prob_correct"</span>].isel(prob_correct_dim_0 <span class="op">=</span> <span class="bu">slice</span>(<span class="dv">0</span>, <span class="dv">4</span>),</span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>                                                    prob_correct_dim_1 <span class="op">=</span> <span class="bu">slice</span>(<span class="va">None</span>)</span>
+<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a>                                                    ),</span>
+<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a>               var_names <span class="op">=</span> <span class="st">'prob_correct'</span>,</span>
+<span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a>               colors <span class="op">=</span> jpcolor)</span>
+<span id="cb21-6"><a href="#cb21-6" aria-hidden="true" tabindex="-1"></a>plt.show()</span>
+<span id="cb21-7"><a href="#cb21-7" aria-hidden="true" tabindex="-1"></a><span class="co"># plt.clf()</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="data89_quiz1_files/figure-html/cell-21-output-1.png" width="642" height="1550" class="figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="irt-dataframe" class="level2">
+<h2 class="anchored" data-anchor-id="irt-dataframe">IRT DataFrame</h2>
+<div id="8fd8c89b" class="cell" data-execution_count="21">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb22"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>irtdf <span class="op">=</span> irt_fit.draws_pd()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+</div>
+</section>
+<section id="student-ability-uncertainty" class="level2">
+<h2 class="anchored" data-anchor-id="student-ability-uncertainty">Student Ability &amp; Uncertainty</h2>
+<div id="af63d951" class="cell" data-execution_count="22">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb23"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>ability <span class="op">=</span> irtdf.<span class="bu">filter</span>(regex <span class="op">=</span> <span class="st">'theta'</span>)</span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>ability <span class="op">=</span> pd.DataFrame({</span>
+<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a>  <span class="st">'mean'</span>: ability.mean(),</span>
+<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a>  <span class="st">'std'</span>: ability.std(),</span>
+<span id="cb23-5"><a href="#cb23-5" aria-hidden="true" tabindex="-1"></a>  <span class="st">'q_lower'</span>: q_lower(ability),</span>
+<span id="cb23-6"><a href="#cb23-6" aria-hidden="true" tabindex="-1"></a>  <span class="st">'q_upper'</span>: q_upper(ability)</span>
+<span id="cb23-7"><a href="#cb23-7" aria-hidden="true" tabindex="-1"></a>}).reset_index()</span>
+<span id="cb23-8"><a href="#cb23-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb23-9"><a href="#cb23-9" aria-hidden="true" tabindex="-1"></a>ability[<span class="st">'stu'</span>] <span class="op">=</span> ability[<span class="st">'index'</span>].<span class="bu">str</span>.replace(<span class="st">'theta['</span>, <span class="st">''</span>)</span>
+<span id="cb23-10"><a href="#cb23-10" aria-hidden="true" tabindex="-1"></a>ability[<span class="st">'stu'</span>] <span class="op">=</span> ability[<span class="st">'stu'</span>].<span class="bu">str</span>.replace(<span class="st">']'</span>, <span class="st">''</span>)</span>
+<span id="cb23-11"><a href="#cb23-11" aria-hidden="true" tabindex="-1"></a>ability <span class="op">=</span> ability.drop(columns <span class="op">=</span> <span class="st">'index'</span>)</span>
+<span id="cb23-12"><a href="#cb23-12" aria-hidden="true" tabindex="-1"></a>ability.head()</span>
+<span id="cb23-13"><a href="#cb23-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb23-14"><a href="#cb23-14" aria-hidden="true" tabindex="-1"></a>pn.ggplot.show(</span>
+<span id="cb23-15"><a href="#cb23-15" aria-hidden="true" tabindex="-1"></a>  pn.ggplot(ability,</span>
+<span id="cb23-16"><a href="#cb23-16" aria-hidden="true" tabindex="-1"></a>            pn.aes(<span class="st">'stu'</span>,</span>
+<span id="cb23-17"><a href="#cb23-17" aria-hidden="true" tabindex="-1"></a>                   <span class="st">'mean'</span>))</span>
+<span id="cb23-18"><a href="#cb23-18" aria-hidden="true" tabindex="-1"></a>  <span class="op">+</span> pn.geom_point(alpha <span class="op">=</span> <span class="fl">.5</span>,</span>
+<span id="cb23-19"><a href="#cb23-19" aria-hidden="true" tabindex="-1"></a>                  color <span class="op">=</span> jpcolor)</span>
+<span id="cb23-20"><a href="#cb23-20" aria-hidden="true" tabindex="-1"></a>  <span class="op">+</span> pn.geom_errorbar(pn.aes(ymin <span class="op">=</span> <span class="st">'q_lower'</span>,</span>
+<span id="cb23-21"><a href="#cb23-21" aria-hidden="true" tabindex="-1"></a>                            ymax <span class="op">=</span> <span class="st">'q_upper'</span>),</span>
+<span id="cb23-22"><a href="#cb23-22" aria-hidden="true" tabindex="-1"></a>                     alpha <span class="op">=</span> <span class="fl">.3</span>,</span>
+<span id="cb23-23"><a href="#cb23-23" aria-hidden="true" tabindex="-1"></a>                     color <span class="op">=</span> jpcolor)</span>
+<span id="cb23-24"><a href="#cb23-24" aria-hidden="true" tabindex="-1"></a>  <span class="op">+</span> pn.geom_hline(yintercept <span class="op">=</span> <span class="dv">0</span>,</span>
+<span id="cb23-25"><a href="#cb23-25" aria-hidden="true" tabindex="-1"></a>                  color <span class="op">=</span> <span class="st">'black'</span>,</span>
+<span id="cb23-26"><a href="#cb23-26" aria-hidden="true" tabindex="-1"></a>                  linetype <span class="op">=</span> <span class="st">'dashed'</span>)</span>
+<span id="cb23-27"><a href="#cb23-27" aria-hidden="true" tabindex="-1"></a>  <span class="op">+</span> pn.labs(title <span class="op">=</span> <span class="st">'Ability Parameter for Each Student'</span>,</span>
+<span id="cb23-28"><a href="#cb23-28" aria-hidden="true" tabindex="-1"></a>            x <span class="op">=</span> <span class="st">'Student'</span>,</span>
+<span id="cb23-29"><a href="#cb23-29" aria-hidden="true" tabindex="-1"></a>            y <span class="op">=</span> <span class="st">'Ability'</span>)</span>
+<span id="cb23-30"><a href="#cb23-30" aria-hidden="true" tabindex="-1"></a>  <span class="op">+</span> pn.theme(axis_text_x <span class="op">=</span> pn.element_blank())</span>
+<span id="cb23-31"><a href="#cb23-31" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="data89_quiz1_files/figure-html/cell-23-output-1.png" width="691" height="499" class="figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="difficulty-uncertainty" class="level2">
+<h2 class="anchored" data-anchor-id="difficulty-uncertainty">Difficulty &amp; Uncertainty</h2>
+<p>b = difficulty</p>
+<p>0 = average difficulty, 2+ = very hard, -2 = very easy</p>
+<div id="35e51875" class="cell" data-execution_count="23">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb24"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a>diff <span class="op">=</span> irtdf.<span class="bu">filter</span>(regex <span class="op">=</span> <span class="st">'^b.*]$'</span>)</span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>diff <span class="op">=</span> pd.DataFrame({</span>
+<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a>  <span class="st">'mean'</span>: diff.mean(),</span>
+<span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a>  <span class="st">'std'</span>: diff.std(),</span>
+<span id="cb24-5"><a href="#cb24-5" aria-hidden="true" tabindex="-1"></a>  <span class="st">'q_lower'</span>: q_lower(diff),</span>
+<span id="cb24-6"><a href="#cb24-6" aria-hidden="true" tabindex="-1"></a>  <span class="st">'q_upper'</span>: q_upper(diff)</span>
+<span id="cb24-7"><a href="#cb24-7" aria-hidden="true" tabindex="-1"></a>}).reset_index()</span>
+<span id="cb24-8"><a href="#cb24-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-9"><a href="#cb24-9" aria-hidden="true" tabindex="-1"></a>diff[<span class="st">'item'</span>] <span class="op">=</span> diff[<span class="st">'index'</span>].<span class="bu">str</span>.replace(<span class="st">'b['</span>, <span class="st">''</span>)</span>
+<span id="cb24-10"><a href="#cb24-10" aria-hidden="true" tabindex="-1"></a>diff[<span class="st">'item'</span>] <span class="op">=</span> diff[<span class="st">'item'</span>].<span class="bu">str</span>.replace(<span class="st">']'</span>, <span class="st">''</span>)</span>
+<span id="cb24-11"><a href="#cb24-11" aria-hidden="true" tabindex="-1"></a>diff <span class="op">=</span> diff.drop(columns <span class="op">=</span> <span class="st">'index'</span>)</span>
+<span id="cb24-12"><a href="#cb24-12" aria-hidden="true" tabindex="-1"></a>diff.head()</span>
+<span id="cb24-13"><a href="#cb24-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-14"><a href="#cb24-14" aria-hidden="true" tabindex="-1"></a>pn.ggplot.show(</span>
+<span id="cb24-15"><a href="#cb24-15" aria-hidden="true" tabindex="-1"></a>  pn.ggplot(diff,</span>
+<span id="cb24-16"><a href="#cb24-16" aria-hidden="true" tabindex="-1"></a>            pn.aes(<span class="st">'item'</span>,</span>
+<span id="cb24-17"><a href="#cb24-17" aria-hidden="true" tabindex="-1"></a>                   <span class="st">'mean'</span>))</span>
+<span id="cb24-18"><a href="#cb24-18" aria-hidden="true" tabindex="-1"></a>  <span class="op">+</span> pn.geom_point(alpha <span class="op">=</span> <span class="fl">.5</span>,</span>
+<span id="cb24-19"><a href="#cb24-19" aria-hidden="true" tabindex="-1"></a>                  color <span class="op">=</span> jpcolor)</span>
+<span id="cb24-20"><a href="#cb24-20" aria-hidden="true" tabindex="-1"></a>  <span class="op">+</span> pn.geom_errorbar(pn.aes(ymin <span class="op">=</span> <span class="st">'q_lower'</span>,</span>
+<span id="cb24-21"><a href="#cb24-21" aria-hidden="true" tabindex="-1"></a>                            ymax <span class="op">=</span> <span class="st">'q_upper'</span>),</span>
+<span id="cb24-22"><a href="#cb24-22" aria-hidden="true" tabindex="-1"></a>                     alpha <span class="op">=</span> <span class="fl">.3</span>,</span>
+<span id="cb24-23"><a href="#cb24-23" aria-hidden="true" tabindex="-1"></a>                     color <span class="op">=</span> jpcolor)</span>
+<span id="cb24-24"><a href="#cb24-24" aria-hidden="true" tabindex="-1"></a>  <span class="co"># + pn.geom_hline(yintercept = 0,</span></span>
+<span id="cb24-25"><a href="#cb24-25" aria-hidden="true" tabindex="-1"></a>  <span class="co">#                 color = 'black',</span></span>
+<span id="cb24-26"><a href="#cb24-26" aria-hidden="true" tabindex="-1"></a>  <span class="co">#                 linetype = 'dashed')</span></span>
+<span id="cb24-27"><a href="#cb24-27" aria-hidden="true" tabindex="-1"></a>  <span class="op">+</span> pn.labs(title <span class="op">=</span> <span class="st">'Difficulty Parameter for Each Item'</span>,</span>
+<span id="cb24-28"><a href="#cb24-28" aria-hidden="true" tabindex="-1"></a>            x <span class="op">=</span> <span class="st">'Item'</span>,</span>
+<span id="cb24-29"><a href="#cb24-29" aria-hidden="true" tabindex="-1"></a>            y <span class="op">=</span> <span class="st">'Difficulty'</span>)</span>
+<span id="cb24-30"><a href="#cb24-30" aria-hidden="true" tabindex="-1"></a>  <span class="op">+</span> pn.theme(axis_text_x <span class="op">=</span> pn.element_blank())</span>
+<span id="cb24-31"><a href="#cb24-31" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="data89_quiz1_files/figure-html/cell-24-output-1.png" width="691" height="499" class="figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="discrimination-uncertainty" class="level2">
+<h2 class="anchored" data-anchor-id="discrimination-uncertainty">Discrimination &amp; Uncertainty</h2>
+<p>For 2pl &amp; 3pl IRT models</p>
+<p>a = discrimination (differentiate between individuals w/ different ability levels (theta))</p>
+<p>high value = strong discrimination, low value = weak discrimination</p>
+<p>negative = low theta individuals more likely to get responses correct</p>
+<div id="c1466dd1" class="cell" data-execution_count="24">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb25"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a>dis <span class="op">=</span> irtdf.<span class="bu">filter</span>(regex <span class="op">=</span> <span class="st">'^a.*]$'</span>)</span>
+<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a>dis <span class="op">=</span> pd.DataFrame({</span>
+<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a>  <span class="st">'mean'</span>: dis.mean(),</span>
+<span id="cb25-4"><a href="#cb25-4" aria-hidden="true" tabindex="-1"></a>  <span class="st">'std'</span>: dis.std(),</span>
+<span id="cb25-5"><a href="#cb25-5" aria-hidden="true" tabindex="-1"></a>  <span class="st">'q_lower'</span>: q_lower(dis),</span>
+<span id="cb25-6"><a href="#cb25-6" aria-hidden="true" tabindex="-1"></a>  <span class="st">'q_upper'</span>: q_upper(dis)</span>
+<span id="cb25-7"><a href="#cb25-7" aria-hidden="true" tabindex="-1"></a>}).reset_index()</span>
+<span id="cb25-8"><a href="#cb25-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-9"><a href="#cb25-9" aria-hidden="true" tabindex="-1"></a>dis[<span class="st">'item'</span>] <span class="op">=</span> dis[<span class="st">'index'</span>].<span class="bu">str</span>.replace(<span class="st">'a['</span>, <span class="st">''</span>)</span>
+<span id="cb25-10"><a href="#cb25-10" aria-hidden="true" tabindex="-1"></a>dis[<span class="st">'item'</span>] <span class="op">=</span> dis[<span class="st">'item'</span>].<span class="bu">str</span>.replace(<span class="st">']'</span>, <span class="st">''</span>)</span>
+<span id="cb25-11"><a href="#cb25-11" aria-hidden="true" tabindex="-1"></a>dis <span class="op">=</span> dis.drop(columns <span class="op">=</span> <span class="st">'index'</span>)</span>
+<span id="cb25-12"><a href="#cb25-12" aria-hidden="true" tabindex="-1"></a>dis.head()</span>
+<span id="cb25-13"><a href="#cb25-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-14"><a href="#cb25-14" aria-hidden="true" tabindex="-1"></a>pn.ggplot.show(</span>
+<span id="cb25-15"><a href="#cb25-15" aria-hidden="true" tabindex="-1"></a>  pn.ggplot(dis,</span>
+<span id="cb25-16"><a href="#cb25-16" aria-hidden="true" tabindex="-1"></a>            pn.aes(<span class="st">'item'</span>,</span>
+<span id="cb25-17"><a href="#cb25-17" aria-hidden="true" tabindex="-1"></a>                   <span class="st">'mean'</span>))</span>
+<span id="cb25-18"><a href="#cb25-18" aria-hidden="true" tabindex="-1"></a>  <span class="op">+</span> pn.geom_point(alpha <span class="op">=</span> <span class="fl">.5</span>,</span>
+<span id="cb25-19"><a href="#cb25-19" aria-hidden="true" tabindex="-1"></a>                  color <span class="op">=</span> jpcolor)</span>
+<span id="cb25-20"><a href="#cb25-20" aria-hidden="true" tabindex="-1"></a>  <span class="op">+</span> pn.geom_errorbar(pn.aes(ymin <span class="op">=</span> <span class="st">'q_lower'</span>,</span>
+<span id="cb25-21"><a href="#cb25-21" aria-hidden="true" tabindex="-1"></a>                            ymax <span class="op">=</span> <span class="st">'q_upper'</span>),</span>
+<span id="cb25-22"><a href="#cb25-22" aria-hidden="true" tabindex="-1"></a>                     alpha <span class="op">=</span> <span class="fl">.3</span>,</span>
+<span id="cb25-23"><a href="#cb25-23" aria-hidden="true" tabindex="-1"></a>                     color <span class="op">=</span> jpcolor)</span>
+<span id="cb25-24"><a href="#cb25-24" aria-hidden="true" tabindex="-1"></a>  <span class="co"># + pn.geom_hline(yintercept = 0,</span></span>
+<span id="cb25-25"><a href="#cb25-25" aria-hidden="true" tabindex="-1"></a>  <span class="co">#                 color = 'black',</span></span>
+<span id="cb25-26"><a href="#cb25-26" aria-hidden="true" tabindex="-1"></a>  <span class="co">#                 linetype = 'dashed')</span></span>
+<span id="cb25-27"><a href="#cb25-27" aria-hidden="true" tabindex="-1"></a>  <span class="op">+</span> pn.labs(title <span class="op">=</span> <span class="st">'Discrimination Parameter for Each Item'</span>,</span>
+<span id="cb25-28"><a href="#cb25-28" aria-hidden="true" tabindex="-1"></a>            x <span class="op">=</span> <span class="st">'Item'</span>,</span>
+<span id="cb25-29"><a href="#cb25-29" aria-hidden="true" tabindex="-1"></a>            y <span class="op">=</span> <span class="st">'Discrimination'</span>)</span>
+<span id="cb25-30"><a href="#cb25-30" aria-hidden="true" tabindex="-1"></a>  <span class="op">+</span> pn.theme(axis_text_x <span class="op">=</span> pn.element_blank())</span>
+<span id="cb25-31"><a href="#cb25-31" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+</div>
+</section>
+<section id="guessing" class="level2">
+<h2 class="anchored" data-anchor-id="guessing">Guessing</h2>
+<p>3pl models only</p>
+<p>higher value = easier to guess</p>
+<div id="7a968ed7" class="cell" data-execution_count="25">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb26"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a>guess <span class="op">=</span> irtdf.<span class="bu">filter</span>(regex <span class="op">=</span> <span class="st">'^c.*]$'</span>)</span>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a>guess <span class="op">=</span> pd.DataFrame({</span>
+<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a>  <span class="st">'mean'</span>: guess.mean(),</span>
+<span id="cb26-4"><a href="#cb26-4" aria-hidden="true" tabindex="-1"></a>  <span class="st">'std'</span>: guess.std(),</span>
+<span id="cb26-5"><a href="#cb26-5" aria-hidden="true" tabindex="-1"></a>  <span class="st">'q_lower'</span>: q_lower(guess),</span>
+<span id="cb26-6"><a href="#cb26-6" aria-hidden="true" tabindex="-1"></a>  <span class="st">'q_upper'</span>: q_upper(guess)</span>
+<span id="cb26-7"><a href="#cb26-7" aria-hidden="true" tabindex="-1"></a>}).reset_index()</span>
+<span id="cb26-8"><a href="#cb26-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-9"><a href="#cb26-9" aria-hidden="true" tabindex="-1"></a>guess[<span class="st">'item'</span>] <span class="op">=</span> guess[<span class="st">'index'</span>].<span class="bu">str</span>.replace(<span class="st">'c['</span>, <span class="st">''</span>)</span>
+<span id="cb26-10"><a href="#cb26-10" aria-hidden="true" tabindex="-1"></a>guess[<span class="st">'item'</span>] <span class="op">=</span> guess[<span class="st">'item'</span>].<span class="bu">str</span>.replace(<span class="st">']'</span>, <span class="st">''</span>)</span>
+<span id="cb26-11"><a href="#cb26-11" aria-hidden="true" tabindex="-1"></a>guess <span class="op">=</span> guess.drop(columns <span class="op">=</span> <span class="st">'index'</span>)</span>
+<span id="cb26-12"><a href="#cb26-12" aria-hidden="true" tabindex="-1"></a>guess.head()</span>
+<span id="cb26-13"><a href="#cb26-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-14"><a href="#cb26-14" aria-hidden="true" tabindex="-1"></a>pn.ggplot.show(</span>
+<span id="cb26-15"><a href="#cb26-15" aria-hidden="true" tabindex="-1"></a>  pn.ggplot(guess,</span>
+<span id="cb26-16"><a href="#cb26-16" aria-hidden="true" tabindex="-1"></a>            pn.aes(<span class="st">'item'</span>,</span>
+<span id="cb26-17"><a href="#cb26-17" aria-hidden="true" tabindex="-1"></a>                   <span class="st">'mean'</span>))</span>
+<span id="cb26-18"><a href="#cb26-18" aria-hidden="true" tabindex="-1"></a>  <span class="op">+</span> pn.geom_point(alpha <span class="op">=</span> <span class="fl">.5</span>,</span>
+<span id="cb26-19"><a href="#cb26-19" aria-hidden="true" tabindex="-1"></a>                  color <span class="op">=</span> jpcolor)</span>
+<span id="cb26-20"><a href="#cb26-20" aria-hidden="true" tabindex="-1"></a>  <span class="op">+</span> pn.geom_errorbar(pn.aes(ymin <span class="op">=</span> <span class="st">'q_lower'</span>,</span>
+<span id="cb26-21"><a href="#cb26-21" aria-hidden="true" tabindex="-1"></a>                            ymax <span class="op">=</span> <span class="st">'q_upper'</span>),</span>
+<span id="cb26-22"><a href="#cb26-22" aria-hidden="true" tabindex="-1"></a>                     alpha <span class="op">=</span> <span class="fl">.3</span>,</span>
+<span id="cb26-23"><a href="#cb26-23" aria-hidden="true" tabindex="-1"></a>                     color <span class="op">=</span> jpcolor)</span>
+<span id="cb26-24"><a href="#cb26-24" aria-hidden="true" tabindex="-1"></a>  <span class="co"># + pn.geom_hline(yintercept = 0,</span></span>
+<span id="cb26-25"><a href="#cb26-25" aria-hidden="true" tabindex="-1"></a>  <span class="co">#                 color = 'black',</span></span>
+<span id="cb26-26"><a href="#cb26-26" aria-hidden="true" tabindex="-1"></a>  <span class="co">#                 linetype = 'dashed')</span></span>
+<span id="cb26-27"><a href="#cb26-27" aria-hidden="true" tabindex="-1"></a>  <span class="op">+</span> pn.labs(title <span class="op">=</span> <span class="st">'Difficulty Parameter for Each Item'</span>,</span>
+<span id="cb26-28"><a href="#cb26-28" aria-hidden="true" tabindex="-1"></a>            x <span class="op">=</span> <span class="st">'Item'</span>,</span>
+<span id="cb26-29"><a href="#cb26-29" aria-hidden="true" tabindex="-1"></a>            y <span class="op">=</span> <span class="st">'Difficulty'</span>)</span>
+<span id="cb26-30"><a href="#cb26-30" aria-hidden="true" tabindex="-1"></a>  <span class="op">+</span> pn.theme(axis_text_x <span class="op">=</span> pn.element_blank())</span>
+<span id="cb26-31"><a href="#cb26-31" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+</div>
+</section>
+<section id="replicated-data" class="level2">
+<h2 class="anchored" data-anchor-id="replicated-data">Replicated Data</h2>
+<div id="01549d90" class="cell" data-execution_count="26">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb27"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a>yirt <span class="op">=</span> irtdf.<span class="bu">filter</span>(regex <span class="op">=</span> <span class="st">'^y_rep'</span>)</span>
+<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a>yirt.head()</span>
+<span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-4"><a href="#cb27-4" aria-hidden="true" tabindex="-1"></a>yirt_prob <span class="op">=</span> pd.DataFrame({</span>
+<span id="cb27-5"><a href="#cb27-5" aria-hidden="true" tabindex="-1"></a>  <span class="st">'mean'</span>: yirt.mean(),</span>
+<span id="cb27-6"><a href="#cb27-6" aria-hidden="true" tabindex="-1"></a>  <span class="st">'std'</span>: yirt.std(),</span>
+<span id="cb27-7"><a href="#cb27-7" aria-hidden="true" tabindex="-1"></a>  <span class="st">'q_lower'</span>: q_lower(yirt),</span>
+<span id="cb27-8"><a href="#cb27-8" aria-hidden="true" tabindex="-1"></a>  <span class="st">'q_upper'</span>: q_upper(yirt)</span>
+<span id="cb27-9"><a href="#cb27-9" aria-hidden="true" tabindex="-1"></a>}).reset_index()</span>
+<span id="cb27-10"><a href="#cb27-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-11"><a href="#cb27-11" aria-hidden="true" tabindex="-1"></a>yirt_prob[<span class="st">'index'</span>] <span class="op">=</span> yirt_prob[<span class="st">'index'</span>].<span class="bu">str</span>.replace(<span class="st">'y_rep['</span>, <span class="st">''</span>)</span>
+<span id="cb27-12"><a href="#cb27-12" aria-hidden="true" tabindex="-1"></a>yirt_prob[<span class="st">'index'</span>] <span class="op">=</span> yirt_prob[<span class="st">'index'</span>].<span class="bu">str</span>.replace(<span class="st">']'</span>, <span class="st">''</span>)</span>
+<span id="cb27-13"><a href="#cb27-13" aria-hidden="true" tabindex="-1"></a>yirt_prob[[<span class="st">'stu'</span>, <span class="st">'item'</span>]] <span class="op">=</span> yirt_prob[<span class="st">'index'</span>].<span class="bu">str</span>.split(pat <span class="op">=</span> <span class="st">','</span>, expand <span class="op">=</span> <span class="va">True</span>)</span>
+<span id="cb27-14"><a href="#cb27-14" aria-hidden="true" tabindex="-1"></a>yirt_prob <span class="op">=</span> yirt_prob[[<span class="st">'stu'</span>, <span class="st">'item'</span>, <span class="st">'mean'</span>, <span class="st">'std'</span>, <span class="st">'q_lower'</span>, <span class="st">'q_upper'</span>]]</span>
+<span id="cb27-15"><a href="#cb27-15" aria-hidden="true" tabindex="-1"></a>yirt_prob[[<span class="st">'stu'</span>, <span class="st">'item'</span>]] <span class="op">=</span> yirt_prob[[<span class="st">'stu'</span>, <span class="st">'item'</span>]].astype(<span class="bu">int</span>)</span>
+<span id="cb27-16"><a href="#cb27-16" aria-hidden="true" tabindex="-1"></a>yirt_prob[<span class="st">'correct'</span>] <span class="op">=</span> np.where(yirt_prob[<span class="st">'mean'</span>] <span class="op">&gt;=</span> <span class="fl">.5</span>, <span class="dv">1</span>, <span class="dv">0</span>)</span>
+<span id="cb27-17"><a href="#cb27-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-18"><a href="#cb27-18" aria-hidden="true" tabindex="-1"></a><span class="co"># proportion that got each item correct</span></span>
+<span id="cb27-19"><a href="#cb27-19" aria-hidden="true" tabindex="-1"></a>yirt_prob.groupby(<span class="st">'item'</span>)[<span class="st">'correct'</span>].<span class="bu">sum</span>()</span>
+<span id="cb27-20"><a href="#cb27-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-21"><a href="#cb27-21" aria-hidden="true" tabindex="-1"></a>pn.ggplot.show(</span>
+<span id="cb27-22"><a href="#cb27-22" aria-hidden="true" tabindex="-1"></a>  pn.ggplot(yirt_prob,</span>
+<span id="cb27-23"><a href="#cb27-23" aria-hidden="true" tabindex="-1"></a>            pn.aes(<span class="st">'stu'</span>,</span>
+<span id="cb27-24"><a href="#cb27-24" aria-hidden="true" tabindex="-1"></a>                   <span class="st">'mean'</span>))</span>
+<span id="cb27-25"><a href="#cb27-25" aria-hidden="true" tabindex="-1"></a>  <span class="op">+</span> pn.geom_point(pn.aes(color <span class="op">=</span> <span class="st">'factor(item)'</span>),</span>
+<span id="cb27-26"><a href="#cb27-26" aria-hidden="true" tabindex="-1"></a>                  alpha <span class="op">=</span> <span class="fl">.5</span>)</span>
+<span id="cb27-27"><a href="#cb27-27" aria-hidden="true" tabindex="-1"></a>  <span class="co"># + pn.geom_errorbar(pn.aes(ymin = 'q_lower',</span></span>
+<span id="cb27-28"><a href="#cb27-28" aria-hidden="true" tabindex="-1"></a>  <span class="co">#                           ymax = 'q_upper',</span></span>
+<span id="cb27-29"><a href="#cb27-29" aria-hidden="true" tabindex="-1"></a>  <span class="co">#                           color = 'factor(item)'),</span></span>
+<span id="cb27-30"><a href="#cb27-30" aria-hidden="true" tabindex="-1"></a>  <span class="co">#                    alpha = .1)</span></span>
+<span id="cb27-31"><a href="#cb27-31" aria-hidden="true" tabindex="-1"></a>  <span class="op">+</span> pn.geom_hline(yintercept <span class="op">=</span> <span class="fl">.5</span>,</span>
+<span id="cb27-32"><a href="#cb27-32" aria-hidden="true" tabindex="-1"></a>                  color <span class="op">=</span> <span class="st">'black'</span>,</span>
+<span id="cb27-33"><a href="#cb27-33" aria-hidden="true" tabindex="-1"></a>                  linetype <span class="op">=</span> <span class="st">'dashed'</span>)</span>
+<span id="cb27-34"><a href="#cb27-34" aria-hidden="true" tabindex="-1"></a>  <span class="op">+</span> pn.labs(title <span class="op">=</span> <span class="st">'Probability Student Gets Items Correct'</span>,</span>
+<span id="cb27-35"><a href="#cb27-35" aria-hidden="true" tabindex="-1"></a>            x <span class="op">=</span> <span class="st">'Student'</span>,</span>
+<span id="cb27-36"><a href="#cb27-36" aria-hidden="true" tabindex="-1"></a>            y <span class="op">=</span> <span class="st">'Probability'</span>)</span>
+<span id="cb27-37"><a href="#cb27-37" aria-hidden="true" tabindex="-1"></a>  <span class="op">+</span> pn.theme(axis_text_x <span class="op">=</span> pn.element_blank())</span>
+<span id="cb27-38"><a href="#cb27-38" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="data89_quiz1_files/figure-html/cell-27-output-1.png" width="691" height="499" class="figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+<div id="39160812" class="cell" data-execution_count="27">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb28"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a>yirt_wide <span class="op">=</span> (</span>
+<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a>  yirt_prob</span>
+<span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a>  .pivot(</span>
+<span id="cb28-4"><a href="#cb28-4" aria-hidden="true" tabindex="-1"></a>    index <span class="op">=</span> <span class="st">'stu'</span>,</span>
+<span id="cb28-5"><a href="#cb28-5" aria-hidden="true" tabindex="-1"></a>    columns <span class="op">=</span> <span class="st">'item'</span>,</span>
+<span id="cb28-6"><a href="#cb28-6" aria-hidden="true" tabindex="-1"></a>    values <span class="op">=</span> <span class="st">'correct'</span>)</span>
+<span id="cb28-7"><a href="#cb28-7" aria-hidden="true" tabindex="-1"></a>  .reset_index(drop <span class="op">=</span> <span class="va">True</span>)</span>
+<span id="cb28-8"><a href="#cb28-8" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb28-9"><a href="#cb28-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb28-10"><a href="#cb28-10" aria-hidden="true" tabindex="-1"></a>yirt_wide.columns <span class="op">=</span> [<span class="ss">f'item</span><span class="sc">{</span>i<span class="op">+</span><span class="dv">1</span><span class="sc">}</span><span class="ss">'</span> <span class="cf">for</span> i <span class="kw">in</span> np.arange(yirt_wide.shape[<span class="dv">1</span>])]</span>
+<span id="cb28-11"><a href="#cb28-11" aria-hidden="true" tabindex="-1"></a>yirt_wide <span class="op">=</span> yirt_wide.reset_index()</span>
+<span id="cb28-12"><a href="#cb28-12" aria-hidden="true" tabindex="-1"></a>yirt_wide <span class="op">=</span> yirt_wide.rename(columns <span class="op">=</span> {<span class="st">'index'</span>: <span class="st">'stu'</span>})</span>
+<span id="cb28-13"><a href="#cb28-13" aria-hidden="true" tabindex="-1"></a>yirt_wide[<span class="st">'stu'</span>] <span class="op">=</span> yirt_wide[<span class="st">'stu'</span>] <span class="op">+</span> <span class="dv">1</span></span>
+<span id="cb28-14"><a href="#cb28-14" aria-hidden="true" tabindex="-1"></a><span class="co"># yirt_wide.head()</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+</div>
+<div id="6b2344f3" class="cell" data-execution_count="28">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb29"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a>irt_means <span class="op">=</span> [ppp_func(df <span class="op">=</span> yirt_prob, item_num <span class="op">=</span> i, stat <span class="op">=</span> <span class="st">'mean'</span>) <span class="cf">for</span> i <span class="kw">in</span> np.arange(<span class="dv">1</span>, (y_describe.shape[<span class="dv">1</span>]))]</span>
+<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a>irt_stds <span class="op">=</span> [ppp_func(df <span class="op">=</span> yirt_prob, item_num <span class="op">=</span> i, stat <span class="op">=</span> <span class="st">'std'</span>) <span class="cf">for</span> i <span class="kw">in</span> np.arange(<span class="dv">1</span>, (y_describe.shape[<span class="dv">1</span>]))]</span>
+<span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb29-4"><a href="#cb29-4" aria-hidden="true" tabindex="-1"></a>ppp_irt <span class="op">=</span> pd.DataFrame({<span class="st">'means'</span>: pd.Series(irt_means),</span>
+<span id="cb29-5"><a href="#cb29-5" aria-hidden="true" tabindex="-1"></a>                       <span class="st">'stds'</span>: pd.Series(irt_stds)})</span>
+<span id="cb29-6"><a href="#cb29-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb29-7"><a href="#cb29-7" aria-hidden="true" tabindex="-1"></a>ppp_irt <span class="op">=</span> ppp_irt.reset_index()</span>
+<span id="cb29-8"><a href="#cb29-8" aria-hidden="true" tabindex="-1"></a>ppp_irt <span class="op">=</span> ppp_irt.rename(columns <span class="op">=</span> {<span class="st">'index'</span>: <span class="st">'item'</span>})</span>
+<span id="cb29-9"><a href="#cb29-9" aria-hidden="true" tabindex="-1"></a>ppp_irt[<span class="st">'item'</span>] <span class="op">=</span> ppp_irt[<span class="st">'item'</span>] <span class="op">+</span> <span class="dv">1</span></span>
+<span id="cb29-10"><a href="#cb29-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb29-11"><a href="#cb29-11" aria-hidden="true" tabindex="-1"></a><span class="co"># ppp_irt.head()</span></span>
+<span id="cb29-12"><a href="#cb29-12" aria-hidden="true" tabindex="-1"></a><span class="co"># y_describe</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+</div>
+<div id="cefba7c2" class="cell" data-execution_count="29">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb30"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a>pn.ggplot.show(</span>
+<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a>  pn.ggplot(ppp_irt, pn.aes(<span class="st">'item'</span>, <span class="st">'means'</span>))</span>
+<span id="cb30-3"><a href="#cb30-3" aria-hidden="true" tabindex="-1"></a>  <span class="op">+</span> pn.geom_point(color <span class="op">=</span> jpcolor,</span>
+<span id="cb30-4"><a href="#cb30-4" aria-hidden="true" tabindex="-1"></a>                  size <span class="op">=</span> <span class="dv">2</span>)</span>
+<span id="cb30-5"><a href="#cb30-5" aria-hidden="true" tabindex="-1"></a>  <span class="op">+</span> pn.geom_hline(yintercept <span class="op">=</span> <span class="fl">.5</span>, linetype <span class="op">=</span> <span class="st">'dashed'</span>)</span>
+<span id="cb30-6"><a href="#cb30-6" aria-hidden="true" tabindex="-1"></a>  <span class="op">+</span> pn.geom_hline(yintercept <span class="op">=</span> <span class="fl">.025</span>, linetype <span class="op">=</span> <span class="st">'dotted'</span>)</span>
+<span id="cb30-7"><a href="#cb30-7" aria-hidden="true" tabindex="-1"></a>  <span class="op">+</span> pn.geom_hline(yintercept <span class="op">=</span> <span class="fl">.975</span>, linetype <span class="op">=</span> <span class="st">'dotted'</span>)</span>
+<span id="cb30-8"><a href="#cb30-8" aria-hidden="true" tabindex="-1"></a>  <span class="op">+</span> pn.scale_x_continuous(limits <span class="op">=</span> [<span class="dv">1</span>, ppp_irt[<span class="st">'item'</span>].<span class="bu">max</span>() <span class="op">+</span> <span class="dv">1</span>],</span>
+<span id="cb30-9"><a href="#cb30-9" aria-hidden="true" tabindex="-1"></a>                          breaks <span class="op">=</span> np.arange(<span class="dv">1</span>, ppp_irt[<span class="st">'item'</span>].<span class="bu">max</span>() <span class="op">+</span> <span class="dv">1</span>))</span>
+<span id="cb30-10"><a href="#cb30-10" aria-hidden="true" tabindex="-1"></a>  <span class="op">+</span> pn.scale_y_continuous(limits <span class="op">=</span> [<span class="dv">0</span>, <span class="fl">1.01</span>],</span>
+<span id="cb30-11"><a href="#cb30-11" aria-hidden="true" tabindex="-1"></a>                          breaks <span class="op">=</span> np.arange(<span class="dv">0</span>, <span class="fl">1.01</span>, <span class="fl">.1</span>))</span>
+<span id="cb30-12"><a href="#cb30-12" aria-hidden="true" tabindex="-1"></a>  <span class="op">+</span> pn.theme_light()</span>
+<span id="cb30-13"><a href="#cb30-13" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="data89_quiz1_files/figure-html/cell-30-output-1.png" width="691" height="499" class="figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+<div id="ae2d9efb" class="cell" data-execution_count="30">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb31"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a>pn.ggplot.show(</span>
+<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a>  pn.ggplot(ppp_irt, pn.aes(<span class="st">'item'</span>, <span class="st">'stds'</span>))</span>
+<span id="cb31-3"><a href="#cb31-3" aria-hidden="true" tabindex="-1"></a>  <span class="op">+</span> pn.geom_point(color <span class="op">=</span> jpcolor,</span>
+<span id="cb31-4"><a href="#cb31-4" aria-hidden="true" tabindex="-1"></a>                  size <span class="op">=</span> <span class="dv">2</span>)</span>
+<span id="cb31-5"><a href="#cb31-5" aria-hidden="true" tabindex="-1"></a>  <span class="op">+</span> pn.geom_hline(yintercept <span class="op">=</span> <span class="fl">.5</span>, linetype <span class="op">=</span> <span class="st">'dashed'</span>)</span>
+<span id="cb31-6"><a href="#cb31-6" aria-hidden="true" tabindex="-1"></a>  <span class="op">+</span> pn.geom_hline(yintercept <span class="op">=</span> <span class="fl">.025</span>, linetype <span class="op">=</span> <span class="st">'dotted'</span>)</span>
+<span id="cb31-7"><a href="#cb31-7" aria-hidden="true" tabindex="-1"></a>  <span class="op">+</span> pn.geom_hline(yintercept <span class="op">=</span> <span class="fl">.975</span>, linetype <span class="op">=</span> <span class="st">'dotted'</span>)</span>
+<span id="cb31-8"><a href="#cb31-8" aria-hidden="true" tabindex="-1"></a>  <span class="op">+</span> pn.scale_x_continuous(limits <span class="op">=</span> [<span class="dv">1</span>, ppp_irt[<span class="st">'item'</span>].<span class="bu">max</span>() <span class="op">+</span> <span class="dv">1</span>],</span>
+<span id="cb31-9"><a href="#cb31-9" aria-hidden="true" tabindex="-1"></a>                          breaks <span class="op">=</span> np.arange(<span class="dv">1</span>, ppp_irt[<span class="st">'item'</span>].<span class="bu">max</span>() <span class="op">+</span> <span class="dv">1</span>))</span>
+<span id="cb31-10"><a href="#cb31-10" aria-hidden="true" tabindex="-1"></a>  <span class="op">+</span> pn.scale_y_continuous(limits <span class="op">=</span> [<span class="dv">0</span>, <span class="fl">1.01</span>],</span>
+<span id="cb31-11"><a href="#cb31-11" aria-hidden="true" tabindex="-1"></a>                          breaks <span class="op">=</span> np.arange(<span class="dv">0</span>, <span class="fl">1.01</span>, <span class="fl">.1</span>))</span>
+<span id="cb31-12"><a href="#cb31-12" aria-hidden="true" tabindex="-1"></a>  <span class="op">+</span> pn.theme_light()</span>
+<span id="cb31-13"><a href="#cb31-13" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="data89_quiz1_files/figure-html/cell-31-output-1.png" width="691" height="499" class="figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="diagnostic-model" class="level1">
+<h1>Diagnostic Model</h1>
+<div id="d240e0c1" class="cell" data-execution_count="32">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb32"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a>dcm_diagnose.to_csv(here(<span class="ss">f'diagnostics/</span><span class="sc">{</span>dcm_type<span class="sc">}</span><span class="ss">_</span><span class="sc">{</span>quiz_num<span class="sc">}</span><span class="ss">.csv'</span>))</span>
+<span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-3"><a href="#cb32-3" aria-hidden="true" tabindex="-1"></a>(</span>
+<span id="cb32-4"><a href="#cb32-4" aria-hidden="true" tabindex="-1"></a>  joblib.dump([dcm_model, dcm_fit],</span>
+<span id="cb32-5"><a href="#cb32-5" aria-hidden="true" tabindex="-1"></a>              here(<span class="ss">f'joblib_models/</span><span class="sc">{</span>dcm_type<span class="sc">}</span><span class="ss">_</span><span class="sc">{</span>quiz_num<span class="sc">}</span><span class="ss">_modfit.joblib'</span>),</span>
+<span id="cb32-6"><a href="#cb32-6" aria-hidden="true" tabindex="-1"></a>              compress <span class="op">=</span> <span class="dv">3</span>)</span>
+<span id="cb32-7"><a href="#cb32-7" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-display" data-execution_count="94">
+<pre><code>['/Users/jp/Documents/github_projects/CDSS/data89_evaluation/joblib_models/lcdm_quiz1_modfit.joblib']</code></pre>
+</div>
+</div>
+<div id="7fa42b3f" class="cell" data-execution_count="33">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb34"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a>dcm_diagnose[<span class="st">'R_hat'</span>].sort_values(ascending <span class="op">=</span> <span class="va">False</span>).head()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-display" data-execution_count="95">
+<pre><code>prob_resp_attr[65,2]    1.00675
+prob_resp_attr[2,2]     1.00644
+prob_resp_attr[90,2]    1.00638
+prob_resp_attr[37,2]    1.00628
+prob_resp_attr[94,2]    1.00628
+Name: R_hat, dtype: float64</code></pre>
+</div>
+</div>
+<div id="79310c5f" class="cell" data-execution_count="34">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb36"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a>idcm <span class="op">=</span> az.from_cmdstanpy(</span>
+<span id="cb36-2"><a href="#cb36-2" aria-hidden="true" tabindex="-1"></a>    posterior <span class="op">=</span> dcm_fit,</span>
+<span id="cb36-3"><a href="#cb36-3" aria-hidden="true" tabindex="-1"></a>    posterior_predictive <span class="op">=</span> [<span class="st">'y_rep'</span>],</span>
+<span id="cb36-4"><a href="#cb36-4" aria-hidden="true" tabindex="-1"></a>    observed_data <span class="op">=</span> {<span class="st">'Y'</span>: y.<span class="bu">filter</span>(regex <span class="op">=</span> <span class="st">'item'</span>)},</span>
+<span id="cb36-5"><a href="#cb36-5" aria-hidden="true" tabindex="-1"></a>    log_likelihood <span class="op">=</span> {<span class="st">'Y'</span>: <span class="st">'eta'</span>})</span>
+<span id="cb36-6"><a href="#cb36-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-7"><a href="#cb36-7" aria-hidden="true" tabindex="-1"></a>idcm <span class="op">=</span> idcm.rename(name_dict <span class="op">=</span> name_mapping, groups <span class="op">=</span> [<span class="st">"posterior_predictive"</span>])</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+</div>
+<section id="model-fit-1" class="level3">
+<h3 class="anchored" data-anchor-id="model-fit-1">Model Fit</h3>
+<div id="1bcf273c" class="cell" data-execution_count="35">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb37"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a>az.loo(idcm)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-display" data-execution_count="97">
+<pre><code>Computed from 8000 posterior samples and 10 observations log-likelihood matrix.
+
+         Estimate       SE
+elpd_loo    -9.09     3.08
+p_loo        1.28        -
+
+There has been a warning during the calculation. Please check the results.
+------
+
+Pareto k diagnostic values:
+                         Count   Pct.
+(-Inf, 0.70]   (good)        9   90.0%
+   (0.70, 1]   (bad)         1   10.0%
+   (1, Inf)   (very bad)    0    0.0%</code></pre>
+</div>
+</div>
+<div id="7c2dfaa1" class="cell" data-execution_count="36">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb39"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a>az.waic(idcm)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-display" data-execution_count="98">
+<pre><code>Computed from 8000 posterior samples and 10 observations log-likelihood matrix.
+
+          Estimate       SE
+elpd_waic    -8.92     2.97
+p_waic        1.11        -
+
+There has been a warning during the calculation. Please check the results.</code></pre>
+</div>
+</div>
+</section>
+<section id="class-membership-visuals" class="level2">
+<h2 class="anchored" data-anchor-id="class-membership-visuals">Class Membership Visuals</h2>
+<div id="d2fbef63" class="cell" data-execution_count="37">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb41"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a>az.plot_trace(idcm,</span>
+<span id="cb41-2"><a href="#cb41-2" aria-hidden="true" tabindex="-1"></a>                var_names <span class="op">=</span> <span class="st">'nu'</span>)</span>
+<span id="cb41-3"><a href="#cb41-3" aria-hidden="true" tabindex="-1"></a>plt.show()</span>
+<span id="cb41-4"><a href="#cb41-4" aria-hidden="true" tabindex="-1"></a><span class="co"># plt.clf()</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="data89_quiz1_files/figure-html/cell-38-output-1.png" width="912" height="209" class="figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="pi-matrix-visuals" class="level2">
+<h2 class="anchored" data-anchor-id="pi-matrix-visuals">Pi Matrix Visuals</h2>
+<div id="8041059f" class="cell" data-execution_count="38">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb42"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a>az.plot_trace(idcm,</span>
+<span id="cb42-2"><a href="#cb42-2" aria-hidden="true" tabindex="-1"></a>                var_names <span class="op">=</span> <span class="st">'pi'</span>)</span>
+<span id="cb42-3"><a href="#cb42-3" aria-hidden="true" tabindex="-1"></a>plt.show()</span>
+<span id="cb42-4"><a href="#cb42-4" aria-hidden="true" tabindex="-1"></a><span class="co"># plt.clf()</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="data89_quiz1_files/figure-html/cell-39-output-1.png" width="912" height="209" class="figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="beta-coefficient-visuals" class="level2">
+<h2 class="anchored" data-anchor-id="beta-coefficient-visuals">Beta Coefficient Visuals</h2>
+<div id="57799056" class="cell" data-execution_count="39">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb43"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true" tabindex="-1"></a>az.plot_trace(idcm,</span>
+<span id="cb43-2"><a href="#cb43-2" aria-hidden="true" tabindex="-1"></a>                var_names <span class="op">=</span> <span class="st">'beta0'</span>)</span>
+<span id="cb43-3"><a href="#cb43-3" aria-hidden="true" tabindex="-1"></a>plt.show()</span>
+<span id="cb43-4"><a href="#cb43-4" aria-hidden="true" tabindex="-1"></a><span class="co"># plt.clf()</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="data89_quiz1_files/figure-html/cell-40-output-1.png" width="918" height="209" class="figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+<div id="c60b2cc3" class="cell" data-execution_count="40">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb44"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb44-1"><a href="#cb44-1" aria-hidden="true" tabindex="-1"></a>az.plot_trace(idcm,</span>
+<span id="cb44-2"><a href="#cb44-2" aria-hidden="true" tabindex="-1"></a>                var_names <span class="op">=</span> <span class="st">'beta1'</span>)</span>
+<span id="cb44-3"><a href="#cb44-3" aria-hidden="true" tabindex="-1"></a>plt.show()</span>
+<span id="cb44-4"><a href="#cb44-4" aria-hidden="true" tabindex="-1"></a><span class="co"># plt.clf()</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="data89_quiz1_files/figure-html/cell-41-output-1.png" width="912" height="209" class="figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+<div id="f6cf0a0f" class="cell" data-execution_count="41">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb45"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb45-1"><a href="#cb45-1" aria-hidden="true" tabindex="-1"></a>az.plot_trace(idcm,</span>
+<span id="cb45-2"><a href="#cb45-2" aria-hidden="true" tabindex="-1"></a>                var_names <span class="op">=</span> <span class="st">'beta2'</span>)</span>
+<span id="cb45-3"><a href="#cb45-3" aria-hidden="true" tabindex="-1"></a>plt.show()</span>
+<span id="cb45-4"><a href="#cb45-4" aria-hidden="true" tabindex="-1"></a><span class="co"># plt.clf()</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="data89_quiz1_files/figure-html/cell-42-output-1.png" width="912" height="209" class="figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+<div id="30aa45f5" class="cell" data-execution_count="42">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb46"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb46-1"><a href="#cb46-1" aria-hidden="true" tabindex="-1"></a>az.plot_trace(idcm,</span>
+<span id="cb46-2"><a href="#cb46-2" aria-hidden="true" tabindex="-1"></a>                var_names <span class="op">=</span> <span class="st">'beta12'</span>)</span>
+<span id="cb46-3"><a href="#cb46-3" aria-hidden="true" tabindex="-1"></a>plt.show()</span>
+<span id="cb46-4"><a href="#cb46-4" aria-hidden="true" tabindex="-1"></a><span class="co"># plt.clf()</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="data89_quiz1_files/figure-html/cell-43-output-1.png" width="929" height="209" class="figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+<section id="attribute-mastery-per-class-visual" class="level3">
+<h3 class="anchored" data-anchor-id="attribute-mastery-per-class-visual">Attribute Mastery Per Class Visual</h3>
+<div id="f26a0447" class="cell" data-execution_count="43">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb47"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb47-1"><a href="#cb47-1" aria-hidden="true" tabindex="-1"></a>az.plot_forest(idcm.posterior[<span class="st">"prob_resp_class"</span>].isel(prob_resp_class_dim_0 <span class="op">=</span> <span class="bu">slice</span>(<span class="dv">0</span>, <span class="dv">4</span>),</span>
+<span id="cb47-2"><a href="#cb47-2" aria-hidden="true" tabindex="-1"></a>                                                    prob_resp_class_dim_1 <span class="op">=</span> <span class="bu">slice</span>(<span class="va">None</span>)</span>
+<span id="cb47-3"><a href="#cb47-3" aria-hidden="true" tabindex="-1"></a>                                                    ),</span>
+<span id="cb47-4"><a href="#cb47-4" aria-hidden="true" tabindex="-1"></a>               var_names <span class="op">=</span> <span class="st">'prob_resp_class'</span>,</span>
+<span id="cb47-5"><a href="#cb47-5" aria-hidden="true" tabindex="-1"></a>               colors <span class="op">=</span> jpcolor)</span>
+<span id="cb47-6"><a href="#cb47-6" aria-hidden="true" tabindex="-1"></a>plt.show()</span>
+<span id="cb47-7"><a href="#cb47-7" aria-hidden="true" tabindex="-1"></a><span class="co"># plt.clf()</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="data89_quiz1_files/figure-html/cell-44-output-1.png" width="673" height="840" class="figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="attribute-mastery-per-student-visual" class="level3">
+<h3 class="anchored" data-anchor-id="attribute-mastery-per-student-visual">Attribute Mastery Per Student Visual</h3>
+<div id="9d35cd15" class="cell" data-execution_count="44">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb48"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb48-1"><a href="#cb48-1" aria-hidden="true" tabindex="-1"></a>az.plot_forest(idcm.posterior[<span class="st">"prob_resp_attr"</span>].isel(prob_resp_attr_dim_0 <span class="op">=</span> <span class="bu">slice</span>(<span class="dv">0</span>, <span class="dv">4</span>),</span>
+<span id="cb48-2"><a href="#cb48-2" aria-hidden="true" tabindex="-1"></a>                                                    prob_resp_attr_dim_1 <span class="op">=</span> <span class="bu">slice</span>(<span class="va">None</span>)</span>
+<span id="cb48-3"><a href="#cb48-3" aria-hidden="true" tabindex="-1"></a>                                                    ),</span>
+<span id="cb48-4"><a href="#cb48-4" aria-hidden="true" tabindex="-1"></a>               var_names <span class="op">=</span> <span class="st">'prob_resp_attr'</span>,</span>
+<span id="cb48-5"><a href="#cb48-5" aria-hidden="true" tabindex="-1"></a>               colors <span class="op">=</span> jpcolor)</span>
+<span id="cb48-6"><a href="#cb48-6" aria-hidden="true" tabindex="-1"></a>plt.show()</span>
+<span id="cb48-7"><a href="#cb48-7" aria-hidden="true" tabindex="-1"></a><span class="co"># plt.clf()</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="data89_quiz1_files/figure-html/cell-45-output-1.png" width="660" height="604" class="figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="ppp-visuals" class="level2">
+<h2 class="anchored" data-anchor-id="ppp-visuals">PPP Visuals</h2>
+<div id="94e4920e" class="cell" data-execution_count="45">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb49"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb49-1"><a href="#cb49-1" aria-hidden="true" tabindex="-1"></a>az.plot_ppc(idcm,</span>
+<span id="cb49-2"><a href="#cb49-2" aria-hidden="true" tabindex="-1"></a>            data_pairs <span class="op">=</span> {<span class="st">'Y'</span>: <span class="st">'Y'</span>},</span>
+<span id="cb49-3"><a href="#cb49-3" aria-hidden="true" tabindex="-1"></a>            num_pp_samples <span class="op">=</span> <span class="dv">1000</span>)</span>
+<span id="cb49-4"><a href="#cb49-4" aria-hidden="true" tabindex="-1"></a>plt.show()</span>
+<span id="cb49-5"><a href="#cb49-5" aria-hidden="true" tabindex="-1"></a><span class="co"># plt.clf()</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="data89_quiz1_files/figure-html/cell-46-output-1.png" width="540" height="442" class="figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+<div id="eaed7688" class="cell" data-execution_count="46">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb50"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb50-1"><a href="#cb50-1" aria-hidden="true" tabindex="-1"></a>az.plot_ppc(idcm,</span>
+<span id="cb50-2"><a href="#cb50-2" aria-hidden="true" tabindex="-1"></a>            data_pairs <span class="op">=</span> {<span class="st">'Y'</span>: <span class="st">'Y'</span>},</span>
+<span id="cb50-3"><a href="#cb50-3" aria-hidden="true" tabindex="-1"></a>            num_pp_samples <span class="op">=</span> <span class="dv">1000</span>,</span>
+<span id="cb50-4"><a href="#cb50-4" aria-hidden="true" tabindex="-1"></a>            kind <span class="op">=</span> <span class="st">'cumulative'</span>)</span>
+<span id="cb50-5"><a href="#cb50-5" aria-hidden="true" tabindex="-1"></a>plt.show()</span>
+<span id="cb50-6"><a href="#cb50-6" aria-hidden="true" tabindex="-1"></a><span class="co"># plt.clf()</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="data89_quiz1_files/figure-html/cell-47-output-1.png" width="571" height="436" class="figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+<div id="9829196d" class="cell" data-execution_count="47">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb51"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb51-1"><a href="#cb51-1" aria-hidden="true" tabindex="-1"></a>az.plot_bpv(idcm,</span>
+<span id="cb51-2"><a href="#cb51-2" aria-hidden="true" tabindex="-1"></a>            kind <span class="op">=</span> <span class="st">'t_stat'</span>, </span>
+<span id="cb51-3"><a href="#cb51-3" aria-hidden="true" tabindex="-1"></a>            t_stat <span class="op">=</span> <span class="st">'mean'</span>)</span>
+<span id="cb51-4"><a href="#cb51-4" aria-hidden="true" tabindex="-1"></a>plt.show()</span>
+<span id="cb51-5"><a href="#cb51-5" aria-hidden="true" tabindex="-1"></a><span class="co"># plt.clf()</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="data89_quiz1_files/figure-html/cell-48-output-1.png" width="546" height="440" class="figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+<div id="bad99cf9" class="cell" data-execution_count="48">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb52"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb52-1"><a href="#cb52-1" aria-hidden="true" tabindex="-1"></a>az.plot_bpv(idcm,</span>
+<span id="cb52-2"><a href="#cb52-2" aria-hidden="true" tabindex="-1"></a>            kind <span class="op">=</span> <span class="st">'t_stat'</span>, </span>
+<span id="cb52-3"><a href="#cb52-3" aria-hidden="true" tabindex="-1"></a>            t_stat <span class="op">=</span> <span class="st">'std'</span>)</span>
+<span id="cb52-4"><a href="#cb52-4" aria-hidden="true" tabindex="-1"></a>plt.show()</span>
+<span id="cb52-5"><a href="#cb52-5" aria-hidden="true" tabindex="-1"></a><span class="co"># plt.clf()</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="data89_quiz1_files/figure-html/cell-49-output-1.png" width="545" height="440" class="figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="pandas-dataframe" class="level2">
+<h2 class="anchored" data-anchor-id="pandas-dataframe">Pandas Dataframe</h2>
+<div id="3208da71" class="cell" data-execution_count="49">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb53"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb53-1"><a href="#cb53-1" aria-hidden="true" tabindex="-1"></a>dcmdf <span class="op">=</span> dcm_fit.draws_pd()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+</div>
+</section>
+<section id="pi-matrix" class="level2">
+<h2 class="anchored" data-anchor-id="pi-matrix">Pi Matrix</h2>
+<div id="c09d3264" class="cell" data-execution_count="50">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb54"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb54-1"><a href="#cb54-1" aria-hidden="true" tabindex="-1"></a>pi_mat <span class="op">=</span> dcmdf.<span class="bu">filter</span>(regex <span class="op">=</span> <span class="st">'pi'</span>)</span>
+<span id="cb54-2"><a href="#cb54-2" aria-hidden="true" tabindex="-1"></a>pi_mat <span class="op">=</span> pd.DataFrame({</span>
+<span id="cb54-3"><a href="#cb54-3" aria-hidden="true" tabindex="-1"></a>  <span class="st">'mean'</span>: pi_mat.mean(),</span>
+<span id="cb54-4"><a href="#cb54-4" aria-hidden="true" tabindex="-1"></a>  <span class="st">'std'</span>: pi_mat.std(),</span>
+<span id="cb54-5"><a href="#cb54-5" aria-hidden="true" tabindex="-1"></a>  <span class="st">'q_lower'</span>: q_lower(pi_mat),</span>
+<span id="cb54-6"><a href="#cb54-6" aria-hidden="true" tabindex="-1"></a>  <span class="st">'q_upper'</span>: q_upper(pi_mat)</span>
+<span id="cb54-7"><a href="#cb54-7" aria-hidden="true" tabindex="-1"></a>}).reset_index()</span>
+<span id="cb54-8"><a href="#cb54-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb54-9"><a href="#cb54-9" aria-hidden="true" tabindex="-1"></a>pi_mat[<span class="st">'index'</span>] <span class="op">=</span> pi_mat[<span class="st">'index'</span>].<span class="bu">str</span>.replace(<span class="st">'pi['</span>, <span class="st">''</span>)</span>
+<span id="cb54-10"><a href="#cb54-10" aria-hidden="true" tabindex="-1"></a>pi_mat[<span class="st">'index'</span>] <span class="op">=</span> pi_mat[<span class="st">'index'</span>].<span class="bu">str</span>.replace(<span class="st">']'</span>, <span class="st">''</span>)</span>
+<span id="cb54-11"><a href="#cb54-11" aria-hidden="true" tabindex="-1"></a>pi_mat[[<span class="st">'item'</span>, <span class="st">'lat_class'</span>]] <span class="op">=</span> pi_mat[<span class="st">'index'</span>].<span class="bu">str</span>.split(<span class="st">','</span>, expand <span class="op">=</span> <span class="va">True</span>)</span>
+<span id="cb54-12"><a href="#cb54-12" aria-hidden="true" tabindex="-1"></a>pi_mat[[<span class="st">'item'</span>, <span class="st">'lat_class'</span>]] <span class="op">=</span> pi_mat[[<span class="st">'item'</span>, <span class="st">'lat_class'</span>]].astype(<span class="bu">int</span>)</span>
+<span id="cb54-13"><a href="#cb54-13" aria-hidden="true" tabindex="-1"></a>pi_mat <span class="op">=</span> pi_mat[[<span class="st">'item'</span>, <span class="st">'lat_class'</span>, <span class="st">'mean'</span>, <span class="st">'std'</span>, <span class="st">'q_lower'</span>, <span class="st">'q_upper'</span>]]</span>
+<span id="cb54-14"><a href="#cb54-14" aria-hidden="true" tabindex="-1"></a>pi_mat.head()</span>
+<span id="cb54-15"><a href="#cb54-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb54-16"><a href="#cb54-16" aria-hidden="true" tabindex="-1"></a>pn.ggplot.show(</span>
+<span id="cb54-17"><a href="#cb54-17" aria-hidden="true" tabindex="-1"></a>  pn.ggplot(pi_mat,</span>
+<span id="cb54-18"><a href="#cb54-18" aria-hidden="true" tabindex="-1"></a>            pn.aes(<span class="st">'factor(item)'</span>,</span>
+<span id="cb54-19"><a href="#cb54-19" aria-hidden="true" tabindex="-1"></a>                   <span class="st">'mean'</span>))</span>
+<span id="cb54-20"><a href="#cb54-20" aria-hidden="true" tabindex="-1"></a>  <span class="op">+</span> pn.geom_point(alpha <span class="op">=</span> <span class="fl">.5</span>,</span>
+<span id="cb54-21"><a href="#cb54-21" aria-hidden="true" tabindex="-1"></a>                  color <span class="op">=</span> jpcolor)</span>
+<span id="cb54-22"><a href="#cb54-22" aria-hidden="true" tabindex="-1"></a>  <span class="op">+</span> pn.geom_errorbar(pn.aes(ymin <span class="op">=</span> <span class="st">'q_lower'</span>,</span>
+<span id="cb54-23"><a href="#cb54-23" aria-hidden="true" tabindex="-1"></a>                            ymax <span class="op">=</span> <span class="st">'q_upper'</span>),</span>
+<span id="cb54-24"><a href="#cb54-24" aria-hidden="true" tabindex="-1"></a>                     alpha <span class="op">=</span> <span class="fl">.1</span>)</span>
+<span id="cb54-25"><a href="#cb54-25" aria-hidden="true" tabindex="-1"></a>  <span class="op">+</span> pn.geom_hline(yintercept <span class="op">=</span> <span class="fl">.5</span>,</span>
+<span id="cb54-26"><a href="#cb54-26" aria-hidden="true" tabindex="-1"></a>                  color <span class="op">=</span> <span class="st">'black'</span>,</span>
+<span id="cb54-27"><a href="#cb54-27" aria-hidden="true" tabindex="-1"></a>                  linetype <span class="op">=</span> <span class="st">'dashed'</span>)</span>
+<span id="cb54-28"><a href="#cb54-28" aria-hidden="true" tabindex="-1"></a>  <span class="op">+</span> pn.facet_wrap(<span class="st">'lat_class'</span>)</span>
+<span id="cb54-29"><a href="#cb54-29" aria-hidden="true" tabindex="-1"></a>  <span class="op">+</span> pn.labs(title <span class="op">=</span> <span class="st">'Probability That Latent Class Gets Items Correct'</span>,</span>
+<span id="cb54-30"><a href="#cb54-30" aria-hidden="true" tabindex="-1"></a>            x <span class="op">=</span> <span class="st">'Item'</span>,</span>
+<span id="cb54-31"><a href="#cb54-31" aria-hidden="true" tabindex="-1"></a>            y <span class="op">=</span> <span class="st">'Probability'</span>)</span>
+<span id="cb54-32"><a href="#cb54-32" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="data89_quiz1_files/figure-html/cell-51-output-1.png" width="691" height="499" class="figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+<div id="15a47332" class="cell" data-execution_count="51">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb55"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb55-1"><a href="#cb55-1" aria-hidden="true" tabindex="-1"></a>pn.ggplot.show(</span>
+<span id="cb55-2"><a href="#cb55-2" aria-hidden="true" tabindex="-1"></a>  pn.ggplot(pi_mat,</span>
+<span id="cb55-3"><a href="#cb55-3" aria-hidden="true" tabindex="-1"></a>            pn.aes(<span class="st">'factor(item)'</span>,</span>
+<span id="cb55-4"><a href="#cb55-4" aria-hidden="true" tabindex="-1"></a>                   <span class="st">'std'</span>))</span>
+<span id="cb55-5"><a href="#cb55-5" aria-hidden="true" tabindex="-1"></a>  <span class="op">+</span> pn.geom_point(alpha <span class="op">=</span> <span class="fl">.5</span>,</span>
+<span id="cb55-6"><a href="#cb55-6" aria-hidden="true" tabindex="-1"></a>                  color <span class="op">=</span> jpcolor)</span>
+<span id="cb55-7"><a href="#cb55-7" aria-hidden="true" tabindex="-1"></a>  <span class="op">+</span> pn.facet_wrap(<span class="st">'lat_class'</span>)</span>
+<span id="cb55-8"><a href="#cb55-8" aria-hidden="true" tabindex="-1"></a>  <span class="op">+</span> pn.labs(title <span class="op">=</span> <span class="st">'Standard Deviation For Each Item By Latent Class'</span>,</span>
+<span id="cb55-9"><a href="#cb55-9" aria-hidden="true" tabindex="-1"></a>            x <span class="op">=</span> <span class="st">'Item'</span>,</span>
+<span id="cb55-10"><a href="#cb55-10" aria-hidden="true" tabindex="-1"></a>            y <span class="op">=</span> <span class="st">'Standard Deviation'</span>)</span>
+<span id="cb55-11"><a href="#cb55-11" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="data89_quiz1_files/figure-html/cell-52-output-1.png" width="691" height="499" class="figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+<section id="beta-coefficients" class="level3">
+<h3 class="anchored" data-anchor-id="beta-coefficients">Beta Coefficients</h3>
+<div id="eb01a506" class="cell" data-execution_count="52">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb56"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb56-1"><a href="#cb56-1" aria-hidden="true" tabindex="-1"></a>beta_df <span class="op">=</span> dcmdf.<span class="bu">filter</span>(regex <span class="op">=</span> <span class="st">'beta'</span>)</span>
+<span id="cb56-2"><a href="#cb56-2" aria-hidden="true" tabindex="-1"></a>beta_df <span class="op">=</span> pd.DataFrame({</span>
+<span id="cb56-3"><a href="#cb56-3" aria-hidden="true" tabindex="-1"></a>  <span class="st">'mean'</span>: beta_df.mean(),</span>
+<span id="cb56-4"><a href="#cb56-4" aria-hidden="true" tabindex="-1"></a>  <span class="st">'std'</span>: beta_df.std(),</span>
+<span id="cb56-5"><a href="#cb56-5" aria-hidden="true" tabindex="-1"></a>  <span class="st">'q_lower'</span>: q_lower(beta_df),</span>
+<span id="cb56-6"><a href="#cb56-6" aria-hidden="true" tabindex="-1"></a>  <span class="st">'q_upper'</span>: q_upper(beta_df)</span>
+<span id="cb56-7"><a href="#cb56-7" aria-hidden="true" tabindex="-1"></a>}).reset_index()</span>
+<span id="cb56-8"><a href="#cb56-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb56-9"><a href="#cb56-9" aria-hidden="true" tabindex="-1"></a>beta_df[<span class="st">'index'</span>] <span class="op">=</span> beta_df[<span class="st">'index'</span>].<span class="bu">str</span>.replace(<span class="st">']'</span>, <span class="st">''</span>)</span>
+<span id="cb56-10"><a href="#cb56-10" aria-hidden="true" tabindex="-1"></a>beta_df[[<span class="st">'var'</span>, <span class="st">'item'</span>]] <span class="op">=</span> beta_df[<span class="st">'index'</span>].<span class="bu">str</span>.split(<span class="st">'['</span>, expand <span class="op">=</span> <span class="va">True</span>)</span>
+<span id="cb56-11"><a href="#cb56-11" aria-hidden="true" tabindex="-1"></a>beta_df[<span class="st">'item'</span>] <span class="op">=</span> beta_df[<span class="st">'item'</span>].astype(<span class="bu">int</span>)</span>
+<span id="cb56-12"><a href="#cb56-12" aria-hidden="true" tabindex="-1"></a>beta_df <span class="op">=</span> beta_df[[<span class="st">'item'</span>, <span class="st">'var'</span>, <span class="st">'mean'</span>, <span class="st">'std'</span>, <span class="st">'q_lower'</span>, <span class="st">'q_upper'</span>]]</span>
+<span id="cb56-13"><a href="#cb56-13" aria-hidden="true" tabindex="-1"></a>beta_df.head()</span>
+<span id="cb56-14"><a href="#cb56-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb56-15"><a href="#cb56-15" aria-hidden="true" tabindex="-1"></a>pn.ggplot.show(</span>
+<span id="cb56-16"><a href="#cb56-16" aria-hidden="true" tabindex="-1"></a>  pn.ggplot(beta_df,</span>
+<span id="cb56-17"><a href="#cb56-17" aria-hidden="true" tabindex="-1"></a>            pn.aes(<span class="st">'factor(item)'</span>,</span>
+<span id="cb56-18"><a href="#cb56-18" aria-hidden="true" tabindex="-1"></a>                   <span class="st">'mean'</span>))</span>
+<span id="cb56-19"><a href="#cb56-19" aria-hidden="true" tabindex="-1"></a>  <span class="op">+</span> pn.geom_point(alpha <span class="op">=</span> <span class="fl">.5</span>,</span>
+<span id="cb56-20"><a href="#cb56-20" aria-hidden="true" tabindex="-1"></a>                  color <span class="op">=</span> jpcolor)</span>
+<span id="cb56-21"><a href="#cb56-21" aria-hidden="true" tabindex="-1"></a>  <span class="op">+</span> pn.geom_errorbar(pn.aes(ymin <span class="op">=</span> <span class="st">'q_lower'</span>,</span>
+<span id="cb56-22"><a href="#cb56-22" aria-hidden="true" tabindex="-1"></a>                            ymax <span class="op">=</span> <span class="st">'q_upper'</span>),</span>
+<span id="cb56-23"><a href="#cb56-23" aria-hidden="true" tabindex="-1"></a>                     alpha <span class="op">=</span> <span class="fl">.1</span>)</span>
+<span id="cb56-24"><a href="#cb56-24" aria-hidden="true" tabindex="-1"></a>  <span class="op">+</span> pn.facet_wrap(<span class="st">'var'</span>)</span>
+<span id="cb56-25"><a href="#cb56-25" aria-hidden="true" tabindex="-1"></a>  <span class="op">+</span> pn.labs(title <span class="op">=</span> <span class="st">'Coefficient Value Per Variable'</span>,</span>
+<span id="cb56-26"><a href="#cb56-26" aria-hidden="true" tabindex="-1"></a>            x <span class="op">=</span> <span class="st">'Item'</span>,</span>
+<span id="cb56-27"><a href="#cb56-27" aria-hidden="true" tabindex="-1"></a>            y <span class="op">=</span> <span class="st">'Coefficient'</span>)</span>
+<span id="cb56-28"><a href="#cb56-28" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="data89_quiz1_files/figure-html/cell-53-output-1.png" width="691" height="499" class="figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+<div id="cc981399" class="cell" data-execution_count="53">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb57"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb57-1"><a href="#cb57-1" aria-hidden="true" tabindex="-1"></a>pn.ggplot.show(</span>
+<span id="cb57-2"><a href="#cb57-2" aria-hidden="true" tabindex="-1"></a>  pn.ggplot(beta_df,</span>
+<span id="cb57-3"><a href="#cb57-3" aria-hidden="true" tabindex="-1"></a>            pn.aes(<span class="st">'factor(item)'</span>,</span>
+<span id="cb57-4"><a href="#cb57-4" aria-hidden="true" tabindex="-1"></a>                   <span class="st">'std'</span>))</span>
+<span id="cb57-5"><a href="#cb57-5" aria-hidden="true" tabindex="-1"></a>  <span class="op">+</span> pn.geom_point(alpha <span class="op">=</span> <span class="fl">.5</span>,</span>
+<span id="cb57-6"><a href="#cb57-6" aria-hidden="true" tabindex="-1"></a>                  color <span class="op">=</span> jpcolor)</span>
+<span id="cb57-7"><a href="#cb57-7" aria-hidden="true" tabindex="-1"></a>  <span class="op">+</span> pn.facet_wrap(<span class="st">'var'</span>)</span>
+<span id="cb57-8"><a href="#cb57-8" aria-hidden="true" tabindex="-1"></a>  <span class="op">+</span> pn.labs(title <span class="op">=</span> <span class="st">'Standard Deviation For Coefficient Value Per Variable'</span>,</span>
+<span id="cb57-9"><a href="#cb57-9" aria-hidden="true" tabindex="-1"></a>            x <span class="op">=</span> <span class="st">'Item'</span>,</span>
+<span id="cb57-10"><a href="#cb57-10" aria-hidden="true" tabindex="-1"></a>            y <span class="op">=</span> <span class="st">'Standard Deviation'</span>)</span>
+<span id="cb57-11"><a href="#cb57-11" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="data89_quiz1_files/figure-html/cell-54-output-1.png" width="691" height="499" class="figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="attribute-mastery-uncertainty" class="level3">
+<h3 class="anchored" data-anchor-id="attribute-mastery-uncertainty">Attribute Mastery &amp; Uncertainty</h3>
+<div id="840e119d" class="cell" data-execution_count="54">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb58"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb58-1"><a href="#cb58-1" aria-hidden="true" tabindex="-1"></a>attr_df <span class="op">=</span> dcmdf.<span class="bu">filter</span>(regex <span class="op">=</span> <span class="st">'^prob_resp_attr'</span>)</span>
+<span id="cb58-2"><a href="#cb58-2" aria-hidden="true" tabindex="-1"></a>attr_df <span class="op">=</span> pd.DataFrame({</span>
+<span id="cb58-3"><a href="#cb58-3" aria-hidden="true" tabindex="-1"></a>  <span class="st">'mean'</span>: attr_df.mean(),</span>
+<span id="cb58-4"><a href="#cb58-4" aria-hidden="true" tabindex="-1"></a>  <span class="st">'std'</span>: attr_df.std(),</span>
+<span id="cb58-5"><a href="#cb58-5" aria-hidden="true" tabindex="-1"></a>  <span class="st">'q_lower'</span>: q_lower(attr_df),</span>
+<span id="cb58-6"><a href="#cb58-6" aria-hidden="true" tabindex="-1"></a>  <span class="st">'q_upper'</span>: q_upper(attr_df)</span>
+<span id="cb58-7"><a href="#cb58-7" aria-hidden="true" tabindex="-1"></a>}).reset_index()</span>
+<span id="cb58-8"><a href="#cb58-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb58-9"><a href="#cb58-9" aria-hidden="true" tabindex="-1"></a>attr_df[<span class="st">'index'</span>] <span class="op">=</span> attr_df[<span class="st">'index'</span>].<span class="bu">str</span>.replace(<span class="st">'prob_resp_attr['</span>, <span class="st">''</span>)</span>
+<span id="cb58-10"><a href="#cb58-10" aria-hidden="true" tabindex="-1"></a>attr_df[<span class="st">'index'</span>] <span class="op">=</span> attr_df[<span class="st">'index'</span>].<span class="bu">str</span>.replace(<span class="st">']'</span>, <span class="st">''</span>)</span>
+<span id="cb58-11"><a href="#cb58-11" aria-hidden="true" tabindex="-1"></a>attr_df[[<span class="st">'stu'</span>, <span class="st">'attr'</span>]] <span class="op">=</span> attr_df[<span class="st">'index'</span>].<span class="bu">str</span>.split(<span class="st">','</span>, expand <span class="op">=</span> <span class="va">True</span>)</span>
+<span id="cb58-12"><a href="#cb58-12" aria-hidden="true" tabindex="-1"></a>attr_df[[<span class="st">'stu'</span>, <span class="st">'attr'</span>]] <span class="op">=</span> attr_df[[<span class="st">'stu'</span>, <span class="st">'attr'</span>]].astype(<span class="bu">int</span>)</span>
+<span id="cb58-13"><a href="#cb58-13" aria-hidden="true" tabindex="-1"></a>attr_df <span class="op">=</span> attr_df[[<span class="st">'stu'</span>, <span class="st">'attr'</span>, <span class="st">'mean'</span>, <span class="st">'std'</span>, <span class="st">'q_lower'</span>, <span class="st">'q_upper'</span>]]</span>
+<span id="cb58-14"><a href="#cb58-14" aria-hidden="true" tabindex="-1"></a><span class="co"># attr_df.head()</span></span>
+<span id="cb58-15"><a href="#cb58-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb58-16"><a href="#cb58-16" aria-hidden="true" tabindex="-1"></a>pn.ggplot.show(</span>
+<span id="cb58-17"><a href="#cb58-17" aria-hidden="true" tabindex="-1"></a>  pn.ggplot(attr_df,</span>
+<span id="cb58-18"><a href="#cb58-18" aria-hidden="true" tabindex="-1"></a>            pn.aes(<span class="st">'stu'</span>,</span>
+<span id="cb58-19"><a href="#cb58-19" aria-hidden="true" tabindex="-1"></a>                   <span class="st">'mean'</span>))</span>
+<span id="cb58-20"><a href="#cb58-20" aria-hidden="true" tabindex="-1"></a>  <span class="op">+</span> pn.geom_point(alpha <span class="op">=</span> <span class="fl">.5</span>,</span>
+<span id="cb58-21"><a href="#cb58-21" aria-hidden="true" tabindex="-1"></a>                  color <span class="op">=</span> jpcolor)</span>
+<span id="cb58-22"><a href="#cb58-22" aria-hidden="true" tabindex="-1"></a>  <span class="op">+</span> pn.geom_errorbar(pn.aes(ymin <span class="op">=</span> <span class="st">'q_lower'</span>,</span>
+<span id="cb58-23"><a href="#cb58-23" aria-hidden="true" tabindex="-1"></a>                            ymax <span class="op">=</span> <span class="st">'q_upper'</span>),</span>
+<span id="cb58-24"><a href="#cb58-24" aria-hidden="true" tabindex="-1"></a>                     alpha <span class="op">=</span> <span class="fl">.1</span>)</span>
+<span id="cb58-25"><a href="#cb58-25" aria-hidden="true" tabindex="-1"></a>  <span class="op">+</span> pn.geom_hline(yintercept <span class="op">=</span> mastery_prob,</span>
+<span id="cb58-26"><a href="#cb58-26" aria-hidden="true" tabindex="-1"></a>                  linetype <span class="op">=</span> <span class="st">'dashed'</span>)</span>
+<span id="cb58-27"><a href="#cb58-27" aria-hidden="true" tabindex="-1"></a>  <span class="op">+</span> pn.facet_wrap(<span class="st">'attr'</span>)</span>
+<span id="cb58-28"><a href="#cb58-28" aria-hidden="true" tabindex="-1"></a>  <span class="op">+</span> pn.labs(title <span class="op">=</span> <span class="st">'Attribute Mastery Per Student'</span>,</span>
+<span id="cb58-29"><a href="#cb58-29" aria-hidden="true" tabindex="-1"></a>            x <span class="op">=</span> <span class="st">'Students'</span>,</span>
+<span id="cb58-30"><a href="#cb58-30" aria-hidden="true" tabindex="-1"></a>            y <span class="op">=</span> <span class="st">'Probability'</span>)</span>
+<span id="cb58-31"><a href="#cb58-31" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="data89_quiz1_files/figure-html/cell-55-output-1.png" width="691" height="499" class="figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+<div id="5e436851" class="cell" data-execution_count="55">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb59"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb59-1"><a href="#cb59-1" aria-hidden="true" tabindex="-1"></a>pn.ggplot.show(</span>
+<span id="cb59-2"><a href="#cb59-2" aria-hidden="true" tabindex="-1"></a>  pn.ggplot(attr_df,</span>
+<span id="cb59-3"><a href="#cb59-3" aria-hidden="true" tabindex="-1"></a>            pn.aes(<span class="st">'stu'</span>,</span>
+<span id="cb59-4"><a href="#cb59-4" aria-hidden="true" tabindex="-1"></a>                   <span class="st">'std'</span>))</span>
+<span id="cb59-5"><a href="#cb59-5" aria-hidden="true" tabindex="-1"></a>  <span class="op">+</span> pn.geom_point(alpha <span class="op">=</span> <span class="fl">.5</span>,</span>
+<span id="cb59-6"><a href="#cb59-6" aria-hidden="true" tabindex="-1"></a>                  color <span class="op">=</span> jpcolor)</span>
+<span id="cb59-7"><a href="#cb59-7" aria-hidden="true" tabindex="-1"></a>  <span class="op">+</span> pn.facet_wrap(<span class="st">'attr'</span>)</span>
+<span id="cb59-8"><a href="#cb59-8" aria-hidden="true" tabindex="-1"></a>  <span class="op">+</span> pn.labs(title <span class="op">=</span> <span class="st">'Standard Deviation Per Student For Each Attribute'</span>,</span>
+<span id="cb59-9"><a href="#cb59-9" aria-hidden="true" tabindex="-1"></a>            x <span class="op">=</span> <span class="st">'Students'</span>,</span>
+<span id="cb59-10"><a href="#cb59-10" aria-hidden="true" tabindex="-1"></a>            y <span class="op">=</span> <span class="st">'Standard Deviation'</span>)</span>
+<span id="cb59-11"><a href="#cb59-11" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="data89_quiz1_files/figure-html/cell-56-output-1.png" width="691" height="499" class="figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+<div id="9dcc4880" class="cell" data-execution_count="56">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb60"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb60-1"><a href="#cb60-1" aria-hidden="true" tabindex="-1"></a>attr_df[<span class="st">'mastery'</span>] <span class="op">=</span> np.where(attr_df[<span class="st">'mean'</span>] <span class="op">&gt;</span> mastery_prob, <span class="dv">1</span>, <span class="dv">0</span>)</span>
+<span id="cb60-2"><a href="#cb60-2" aria-hidden="true" tabindex="-1"></a>attr_df[<span class="st">'proficiency'</span>] <span class="op">=</span> np.where(attr_df[<span class="st">'mean'</span>] <span class="op">&gt;</span> prof_prob, <span class="dv">1</span>, <span class="dv">0</span>)</span>
+<span id="cb60-3"><a href="#cb60-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb60-4"><a href="#cb60-4" aria-hidden="true" tabindex="-1"></a><span class="co"># attr_df.head()</span></span>
+<span id="cb60-5"><a href="#cb60-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb60-6"><a href="#cb60-6" aria-hidden="true" tabindex="-1"></a>attr_df.groupby(<span class="st">'attr'</span>)[<span class="st">'mastery'</span>].value_counts().reset_index()</span>
+<span id="cb60-7"><a href="#cb60-7" aria-hidden="true" tabindex="-1"></a>attr_df.groupby(<span class="st">'attr'</span>)[<span class="st">'proficiency'</span>].value_counts().reset_index()</span>
+<span id="cb60-8"><a href="#cb60-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb60-9"><a href="#cb60-9" aria-hidden="true" tabindex="-1"></a>attr_mastery <span class="op">=</span> attr_df.pivot(index <span class="op">=</span> <span class="st">'stu'</span>,</span>
+<span id="cb60-10"><a href="#cb60-10" aria-hidden="true" tabindex="-1"></a>              columns <span class="op">=</span> <span class="st">'attr'</span>,</span>
+<span id="cb60-11"><a href="#cb60-11" aria-hidden="true" tabindex="-1"></a>              values <span class="op">=</span> <span class="st">'mastery'</span>).reset_index()</span>
+<span id="cb60-12"><a href="#cb60-12" aria-hidden="true" tabindex="-1"></a>attr_mastery <span class="op">=</span> attr_mastery.rename(columns <span class="op">=</span> {<span class="dv">1</span>: <span class="st">'attr1'</span>,</span>
+<span id="cb60-13"><a href="#cb60-13" aria-hidden="true" tabindex="-1"></a>                                              <span class="dv">2</span>: <span class="st">'attr2'</span>})</span>
+<span id="cb60-14"><a href="#cb60-14" aria-hidden="true" tabindex="-1"></a><span class="co"># attr_mastery.head()</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+</div>
+<div id="df6a162b" class="cell" data-execution_count="57">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb61"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb61-1"><a href="#cb61-1" aria-hidden="true" tabindex="-1"></a><span class="co"># INCLUDE THE NAMES FOR THE ATTRIBUTES HERE FOR MASTERY</span></span>
+<span id="cb61-2"><a href="#cb61-2" aria-hidden="true" tabindex="-1"></a>attr_mastery[<span class="st">'attr1'</span>] <span class="op">=</span> np.where(attr_mastery[<span class="st">'attr1'</span>] <span class="op">==</span> <span class="dv">1</span>, <span class="st">''</span>, <span class="st">''</span>)</span>
+<span id="cb61-3"><a href="#cb61-3" aria-hidden="true" tabindex="-1"></a>attr_mastery[<span class="st">'attr2'</span>] <span class="op">=</span> np.where(attr_mastery[<span class="st">'attr2'</span>] <span class="op">==</span> <span class="dv">1</span>, <span class="st">''</span>, <span class="st">''</span>)</span>
+<span id="cb61-4"><a href="#cb61-4" aria-hidden="true" tabindex="-1"></a>attr_mastery.to_csv(<span class="ss">f'student_data/attribute_mastery_</span><span class="sc">{</span>quiz_num<span class="sc">}</span><span class="ss">.csv'</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+</div>
+<div id="a633f83f" class="cell" data-execution_count="58">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb62"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb62-1"><a href="#cb62-1" aria-hidden="true" tabindex="-1"></a>attr_prof <span class="op">=</span> attr_df.pivot(index <span class="op">=</span> <span class="st">'stu'</span>,</span>
+<span id="cb62-2"><a href="#cb62-2" aria-hidden="true" tabindex="-1"></a>              columns <span class="op">=</span> <span class="st">'attr'</span>,</span>
+<span id="cb62-3"><a href="#cb62-3" aria-hidden="true" tabindex="-1"></a>              values <span class="op">=</span> <span class="st">'mastery'</span>).reset_index()</span>
+<span id="cb62-4"><a href="#cb62-4" aria-hidden="true" tabindex="-1"></a>attr_prof <span class="op">=</span> attr_prof.rename(columns <span class="op">=</span> {<span class="dv">1</span>: <span class="st">'attr1'</span>,</span>
+<span id="cb62-5"><a href="#cb62-5" aria-hidden="true" tabindex="-1"></a>                                        <span class="dv">2</span>: <span class="st">'attr2'</span>})</span>
+<span id="cb62-6"><a href="#cb62-6" aria-hidden="true" tabindex="-1"></a><span class="co"># attr_prof.head()</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+</div>
+<div id="f46547bc" class="cell" data-execution_count="59">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb63"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb63-1"><a href="#cb63-1" aria-hidden="true" tabindex="-1"></a><span class="co"># INCLUDE THE NAMES FOR THE ATTRIBUTES HERE FOR PROFICIENCY</span></span>
+<span id="cb63-2"><a href="#cb63-2" aria-hidden="true" tabindex="-1"></a>attr_prof[<span class="st">'attr1'</span>] <span class="op">=</span> np.where(attr_prof[<span class="st">'attr1'</span>] <span class="op">==</span> <span class="dv">1</span>, <span class="st">''</span>, <span class="st">''</span>)</span>
+<span id="cb63-3"><a href="#cb63-3" aria-hidden="true" tabindex="-1"></a>attr_prof[<span class="st">'attr2'</span>] <span class="op">=</span> np.where(attr_prof[<span class="st">'attr2'</span>] <span class="op">==</span> <span class="dv">1</span>, <span class="st">''</span>, <span class="st">''</span>)</span>
+<span id="cb63-4"><a href="#cb63-4" aria-hidden="true" tabindex="-1"></a>attr_prof.to_csv(<span class="ss">f'student_data/attribute_proficiency_</span><span class="sc">{</span>quiz_num<span class="sc">}</span><span class="ss">.csv'</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+</div>
+</section>
+<section id="attribute-mastery-per-class" class="level3">
+<h3 class="anchored" data-anchor-id="attribute-mastery-per-class">Attribute Mastery Per Class</h3>
+<div id="1394178b" class="cell" data-execution_count="60">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb64"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb64-1"><a href="#cb64-1" aria-hidden="true" tabindex="-1"></a>attr_class_df <span class="op">=</span> dcmdf.<span class="bu">filter</span>(regex <span class="op">=</span> <span class="st">'^prob_resp_class'</span>)</span>
+<span id="cb64-2"><a href="#cb64-2" aria-hidden="true" tabindex="-1"></a>attr_class_df <span class="op">=</span> pd.DataFrame({</span>
+<span id="cb64-3"><a href="#cb64-3" aria-hidden="true" tabindex="-1"></a>  <span class="st">'mean'</span>: attr_class_df.mean(),</span>
+<span id="cb64-4"><a href="#cb64-4" aria-hidden="true" tabindex="-1"></a>  <span class="st">'std'</span>: attr_class_df.std(),</span>
+<span id="cb64-5"><a href="#cb64-5" aria-hidden="true" tabindex="-1"></a>  <span class="st">'q_lower'</span>: q_lower(attr_class_df),</span>
+<span id="cb64-6"><a href="#cb64-6" aria-hidden="true" tabindex="-1"></a>  <span class="st">'q_upper'</span>: q_upper(attr_class_df)</span>
+<span id="cb64-7"><a href="#cb64-7" aria-hidden="true" tabindex="-1"></a>}).reset_index()</span>
+<span id="cb64-8"><a href="#cb64-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb64-9"><a href="#cb64-9" aria-hidden="true" tabindex="-1"></a>attr_class_df[<span class="st">'index'</span>] <span class="op">=</span> attr_class_df[<span class="st">'index'</span>].<span class="bu">str</span>.replace(<span class="st">'prob_resp_class['</span>, <span class="st">''</span>)</span>
+<span id="cb64-10"><a href="#cb64-10" aria-hidden="true" tabindex="-1"></a>attr_class_df[<span class="st">'index'</span>] <span class="op">=</span> attr_class_df[<span class="st">'index'</span>].<span class="bu">str</span>.replace(<span class="st">']'</span>, <span class="st">''</span>)</span>
+<span id="cb64-11"><a href="#cb64-11" aria-hidden="true" tabindex="-1"></a>attr_class_df[[<span class="st">'stu'</span>, <span class="st">'lat_class'</span>]] <span class="op">=</span> attr_class_df[<span class="st">'index'</span>].<span class="bu">str</span>.split(<span class="st">','</span>, expand <span class="op">=</span> <span class="va">True</span>)</span>
+<span id="cb64-12"><a href="#cb64-12" aria-hidden="true" tabindex="-1"></a>attr_class_df[[<span class="st">'stu'</span>, <span class="st">'lat_class'</span>]] <span class="op">=</span> attr_class_df[[<span class="st">'stu'</span>, <span class="st">'lat_class'</span>]].astype(<span class="bu">int</span>)</span>
+<span id="cb64-13"><a href="#cb64-13" aria-hidden="true" tabindex="-1"></a>attr_class_df <span class="op">=</span> attr_class_df[[<span class="st">'stu'</span>, <span class="st">'lat_class'</span>, <span class="st">'mean'</span>, <span class="st">'std'</span>, <span class="st">'q_lower'</span>, <span class="st">'q_upper'</span>]]</span>
+<span id="cb64-14"><a href="#cb64-14" aria-hidden="true" tabindex="-1"></a><span class="co"># attr_class_df.head()</span></span>
+<span id="cb64-15"><a href="#cb64-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb64-16"><a href="#cb64-16" aria-hidden="true" tabindex="-1"></a>pn.ggplot.show(</span>
+<span id="cb64-17"><a href="#cb64-17" aria-hidden="true" tabindex="-1"></a>  pn.ggplot(attr_class_df,</span>
+<span id="cb64-18"><a href="#cb64-18" aria-hidden="true" tabindex="-1"></a>            pn.aes(<span class="st">'stu'</span>,</span>
+<span id="cb64-19"><a href="#cb64-19" aria-hidden="true" tabindex="-1"></a>                   <span class="st">'mean'</span>))</span>
+<span id="cb64-20"><a href="#cb64-20" aria-hidden="true" tabindex="-1"></a>  <span class="op">+</span> pn.geom_point(alpha <span class="op">=</span> <span class="fl">.5</span>,</span>
+<span id="cb64-21"><a href="#cb64-21" aria-hidden="true" tabindex="-1"></a>                  color <span class="op">=</span> jpcolor)</span>
+<span id="cb64-22"><a href="#cb64-22" aria-hidden="true" tabindex="-1"></a>  <span class="op">+</span> pn.geom_errorbar(pn.aes(ymin <span class="op">=</span> <span class="st">'q_lower'</span>,</span>
+<span id="cb64-23"><a href="#cb64-23" aria-hidden="true" tabindex="-1"></a>                            ymax <span class="op">=</span> <span class="st">'q_upper'</span>),</span>
+<span id="cb64-24"><a href="#cb64-24" aria-hidden="true" tabindex="-1"></a>                     alpha <span class="op">=</span> <span class="fl">.1</span>)</span>
+<span id="cb64-25"><a href="#cb64-25" aria-hidden="true" tabindex="-1"></a>  <span class="op">+</span> pn.geom_hline(yintercept <span class="op">=</span> <span class="fl">.5</span>,</span>
+<span id="cb64-26"><a href="#cb64-26" aria-hidden="true" tabindex="-1"></a>                  color <span class="op">=</span> <span class="st">'black'</span>,</span>
+<span id="cb64-27"><a href="#cb64-27" aria-hidden="true" tabindex="-1"></a>                  linetype <span class="op">=</span> <span class="st">'dashed'</span>)</span>
+<span id="cb64-28"><a href="#cb64-28" aria-hidden="true" tabindex="-1"></a>  <span class="op">+</span> pn.facet_wrap(<span class="st">'lat_class'</span>)</span>
+<span id="cb64-29"><a href="#cb64-29" aria-hidden="true" tabindex="-1"></a>  <span class="op">+</span> pn.labs(title <span class="op">=</span> <span class="st">'Probability Per Student In Each Latent Class'</span>,</span>
+<span id="cb64-30"><a href="#cb64-30" aria-hidden="true" tabindex="-1"></a>            x <span class="op">=</span> <span class="st">'Students'</span>,</span>
+<span id="cb64-31"><a href="#cb64-31" aria-hidden="true" tabindex="-1"></a>            y <span class="op">=</span> <span class="st">'Probability'</span>)</span>
+<span id="cb64-32"><a href="#cb64-32" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="data89_quiz1_files/figure-html/cell-61-output-1.png" width="691" height="499" class="figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+<div id="3f481c0a" class="cell" data-execution_count="61">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb65"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb65-1"><a href="#cb65-1" aria-hidden="true" tabindex="-1"></a>pn.ggplot.show(</span>
+<span id="cb65-2"><a href="#cb65-2" aria-hidden="true" tabindex="-1"></a>  pn.ggplot(attr_class_df,</span>
+<span id="cb65-3"><a href="#cb65-3" aria-hidden="true" tabindex="-1"></a>            pn.aes(<span class="st">'stu'</span>,</span>
+<span id="cb65-4"><a href="#cb65-4" aria-hidden="true" tabindex="-1"></a>                   <span class="st">'std'</span>))</span>
+<span id="cb65-5"><a href="#cb65-5" aria-hidden="true" tabindex="-1"></a>  <span class="op">+</span> pn.geom_point(alpha <span class="op">=</span> <span class="fl">.5</span>,</span>
+<span id="cb65-6"><a href="#cb65-6" aria-hidden="true" tabindex="-1"></a>                  color <span class="op">=</span> jpcolor)</span>
+<span id="cb65-7"><a href="#cb65-7" aria-hidden="true" tabindex="-1"></a>  <span class="op">+</span> pn.facet_wrap(<span class="st">'lat_class'</span>)</span>
+<span id="cb65-8"><a href="#cb65-8" aria-hidden="true" tabindex="-1"></a>  <span class="op">+</span> pn.labs(title <span class="op">=</span> <span class="st">'Standard Deviation Per Student For Each Latent Class'</span>,</span>
+<span id="cb65-9"><a href="#cb65-9" aria-hidden="true" tabindex="-1"></a>            x <span class="op">=</span> <span class="st">'Students'</span>,</span>
+<span id="cb65-10"><a href="#cb65-10" aria-hidden="true" tabindex="-1"></a>            y <span class="op">=</span> <span class="st">'Standard Deviation'</span>)</span>
+<span id="cb65-11"><a href="#cb65-11" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="data89_quiz1_files/figure-html/cell-62-output-1.png" width="691" height="499" class="figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="ppp-calculations" class="level2">
+<h2 class="anchored" data-anchor-id="ppp-calculations">PPP Calculations</h2>
+<div id="e5765e8f" class="cell" data-execution_count="62">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb66"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb66-1"><a href="#cb66-1" aria-hidden="true" tabindex="-1"></a>ydcm <span class="op">=</span> dcmdf.<span class="bu">filter</span>(regex <span class="op">=</span> <span class="st">'^y_rep'</span>)</span>
+<span id="cb66-2"><a href="#cb66-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb66-3"><a href="#cb66-3" aria-hidden="true" tabindex="-1"></a>ydcm_prob <span class="op">=</span> pd.DataFrame({</span>
+<span id="cb66-4"><a href="#cb66-4" aria-hidden="true" tabindex="-1"></a>  <span class="st">'mean'</span>: ydcm.mean(),</span>
+<span id="cb66-5"><a href="#cb66-5" aria-hidden="true" tabindex="-1"></a>  <span class="st">'std'</span>: ydcm.std(),</span>
+<span id="cb66-6"><a href="#cb66-6" aria-hidden="true" tabindex="-1"></a>  <span class="st">'q_lower'</span>: q_lower(ydcm),</span>
+<span id="cb66-7"><a href="#cb66-7" aria-hidden="true" tabindex="-1"></a>  <span class="st">'q_upper'</span>: q_upper(ydcm)</span>
+<span id="cb66-8"><a href="#cb66-8" aria-hidden="true" tabindex="-1"></a>}).reset_index()</span>
+<span id="cb66-9"><a href="#cb66-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb66-10"><a href="#cb66-10" aria-hidden="true" tabindex="-1"></a>ydcm_prob[<span class="st">'index'</span>] <span class="op">=</span> ydcm_prob[<span class="st">'index'</span>].<span class="bu">str</span>.replace(<span class="st">'y_rep['</span>, <span class="st">''</span>)</span>
+<span id="cb66-11"><a href="#cb66-11" aria-hidden="true" tabindex="-1"></a>ydcm_prob[<span class="st">'index'</span>] <span class="op">=</span> ydcm_prob[<span class="st">'index'</span>].<span class="bu">str</span>.replace(<span class="st">']'</span>, <span class="st">''</span>)</span>
+<span id="cb66-12"><a href="#cb66-12" aria-hidden="true" tabindex="-1"></a>ydcm_prob[[<span class="st">'stu'</span>, <span class="st">'item'</span>]] <span class="op">=</span> ydcm_prob[<span class="st">'index'</span>].<span class="bu">str</span>.split(pat <span class="op">=</span> <span class="st">','</span>, expand <span class="op">=</span> <span class="va">True</span>)</span>
+<span id="cb66-13"><a href="#cb66-13" aria-hidden="true" tabindex="-1"></a>ydcm_prob <span class="op">=</span> ydcm_prob[[<span class="st">'stu'</span>, <span class="st">'item'</span>, <span class="st">'mean'</span>, <span class="st">'std'</span>, <span class="st">'q_lower'</span>, <span class="st">'q_upper'</span>]]</span>
+<span id="cb66-14"><a href="#cb66-14" aria-hidden="true" tabindex="-1"></a>ydcm_prob[[<span class="st">'stu'</span>, <span class="st">'item'</span>]] <span class="op">=</span> ydcm_prob[[<span class="st">'stu'</span>, <span class="st">'item'</span>]].astype(<span class="bu">int</span>)</span>
+<span id="cb66-15"><a href="#cb66-15" aria-hidden="true" tabindex="-1"></a>ydcm_prob[<span class="st">'correct'</span>] <span class="op">=</span> np.where(ydcm_prob[<span class="st">'mean'</span>] <span class="op">&gt;=</span> <span class="fl">.5</span>, <span class="dv">1</span>, <span class="dv">0</span>)</span>
+<span id="cb66-16"><a href="#cb66-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb66-17"><a href="#cb66-17" aria-hidden="true" tabindex="-1"></a>pn.ggplot.show(</span>
+<span id="cb66-18"><a href="#cb66-18" aria-hidden="true" tabindex="-1"></a>  pn.ggplot(ydcm_prob,</span>
+<span id="cb66-19"><a href="#cb66-19" aria-hidden="true" tabindex="-1"></a>            pn.aes(<span class="st">'stu'</span>,</span>
+<span id="cb66-20"><a href="#cb66-20" aria-hidden="true" tabindex="-1"></a>                   <span class="st">'mean'</span>))</span>
+<span id="cb66-21"><a href="#cb66-21" aria-hidden="true" tabindex="-1"></a>  <span class="op">+</span> pn.geom_point(pn.aes(color <span class="op">=</span> <span class="st">'factor(item)'</span>),</span>
+<span id="cb66-22"><a href="#cb66-22" aria-hidden="true" tabindex="-1"></a>                  alpha <span class="op">=</span> <span class="fl">.5</span>)</span>
+<span id="cb66-23"><a href="#cb66-23" aria-hidden="true" tabindex="-1"></a>  <span class="co"># + pn.geom_errorbar(pn.aes(ymin = 'q_lower',</span></span>
+<span id="cb66-24"><a href="#cb66-24" aria-hidden="true" tabindex="-1"></a>  <span class="co">#                           ymax = 'q_upper',</span></span>
+<span id="cb66-25"><a href="#cb66-25" aria-hidden="true" tabindex="-1"></a>  <span class="co">#                           color = 'factor(item)'),</span></span>
+<span id="cb66-26"><a href="#cb66-26" aria-hidden="true" tabindex="-1"></a>  <span class="co">#                    alpha = .1)</span></span>
+<span id="cb66-27"><a href="#cb66-27" aria-hidden="true" tabindex="-1"></a>  <span class="op">+</span> pn.geom_hline(yintercept <span class="op">=</span> <span class="fl">.5</span>,</span>
+<span id="cb66-28"><a href="#cb66-28" aria-hidden="true" tabindex="-1"></a>                  color <span class="op">=</span> <span class="st">'black'</span>,</span>
+<span id="cb66-29"><a href="#cb66-29" aria-hidden="true" tabindex="-1"></a>                  linetype <span class="op">=</span> <span class="st">'dashed'</span>)</span>
+<span id="cb66-30"><a href="#cb66-30" aria-hidden="true" tabindex="-1"></a>  <span class="op">+</span> pn.labs(title <span class="op">=</span> <span class="st">'Probability Student Gets Items Correct'</span>,</span>
+<span id="cb66-31"><a href="#cb66-31" aria-hidden="true" tabindex="-1"></a>            x <span class="op">=</span> <span class="st">'Student'</span>,</span>
+<span id="cb66-32"><a href="#cb66-32" aria-hidden="true" tabindex="-1"></a>            y <span class="op">=</span> <span class="st">'Probability'</span>)</span>
+<span id="cb66-33"><a href="#cb66-33" aria-hidden="true" tabindex="-1"></a>  <span class="op">+</span> pn.theme(axis_text_x <span class="op">=</span> pn.element_blank())</span>
+<span id="cb66-34"><a href="#cb66-34" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="data89_quiz1_files/figure-html/cell-63-output-1.png" width="691" height="499" class="figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+<div id="e3567699" class="cell" data-execution_count="63">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb67"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb67-1"><a href="#cb67-1" aria-hidden="true" tabindex="-1"></a>ydcm_wide <span class="op">=</span> (</span>
+<span id="cb67-2"><a href="#cb67-2" aria-hidden="true" tabindex="-1"></a>  ydcm_prob</span>
+<span id="cb67-3"><a href="#cb67-3" aria-hidden="true" tabindex="-1"></a>  .pivot(</span>
+<span id="cb67-4"><a href="#cb67-4" aria-hidden="true" tabindex="-1"></a>    index <span class="op">=</span> <span class="st">'stu'</span>,</span>
+<span id="cb67-5"><a href="#cb67-5" aria-hidden="true" tabindex="-1"></a>    columns <span class="op">=</span> <span class="st">'item'</span>,</span>
+<span id="cb67-6"><a href="#cb67-6" aria-hidden="true" tabindex="-1"></a>    values <span class="op">=</span> <span class="st">'correct'</span>)</span>
+<span id="cb67-7"><a href="#cb67-7" aria-hidden="true" tabindex="-1"></a>  .reset_index(drop <span class="op">=</span> <span class="va">True</span>)</span>
+<span id="cb67-8"><a href="#cb67-8" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb67-9"><a href="#cb67-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb67-10"><a href="#cb67-10" aria-hidden="true" tabindex="-1"></a>ydcm_wide.columns <span class="op">=</span> [<span class="ss">f'item</span><span class="sc">{</span>i<span class="op">+</span><span class="dv">1</span><span class="sc">}</span><span class="ss">'</span> <span class="cf">for</span> i <span class="kw">in</span> np.arange(ydcm_wide.shape[<span class="dv">1</span>])]</span>
+<span id="cb67-11"><a href="#cb67-11" aria-hidden="true" tabindex="-1"></a>ydcm_wide <span class="op">=</span> ydcm_wide.reset_index()</span>
+<span id="cb67-12"><a href="#cb67-12" aria-hidden="true" tabindex="-1"></a>ydcm_wide <span class="op">=</span> ydcm_wide.rename(columns <span class="op">=</span> {<span class="st">'index'</span>: <span class="st">'stu'</span>})</span>
+<span id="cb67-13"><a href="#cb67-13" aria-hidden="true" tabindex="-1"></a>ydcm_wide[<span class="st">'stu'</span>] <span class="op">=</span> ydcm_wide[<span class="st">'stu'</span>] <span class="op">+</span> <span class="dv">1</span></span>
+<span id="cb67-14"><a href="#cb67-14" aria-hidden="true" tabindex="-1"></a><span class="co"># ydcm_wide.head()</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+</div>
+<div id="e895f18b" class="cell" data-execution_count="64">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb68"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb68-1"><a href="#cb68-1" aria-hidden="true" tabindex="-1"></a>ydcm_wide[<span class="st">'total_correct'</span>] <span class="op">=</span> ydcm_wide.drop(columns <span class="op">=</span> <span class="st">'stu'</span>).<span class="bu">sum</span>(axis <span class="op">=</span> <span class="dv">1</span>)</span>
+<span id="cb68-2"><a href="#cb68-2" aria-hidden="true" tabindex="-1"></a>ydcm_wide[<span class="st">'actual_correct'</span>] <span class="op">=</span> y_sub.drop(columns <span class="op">=</span> <span class="st">'name'</span>).<span class="bu">sum</span>(axis <span class="op">=</span> <span class="dv">1</span>)</span>
+<span id="cb68-3"><a href="#cb68-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb68-4"><a href="#cb68-4" aria-hidden="true" tabindex="-1"></a>ydcm_compare <span class="op">=</span> ydcm_wide[[<span class="st">'stu'</span>, <span class="st">'total_correct'</span>, <span class="st">'actual_correct'</span>]].melt(id_vars <span class="op">=</span> <span class="st">'stu'</span>)</span>
+<span id="cb68-5"><a href="#cb68-5" aria-hidden="true" tabindex="-1"></a>ydcm_compare_count <span class="op">=</span> ydcm_compare.groupby(<span class="st">'variable'</span>)[<span class="st">'value'</span>].value_counts().reset_index()</span>
+<span id="cb68-6"><a href="#cb68-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb68-7"><a href="#cb68-7" aria-hidden="true" tabindex="-1"></a>pn.ggplot.show(</span>
+<span id="cb68-8"><a href="#cb68-8" aria-hidden="true" tabindex="-1"></a>  pn.ggplot(ydcm_compare_count,</span>
+<span id="cb68-9"><a href="#cb68-9" aria-hidden="true" tabindex="-1"></a>            pn.aes(<span class="st">'factor(value)'</span>,</span>
+<span id="cb68-10"><a href="#cb68-10" aria-hidden="true" tabindex="-1"></a>                   <span class="st">'count'</span>))</span>
+<span id="cb68-11"><a href="#cb68-11" aria-hidden="true" tabindex="-1"></a>  <span class="op">+</span> pn.geom_point(pn.aes(color <span class="op">=</span> <span class="st">'variable'</span>))</span>
+<span id="cb68-12"><a href="#cb68-12" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="data89_quiz1_files/figure-html/cell-65-output-1.png" width="691" height="499" class="figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+<div id="eb534baa" class="cell" data-execution_count="65">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb69"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb69-1"><a href="#cb69-1" aria-hidden="true" tabindex="-1"></a>ydcm_compare_actual <span class="op">=</span> ydcm_compare.loc[ydcm_compare[<span class="st">'variable'</span>] <span class="op">==</span> <span class="st">'actual_correct'</span>, <span class="st">'value'</span>].sort_values()</span>
+<span id="cb69-2"><a href="#cb69-2" aria-hidden="true" tabindex="-1"></a>ydcm_compare_predict <span class="op">=</span> ydcm_compare.loc[ydcm_compare[<span class="st">'variable'</span>] <span class="op">==</span> <span class="st">'total_correct'</span>, <span class="st">'value'</span>].sort_values()</span>
+<span id="cb69-3"><a href="#cb69-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb69-4"><a href="#cb69-4" aria-hidden="true" tabindex="-1"></a>ydcm_compare_actual <span class="op">=</span> pd.Categorical(ydcm_compare_actual, ordered <span class="op">=</span> <span class="va">True</span>)</span>
+<span id="cb69-5"><a href="#cb69-5" aria-hidden="true" tabindex="-1"></a>ydcm_compare_predict <span class="op">=</span> pd.Categorical(ydcm_compare_predict, ordered <span class="op">=</span> <span class="va">True</span>)</span>
+<span id="cb69-6"><a href="#cb69-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb69-7"><a href="#cb69-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb69-8"><a href="#cb69-8" aria-hidden="true" tabindex="-1"></a>count_tabs <span class="op">=</span> pd.crosstab(ydcm_compare_actual,</span>
+<span id="cb69-9"><a href="#cb69-9" aria-hidden="true" tabindex="-1"></a>                         ydcm_compare_predict)</span>
+<span id="cb69-10"><a href="#cb69-10" aria-hidden="true" tabindex="-1"></a><span class="co"># count_tabs</span></span>
+<span id="cb69-11"><a href="#cb69-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb69-12"><a href="#cb69-12" aria-hidden="true" tabindex="-1"></a><span class="co"># from scipy.stats import chisquare</span></span>
+<span id="cb69-13"><a href="#cb69-13" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> scipy.stats <span class="im">import</span> chi2_contingency</span>
+<span id="cb69-14"><a href="#cb69-14" aria-hidden="true" tabindex="-1"></a>chi2_contingency(observed <span class="op">=</span> count_tabs)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-display" data-execution_count="127">
+<pre><code>Chi2ContingencyResult(statistic=0.0, pvalue=1.0, dof=0, expected_freq=array([[ 2.],
+       [ 3.],
+       [11.],
+       [15.],
+       [14.],
+       [11.],
+       [ 5.],
+       [ 1.]]))</code></pre>
+</div>
+</div>
+<section id="overall-ppp-values" class="level3">
+<h3 class="anchored" data-anchor-id="overall-ppp-values">Overall PPP Values</h3>
+<div id="6e779e99" class="cell" data-execution_count="66">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb71"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb71-1"><a href="#cb71-1" aria-hidden="true" tabindex="-1"></a>overall_ppp(ydcm_prob, <span class="st">'mean'</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-display" data-execution_count="128">
+<pre><code>np.float64(0.5)</code></pre>
+</div>
+</div>
+<div id="cbb48b71" class="cell" data-execution_count="67">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb73"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb73-1"><a href="#cb73-1" aria-hidden="true" tabindex="-1"></a><span class="co"># overall, model fits pretty well</span></span>
+<span id="cb73-2"><a href="#cb73-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb73-3"><a href="#cb73-3" aria-hidden="true" tabindex="-1"></a>overall_ppp(ydcm_prob, <span class="st">'std'</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-display" data-execution_count="129">
+<pre><code>np.float64(0.7)</code></pre>
+</div>
+</div>
+</section>
+<section id="item-specific-ppp-values" class="level3">
+<h3 class="anchored" data-anchor-id="item-specific-ppp-values">Item Specific PPP Values</h3>
+<div id="875f1cf0" class="cell" data-execution_count="68">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb75"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb75-1"><a href="#cb75-1" aria-hidden="true" tabindex="-1"></a>dcm_means <span class="op">=</span> [ppp_func(df <span class="op">=</span> ydcm_prob,</span>
+<span id="cb75-2"><a href="#cb75-2" aria-hidden="true" tabindex="-1"></a>                      item_num <span class="op">=</span> i,</span>
+<span id="cb75-3"><a href="#cb75-3" aria-hidden="true" tabindex="-1"></a>                      stat <span class="op">=</span> <span class="st">'mean'</span>) <span class="cf">for</span> i <span class="kw">in</span> np.arange(<span class="dv">1</span>,</span>
+<span id="cb75-4"><a href="#cb75-4" aria-hidden="true" tabindex="-1"></a>                                                        (y_describe.shape[<span class="dv">1</span>]))]</span>
+<span id="cb75-5"><a href="#cb75-5" aria-hidden="true" tabindex="-1"></a>dcm_stds <span class="op">=</span> [ppp_func(df <span class="op">=</span> ydcm_prob,</span>
+<span id="cb75-6"><a href="#cb75-6" aria-hidden="true" tabindex="-1"></a>                     item_num <span class="op">=</span> i,</span>
+<span id="cb75-7"><a href="#cb75-7" aria-hidden="true" tabindex="-1"></a>                     stat <span class="op">=</span> <span class="st">'std'</span>) <span class="cf">for</span> i <span class="kw">in</span> np.arange(<span class="dv">1</span>,</span>
+<span id="cb75-8"><a href="#cb75-8" aria-hidden="true" tabindex="-1"></a>                                                      (y_describe.shape[<span class="dv">1</span>]))]</span>
+<span id="cb75-9"><a href="#cb75-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb75-10"><a href="#cb75-10" aria-hidden="true" tabindex="-1"></a>ppp_dcm <span class="op">=</span> pd.DataFrame({<span class="st">'means'</span>: pd.Series(dcm_means),</span>
+<span id="cb75-11"><a href="#cb75-11" aria-hidden="true" tabindex="-1"></a>                       <span class="st">'stds'</span>: pd.Series(dcm_stds)})</span>
+<span id="cb75-12"><a href="#cb75-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb75-13"><a href="#cb75-13" aria-hidden="true" tabindex="-1"></a>ppp_dcm <span class="op">=</span> ppp_dcm.reset_index()</span>
+<span id="cb75-14"><a href="#cb75-14" aria-hidden="true" tabindex="-1"></a>ppp_dcm <span class="op">=</span> ppp_dcm.rename(columns <span class="op">=</span> {<span class="st">'index'</span>: <span class="st">'item'</span>})</span>
+<span id="cb75-15"><a href="#cb75-15" aria-hidden="true" tabindex="-1"></a>ppp_dcm[<span class="st">'item'</span>] <span class="op">=</span> ppp_dcm[<span class="st">'item'</span>] <span class="op">+</span> <span class="dv">1</span></span>
+<span id="cb75-16"><a href="#cb75-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb75-17"><a href="#cb75-17" aria-hidden="true" tabindex="-1"></a>gt.show(gt(ppp_dcm))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-display">
+<div id="oasbtwqdjw" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>
+#oasbtwqdjw table {
+          font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif;
+          -webkit-font-smoothing: antialiased;
+          -moz-osx-font-smoothing: grayscale;
+        }
+
+#oasbtwqdjw thead, tbody, tfoot, tr, td, th { border-style: none; }
+ tr { background-color: transparent; }
+#oasbtwqdjw p { margin: 0; padding: 0; }
+ #oasbtwqdjw .gt_table { display: table; border-collapse: collapse; line-height: normal; margin-left: auto; margin-right: auto; color: #333333; font-size: 16px; font-weight: normal; font-style: normal; background-color: #FFFFFF; width: auto; border-top-style: solid; border-top-width: 2px; border-top-color: #A8A8A8; border-right-style: none; border-right-width: 2px; border-right-color: #D3D3D3; border-bottom-style: solid; border-bottom-width: 2px; border-bottom-color: #A8A8A8; border-left-style: none; border-left-width: 2px; border-left-color: #D3D3D3; }
+ #oasbtwqdjw .gt_caption { padding-top: 4px; padding-bottom: 4px; }
+ #oasbtwqdjw .gt_title { color: #333333; font-size: 125%; font-weight: initial; padding-top: 4px; padding-bottom: 4px; padding-left: 5px; padding-right: 5px; border-bottom-color: #FFFFFF; border-bottom-width: 0; }
+ #oasbtwqdjw .gt_subtitle { color: #333333; font-size: 85%; font-weight: initial; padding-top: 3px; padding-bottom: 5px; padding-left: 5px; padding-right: 5px; border-top-color: #FFFFFF; border-top-width: 0; }
+ #oasbtwqdjw .gt_heading { background-color: #FFFFFF; text-align: center; border-bottom-color: #FFFFFF; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; }
+ #oasbtwqdjw .gt_bottom_border { border-bottom-style: solid; border-bottom-width: 2px; border-bottom-color: #D3D3D3; }
+ #oasbtwqdjw .gt_col_headings { border-top-style: solid; border-top-width: 2px; border-top-color: #D3D3D3; border-bottom-style: solid; border-bottom-width: 2px; border-bottom-color: #D3D3D3; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; }
+ #oasbtwqdjw .gt_col_heading { color: #333333; background-color: #FFFFFF; font-size: 100%; font-weight: normal; text-transform: inherit; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: bottom; padding-top: 5px; padding-bottom: 5px; padding-left: 5px; padding-right: 5px; overflow-x: hidden; }
+ #oasbtwqdjw .gt_column_spanner_outer { color: #333333; background-color: #FFFFFF; font-size: 100%; font-weight: normal; text-transform: inherit; padding-top: 0; padding-bottom: 0; padding-left: 4px; padding-right: 4px; }
+ #oasbtwqdjw .gt_column_spanner_outer:first-child { padding-left: 0; }
+ #oasbtwqdjw .gt_column_spanner_outer:last-child { padding-right: 0; }
+ #oasbtwqdjw .gt_column_spanner { border-bottom-style: solid; border-bottom-width: 2px; border-bottom-color: #D3D3D3; vertical-align: bottom; padding-top: 5px; padding-bottom: 5px; overflow-x: hidden; display: inline-block; width: 100%; }
+ #oasbtwqdjw .gt_spanner_row { border-bottom-style: hidden; }
+ #oasbtwqdjw .gt_group_heading { padding-top: 8px; padding-bottom: 8px; padding-left: 5px; padding-right: 5px; color: #333333; background-color: #FFFFFF; font-size: 100%; font-weight: initial; text-transform: inherit; border-top-style: solid; border-top-width: 2px; border-top-color: #D3D3D3; border-bottom-style: solid; border-bottom-width: 2px; border-bottom-color: #D3D3D3; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; text-align: left; }
+ #oasbtwqdjw .gt_empty_group_heading { padding: 0.5px; color: #333333; background-color: #FFFFFF; font-size: 100%; font-weight: initial; border-top-style: solid; border-top-width: 2px; border-top-color: #D3D3D3; border-bottom-style: solid; border-bottom-width: 2px; border-bottom-color: #D3D3D3; vertical-align: middle; }
+ #oasbtwqdjw .gt_from_md> :first-child { margin-top: 0; }
+ #oasbtwqdjw .gt_from_md> :last-child { margin-bottom: 0; }
+ #oasbtwqdjw .gt_row { padding-top: 8px; padding-bottom: 8px; padding-left: 5px; padding-right: 5px; margin: 10px; border-top-style: solid; border-top-width: 1px; border-top-color: #D3D3D3; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; overflow-x: hidden; }
+ #oasbtwqdjw .gt_stub { color: #333333; background-color: #FFFFFF; font-size: 100%; font-weight: initial; text-transform: inherit; border-right-style: solid; border-right-width: 2px; border-right-color: #D3D3D3; padding-left: 5px; padding-right: 5px; }
+ #oasbtwqdjw .gt_stub_row_group { color: #333333; background-color: #FFFFFF; font-size: 100%; font-weight: initial; text-transform: inherit; border-right-style: solid; border-right-width: 2px; border-right-color: #D3D3D3; padding-left: 5px; padding-right: 5px; vertical-align: top; }
+ #oasbtwqdjw .gt_row_group_first td { border-top-width: 2px; }
+ #oasbtwqdjw .gt_row_group_first th { border-top-width: 2px; }
+ #oasbtwqdjw .gt_striped { color: #333333; background-color: #F4F4F4; }
+ #oasbtwqdjw .gt_table_body { border-top-style: solid; border-top-width: 2px; border-top-color: #D3D3D3; border-bottom-style: solid; border-bottom-width: 2px; border-bottom-color: #D3D3D3; }
+ #oasbtwqdjw .gt_grand_summary_row { color: #333333; background-color: #FFFFFF; text-transform: inherit; padding-top: 8px; padding-bottom: 8px; padding-left: 5px; padding-right: 5px; }
+ #oasbtwqdjw .gt_first_grand_summary_row_bottom { border-top-style: double; border-top-width: 6px; border-top-color: #D3D3D3; }
+ #oasbtwqdjw .gt_last_grand_summary_row_top { border-bottom-style: double; border-bottom-width: 6px; border-bottom-color: #D3D3D3; }
+ #oasbtwqdjw .gt_sourcenotes { color: #333333; background-color: #FFFFFF; border-bottom-style: none; border-bottom-width: 2px; border-bottom-color: #D3D3D3; border-left-style: none; border-left-width: 2px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 2px; border-right-color: #D3D3D3; }
+ #oasbtwqdjw .gt_sourcenote { font-size: 90%; padding-top: 4px; padding-bottom: 4px; padding-left: 5px; padding-right: 5px; text-align: left; }
+ #oasbtwqdjw .gt_left { text-align: left; }
+ #oasbtwqdjw .gt_center { text-align: center; }
+ #oasbtwqdjw .gt_right { text-align: right; font-variant-numeric: tabular-nums; }
+ #oasbtwqdjw .gt_font_normal { font-weight: normal; }
+ #oasbtwqdjw .gt_font_bold { font-weight: bold; }
+ #oasbtwqdjw .gt_font_italic { font-style: italic; }
+ #oasbtwqdjw .gt_super { font-size: 65%; }
+ #oasbtwqdjw .gt_footnote_marks { font-size: 75%; vertical-align: 0.4em; position: initial; }
+ #oasbtwqdjw .gt_asterisk { font-size: 100%; vertical-align: 0; }
+ 
+</style>
+
+<table class="gt_table caption-top table table-sm table-striped small" data-quarto-bootstrap="false">
+<thead>
+<tr class="gt_col_headings header">
+<th id="item" class="gt_col_heading gt_columns_bottom_border gt_right" data-quarto-table-cell-role="th" scope="col">item</th>
+<th id="means" class="gt_col_heading gt_columns_bottom_border gt_right" data-quarto-table-cell-role="th" scope="col">means</th>
+<th id="stds" class="gt_col_heading gt_columns_bottom_border gt_right" data-quarto-table-cell-role="th" scope="col">stds</th>
+</tr>
+</thead>
+<tbody class="gt_table_body">
+<tr class="odd">
+<td class="gt_row gt_right">1</td>
+<td class="gt_row gt_right">0.3893805309734513</td>
+<td class="gt_row gt_right">0.11504424778761062</td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_right">2</td>
+<td class="gt_row gt_right">0.09734513274336283</td>
+<td class="gt_row gt_right">0.7610619469026548</td>
+</tr>
+<tr class="odd">
+<td class="gt_row gt_right">3</td>
+<td class="gt_row gt_right">0.07964601769911504</td>
+<td class="gt_row gt_right">0.8584070796460177</td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_right">4</td>
+<td class="gt_row gt_right">0.3185840707964602</td>
+<td class="gt_row gt_right">0.336283185840708</td>
+</tr>
+<tr class="odd">
+<td class="gt_row gt_right">5</td>
+<td class="gt_row gt_right">0.4336283185840708</td>
+<td class="gt_row gt_right">0.2920353982300885</td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_right">6</td>
+<td class="gt_row gt_right">0.5663716814159292</td>
+<td class="gt_row gt_right">0.07964601769911504</td>
+</tr>
+<tr class="odd">
+<td class="gt_row gt_right">7</td>
+<td class="gt_row gt_right">0.6106194690265486</td>
+<td class="gt_row gt_right">0.168141592920354</td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_right">8</td>
+<td class="gt_row gt_right">0.504424778761062</td>
+<td class="gt_row gt_right">0.0</td>
+</tr>
+<tr class="odd">
+<td class="gt_row gt_right">9</td>
+<td class="gt_row gt_right">0.6814159292035398</td>
+<td class="gt_row gt_right">0.6283185840707964</td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_right">10</td>
+<td class="gt_row gt_right">0.672566371681416</td>
+<td class="gt_row gt_right">0.2831858407079646</td>
+</tr>
+</tbody>
+</table>
+
+
+</div>
+</div>
+</div>
+<div id="56388cc8" class="cell" data-execution_count="69">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb76"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb76-1"><a href="#cb76-1" aria-hidden="true" tabindex="-1"></a>pn.ggplot.show(</span>
+<span id="cb76-2"><a href="#cb76-2" aria-hidden="true" tabindex="-1"></a>  pn.ggplot(ppp_dcm, pn.aes(<span class="st">'item'</span>, <span class="st">'means'</span>))</span>
+<span id="cb76-3"><a href="#cb76-3" aria-hidden="true" tabindex="-1"></a>  <span class="op">+</span> pn.geom_point(color <span class="op">=</span> jpcolor,</span>
+<span id="cb76-4"><a href="#cb76-4" aria-hidden="true" tabindex="-1"></a>                  size <span class="op">=</span> <span class="dv">2</span>)</span>
+<span id="cb76-5"><a href="#cb76-5" aria-hidden="true" tabindex="-1"></a>  <span class="op">+</span> pn.geom_hline(yintercept <span class="op">=</span> <span class="fl">.5</span>, linetype <span class="op">=</span> <span class="st">'dashed'</span>)</span>
+<span id="cb76-6"><a href="#cb76-6" aria-hidden="true" tabindex="-1"></a>  <span class="op">+</span> pn.geom_hline(yintercept <span class="op">=</span> <span class="fl">.025</span>, linetype <span class="op">=</span> <span class="st">'dotted'</span>)</span>
+<span id="cb76-7"><a href="#cb76-7" aria-hidden="true" tabindex="-1"></a>  <span class="op">+</span> pn.geom_hline(yintercept <span class="op">=</span> <span class="fl">.975</span>, linetype <span class="op">=</span> <span class="st">'dotted'</span>)</span>
+<span id="cb76-8"><a href="#cb76-8" aria-hidden="true" tabindex="-1"></a>  <span class="op">+</span> pn.scale_x_continuous(limits <span class="op">=</span> [<span class="dv">1</span>, ppp_dcm[<span class="st">'item'</span>].<span class="bu">max</span>() <span class="op">+</span> <span class="dv">1</span>],</span>
+<span id="cb76-9"><a href="#cb76-9" aria-hidden="true" tabindex="-1"></a>                          breaks <span class="op">=</span> np.arange(<span class="dv">1</span>, ppp_dcm[<span class="st">'item'</span>].<span class="bu">max</span>() <span class="op">+</span> <span class="dv">1</span>))</span>
+<span id="cb76-10"><a href="#cb76-10" aria-hidden="true" tabindex="-1"></a>  <span class="op">+</span> pn.scale_y_continuous(limits <span class="op">=</span> [<span class="dv">0</span>, <span class="fl">1.01</span>],</span>
+<span id="cb76-11"><a href="#cb76-11" aria-hidden="true" tabindex="-1"></a>                          breaks <span class="op">=</span> np.arange(<span class="dv">0</span>, <span class="fl">1.01</span>, <span class="fl">.1</span>))</span>
+<span id="cb76-12"><a href="#cb76-12" aria-hidden="true" tabindex="-1"></a>  <span class="op">+</span> pn.theme_light()</span>
+<span id="cb76-13"><a href="#cb76-13" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="data89_quiz1_files/figure-html/cell-70-output-1.png" width="691" height="499" class="figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+<div id="2ec2cf0f" class="cell" data-execution_count="70">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb77"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb77-1"><a href="#cb77-1" aria-hidden="true" tabindex="-1"></a>pn.ggplot.show(</span>
+<span id="cb77-2"><a href="#cb77-2" aria-hidden="true" tabindex="-1"></a>  pn.ggplot(ppp_dcm, pn.aes(<span class="st">'item'</span>, <span class="st">'stds'</span>))</span>
+<span id="cb77-3"><a href="#cb77-3" aria-hidden="true" tabindex="-1"></a>  <span class="op">+</span> pn.geom_point(color <span class="op">=</span> jpcolor,</span>
+<span id="cb77-4"><a href="#cb77-4" aria-hidden="true" tabindex="-1"></a>                  size <span class="op">=</span> <span class="dv">2</span>)</span>
+<span id="cb77-5"><a href="#cb77-5" aria-hidden="true" tabindex="-1"></a>  <span class="op">+</span> pn.geom_hline(yintercept <span class="op">=</span> <span class="fl">.5</span>, linetype <span class="op">=</span> <span class="st">'dashed'</span>)</span>
+<span id="cb77-6"><a href="#cb77-6" aria-hidden="true" tabindex="-1"></a>  <span class="op">+</span> pn.geom_hline(yintercept <span class="op">=</span> <span class="fl">.025</span>, linetype <span class="op">=</span> <span class="st">'dotted'</span>)</span>
+<span id="cb77-7"><a href="#cb77-7" aria-hidden="true" tabindex="-1"></a>  <span class="op">+</span> pn.geom_hline(yintercept <span class="op">=</span> <span class="fl">.975</span>, linetype <span class="op">=</span> <span class="st">'dotted'</span>)</span>
+<span id="cb77-8"><a href="#cb77-8" aria-hidden="true" tabindex="-1"></a>  <span class="op">+</span> pn.scale_x_continuous(limits <span class="op">=</span> [<span class="dv">1</span>, ppp_dcm[<span class="st">'item'</span>].<span class="bu">max</span>() <span class="op">+</span> <span class="dv">1</span>],</span>
+<span id="cb77-9"><a href="#cb77-9" aria-hidden="true" tabindex="-1"></a>                          breaks <span class="op">=</span> np.arange(<span class="dv">1</span>, ppp_dcm[<span class="st">'item'</span>].<span class="bu">max</span>() <span class="op">+</span> <span class="dv">1</span>))</span>
+<span id="cb77-10"><a href="#cb77-10" aria-hidden="true" tabindex="-1"></a>  <span class="op">+</span> pn.scale_y_continuous(limits <span class="op">=</span> [<span class="dv">0</span>, <span class="fl">1.01</span>],</span>
+<span id="cb77-11"><a href="#cb77-11" aria-hidden="true" tabindex="-1"></a>                          breaks <span class="op">=</span> np.arange(<span class="dv">0</span>, <span class="fl">1.01</span>, <span class="fl">.1</span>))</span>
+<span id="cb77-12"><a href="#cb77-12" aria-hidden="true" tabindex="-1"></a>  <span class="op">+</span> pn.theme_light()</span>
+<span id="cb77-13"><a href="#cb77-13" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="data89_quiz1_files/figure-html/cell-71-output-1.png" width="691" height="499" class="figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+</section>
+</section>
+
+</main>
+<!-- /main column -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+</div> <!-- /content -->
+
+
+
+
+</body></html>
