@@ -1,5 +1,5 @@
 ---
-title: "Quiz 1 Findings"
+title: "Quiz Findings"
 author: Jonathan A. Pedroza
 format:
   html:
@@ -21,15 +21,22 @@ execute:
 params:
 ---
 
+# NEED TO MERGE CONTACT NAME AND INFO W/ ATTRIBUTE MASTERY/PROFICIENCY DATAFRAMES
+
 ```{python}
 #| tags: [parameters]
 
 jpcolor = 'seagreen'
 quiz_num = 'quiz1'
 irt_num = '1'
-dcm_type = 'lcdm'
+dcm_type = 'bayes_net_dina_linear' # lcdm #bayes_net_lcdm_linear # dina_bn # bayes_net_dina_linear
 mastery_prob = .8
 prof_prob = .5
+att1_name = ''
+att2_name = ''
+contact_info_path = 'fake_names_emails.csv'
+data_path = 'data/quiz/y.csv'
+qmatrix_path = 'data/q_matrix/q.csv'
 ```
 
 ```{python}
@@ -79,18 +86,18 @@ def q_upper(x):
 #| echo: false
 
 # imported data
-contact = pd.read_csv(here('fake_names_emails.csv'))
+contact = pd.read_csv(here(f'{contact_info_path}'))
 contact.head()
 
 # correct/incorrect responses to each quiz item
-y = pd.read_csv(here('data/quiz/y.csv')).drop(columns = {'Unnamed: 0'})
-y['name'] = contact['name']
+yog = pd.read_csv(here(f'{data_path}')).drop(columns = {'Unnamed: 0'})
+yog['name'] = contact['name']
 
 np.random.seed(12345)
-y_sub = y.sample(n = 113)
+y = yog.sample(n = 113)
 
 # q-matrix
-q = pd.read_csv(here('data/q_matrix/q.csv')).drop(columns = {'Unnamed: 0'})
+q = pd.read_csv(here(f'{qmatrix_path}')).drop(columns = {'Unnamed: 0'})
 
 # attribute mastery matrix
 alpha = pd.DataFrame([(x, y) for x in np.arange(2) for y in np.arange(2)])
@@ -99,12 +106,24 @@ alpha = alpha.rename(columns = {0: 'hold1',
 
 # stan dictionary data
 irt_dict = {
-  'J': y_sub.drop(columns = 'name').shape[0],
-  'I': y_sub.drop(columns = 'name').shape[1],
-  'Y': np.array(y_sub.drop(columns = 'name'))
+  'J': y.drop(columns = 'name').shape[0],
+  'I': y.drop(columns = 'name').shape[1],
+  'Y': np.array(y.drop(columns = 'name'))
 }
 
-y_describe = y_sub.filter(regex = 'item').agg(['mean', 'std']).reset_index()
+name_mapping = {'y_rep': 'Y'}
+
+stan_dict = {
+  'J': y.drop(columns = 'name').shape[0],
+  'I': y.drop(columns = 'name').shape[1],
+  'C': alpha.shape[0],
+  'K': q.shape[1],
+  'Y': np.array(y.drop(columns = 'name')),
+  'Q': np.array(q),
+  'alpha': np.array(alpha)
+}
+
+y_describe = y.filter(regex = 'item').agg(['mean', 'std']).reset_index()
 y_describe.drop(columns = 'index').transpose()
 actual_avg = y_describe.loc[y_describe['index'] == 'mean', 'item1':'item10'].mean(axis = 1)[0]
 ```
@@ -112,12 +131,9 @@ actual_avg = y_describe.loc[y_describe['index'] == 'mean', 'item1':'item10'].mea
 # IRT Model
 
 ```{python}
-# irt_file = os.path.join(here('stan_models/irt_1pl.stan'))
-irt_file = os.path.join(here('stan_models/irt_2pl.stan'))
-# irt_file = os.path.join(here('stan_models/irt_3pl.stan'))
+irt_file = os.path.join(here(f'stan_models/irt_{irt_num}pl.stan'))
 
-irt_model = CmdStanModel(stan_file = irt_file,
-                         cpp_options = {'STAN_THREADS': 'TRUE'})
+irt_model = CmdStanModel(stan_file = irt_file, cpp_options = {'STAN_THREADS': 'TRUE'})
 ```
 
 ```{python}
@@ -136,8 +152,36 @@ irt_diagnose = pd.DataFrame(irt_fit.summary())
 ```
 
 ```{python}
-#| eval: false
+irt_prior_file = os.path.join(here(f'stan_models/irt_{irt_num}pl_prior_only.stan'))
+
+irt_prior_model = CmdStanModel(stan_file = irt_prior_file, cpp_options = {'STAN_THREADS': 'TRUE'})
+```
+
+```{python}
+#| include: false
+
+np.random.seed(12345)
+irt_prior_fit = irt_prior_model.sample(data = irt_dict,
+                        show_console = True,
+                        chains = 4,
+                        # adapt_delta = .95,
+                        iter_warmup = 2000,
+                        iter_sampling = 2000)
+
+irt_prior_diagnose = pd.DataFrame(irt_prior_fit.summary())
+```
+
+```{python}
+#| eval: true
 #| echo: true
+
+irt_prior_diagnose.to_csv(here(f'diagnostics/{irt_num}pl_irt_{quiz_num}_prior_only.csv'))
+
+(
+  joblib.dump([irt_prior_model, irt_prior_fit],
+              here(f'joblib_models/{irt_num}pl_irt_{quiz_num}_modfit_prior_only.joblib'),
+              compress = 3)
+)
 
 irt_diagnose.to_csv(here(f'diagnostics/{irt_num}pl_irt_{quiz_num}.csv'))
 
@@ -149,6 +193,10 @@ irt_diagnose.to_csv(here(f'diagnostics/{irt_num}pl_irt_{quiz_num}.csv'))
 ```
 
 ```{python}
+irt_prior_diagnose['R_hat'].sort_values(ascending = False).head()
+```
+
+```{python}
 irt_diagnose['R_hat'].sort_values(ascending = False).head()
 ```
 
@@ -156,11 +204,57 @@ irt_diagnose['R_hat'].sort_values(ascending = False).head()
 iirt = az.from_cmdstanpy(
     posterior = irt_fit,
     posterior_predictive = ['y_rep'],
-    observed_data = {'Y': y_sub.drop(columns = 'name')},
+    observed_data = {'Y': y.drop(columns = 'name')},
     log_likelihood = {'Y': 'log_lik'})
 
-name_mapping = {'y_rep': 'Y'}
-iirt = iirt.rename(name_dict = name_mapping, groups = ["posterior_predictive"])
+iirt = iirt.rename(name_dict = name_mapping,
+groups = ["posterior_predictive"])
+
+iirt_prior = az.from_cmdstanpy(prior = irt_prior_fit,
+prior_predictive = ['y_rep'])
+
+iirt_prior = iirt_prior.rename(
+    name_dict = name_mapping,
+    groups = ['prior_predictive']
+)
+
+iirt.extend(iirt_prior)
+```
+
+## Prior v Posterior
+
+```{python}
+# student ability
+az.plot_dist_comparison(iirt,
+var_names = ['theta'])
+plt.show()
+```
+
+```{python}
+# item difficulty parameter
+az.plot_dist_comparison(iirt,
+var_names = ['b'])
+plt.show()
+```
+
+```{python}
+#| eval: false
+#| echo: true
+
+# discrimination parameter
+az.plot_dist_comparison(iirt,
+var_names = ['a'])
+plt.show()
+```
+
+```{python}
+#| eval: false
+#| echo: true
+
+# guessing parameter
+az.plot_dist_comparison(iirt,
+var_names = ['c'])
+plt.show()
 ```
 
 ## Model Fit
@@ -203,11 +297,14 @@ plt.show()
 ## Guessing Visuals
 
 ```{python}
+#| eval: false
+#| echo: true
+
 # only for 3pl
 
-# az.plot_trace(iirt,
-#                 var_names = 'c')
-# plt.show()
+az.plot_trace(iirt,
+                var_names = 'c')
+plt.show()
 # plt.clf()
 ```
 
@@ -558,22 +655,13 @@ pn.ggplot.show(
 )
 ```
 
+
 # Diagnostic Model
 
 ```{python}
 #| include: false
 
-stan_dict = {
-  'J': y_sub.drop(columns = 'name').shape[0],
-  'I': y_sub.drop(columns = 'name').shape[1],
-  'C': alpha.shape[0],
-  'K': q.shape[1],
-  'Y': np.array(y_sub.drop(columns = 'name')),
-  'Q': np.array(q),
-  'alpha': np.array(alpha)
-}
-
-dcm_file = os.path.join(here('stan_models/lcdm.stan'))
+dcm_file = os.path.join(here(f'stan_models/{dcm_type}.stan'))
 dcm_model = CmdStanModel(stan_file = dcm_file,
                          cpp_options={'STAN_THREADS': 'TRUE'})
 
@@ -589,8 +677,34 @@ dcm_diagnose = pd.DataFrame(dcm_fit.summary())
 ```
 
 ```{python}
+#| include: false
+
+dcm_prior_file = os.path.join(here(f'stan_models/{dcm_type}_prior_only.stan'))
+dcm_prior_model = CmdStanModel(stan_file = dcm_prior_file,
+                         cpp_options={'STAN_THREADS': 'TRUE'})
+
+np.random.seed(12345)
+dcm_prior_fit = dcm_prior_model.sample(data = stan_dict,
+                        show_console = True,
+                        chains = 4,
+                        # adapt_delta = .95,
+                        iter_warmup = 2000,
+                        iter_sampling = 2000)
+
+dcm_prior_diagnose = pd.DataFrame(dcm_prior_fit.summary())
+```
+
+```{python}
 #| eval: true
 #| echo: true
+
+dcm_prior_diagnose.to_csv(here(f'diagnostics/{dcm_type}_{quiz_num}_prior_only.csv'))
+
+(
+  joblib.dump([dcm_prior_model, dcm_prior_fit],
+              here(f'joblib_models/{dcm_type}_{quiz_num}_modfit_prior_only.joblib'),
+              compress = 3)
+)
 
 dcm_diagnose.to_csv(here(f'diagnostics/{dcm_type}_{quiz_num}.csv'))
 
@@ -599,6 +713,10 @@ dcm_diagnose.to_csv(here(f'diagnostics/{dcm_type}_{quiz_num}.csv'))
               here(f'joblib_models/{dcm_type}_{quiz_num}_modfit.joblib'),
               compress = 3)
 )
+```
+
+```{python}
+dcm_prior_diagnose['R_hat'].sort_values(ascending = False).head()
 ```
 
 ```{python}
@@ -614,6 +732,116 @@ idcm = az.from_cmdstanpy(
 
 idcm = idcm.rename(name_dict = name_mapping, groups = ["posterior_predictive"])
 
+idcm_prior = az.from_cmdstanpy(prior = dcm_prior_fit,
+prior_predictive = ['y_rep'])
+
+idcm_prior = idcm_prior.rename(
+    name_dict = name_mapping,
+    groups = ['prior_predictive']
+)
+
+idcm.extend(idcm_prior)
+```
+
+## Prior v Posterior
+
+```{python}
+#| eval: false
+#| echo: true
+
+az.plot_dist_comparison(idcm,
+var_names = ['nu'])
+plt.show()
+```
+
+```{python}
+#| eval: false
+#| echo: true
+
+az.plot_dist_comparison(idcm,
+var_names = ['theta1'])
+plt.show()
+```
+
+```{python}
+#| eval: false
+#| echo: true
+
+az.plot_dist_comparison(idcm,
+var_names = ['theta2'])
+plt.show()
+```
+
+```{python}
+#| eval: false
+#| echo: true
+
+az.plot_dist_comparison(idcm,
+var_names = ['gamma0'])
+plt.show()
+```
+
+```{python}
+#| eval: false
+#| echo: true
+
+az.plot_dist_comparison(idcm,
+var_names = ['gamma1'])
+plt.show()
+```
+
+```{python}
+#| eval: false
+#| echo: true
+
+az.plot_dist_comparison(idcm,
+var_names = ['beta0'])
+plt.show()
+```
+
+```{python}
+#| eval: false
+#| echo: true
+
+az.plot_dist_comparison(idcm,
+var_names = ['beta1'])
+plt.show()
+```
+
+```{python}
+#| eval: false
+#| echo: true
+
+az.plot_dist_comparison(idcm,
+var_names = ['beta2'])
+plt.show()
+```
+
+```{python}
+#| eval: false
+#| echo: true
+
+az.plot_dist_comparison(idcm,
+var_names = ['beta12'])
+plt.show()
+```
+
+```{python}
+#| eval: false
+#| echo: true
+
+az.plot_dist_comparison(idcm,
+var_names = ['fp'])
+plt.show()
+```
+
+```{python}
+#| eval: false
+#| echo: true
+
+az.plot_dist_comparison(idcm,
+var_names = ['tp'])
+plt.show()
 ```
 
 ### Model Fit
@@ -629,6 +857,9 @@ az.waic(idcm)
 ## Class Membership Visuals
 
 ```{python}
+#| eval: false
+#| echo: true
+
 az.plot_trace(idcm,
                 var_names = 'nu')
 plt.show()
@@ -640,6 +871,40 @@ plt.show()
 ```{python}
 az.plot_trace(idcm,
                 var_names = 'pi')
+plt.show()
+# plt.clf()
+```
+
+## Theta Coefficient Visuals
+
+```{python}
+#| eval: false
+#| echo: true
+
+az.plot_trace(idcm,
+                var_names = 'theta1')
+plt.show()
+# plt.clf()
+```
+
+## Gamma Coefficient Visuals
+
+```{python}
+#| eval: false
+#| echo: true
+
+az.plot_trace(idcm,
+                var_names = 'gamma0')
+plt.show()
+# plt.clf()
+```
+
+```{python}
+#| eval: false
+#| echo: true
+
+az.plot_trace(idcm,
+                var_names = 'gamma1')
 plt.show()
 # plt.clf()
 ```
@@ -677,6 +942,9 @@ plt.show()
 ### Attribute Mastery Per Class Visual
 
 ```{python}
+#| eval: false
+#| echo: true
+
 az.plot_forest(idcm.posterior["prob_resp_class"].isel(prob_resp_class_dim_0 = slice(0, 4),
                                                     prob_resp_class_dim_1 = slice(None)
                                                     ),
@@ -689,7 +957,7 @@ plt.show()
 ### Attribute Mastery Per Student Visual
 
 ```{python}
-az.plot_forest(idcm.posterior["prob_resp_attr"].isel(prob_resp_attr_dim_0 = slice(0, 4),
+az.plot_forest(idcm.posterior["prob_resp_attr"].isel(prob_resp_attr_dim_0 = slice(0, 10),
                                                     prob_resp_attr_dim_1 = slice(None)
                                                     ),
                var_names = 'prob_resp_attr',
@@ -790,10 +1058,68 @@ pn.ggplot.show(
 )
 ```
 
+### Theta Coefficient
+
+```{python}
+theta_df = dcmdf.filter(regex = 'theta')
+theta_df = pd.DataFrame({
+  'mean': theta_df.mean(),
+  'std': theta_df.std(),
+  'q_lower': q_lower(theta_df),
+  'q_upper': q_upper(theta_df)
+}).reset_index()
+
+theta_df.head()
+
+pn.ggplot.show(
+  pn.ggplot(theta_df,
+            pn.aes('index',
+                   'mean'))
+  + pn.geom_point(alpha = .5,
+                  color = jpcolor)
+  + pn.geom_errorbar(pn.aes(ymin = 'q_lower',
+                            ymax = 'q_upper'),
+                            color = jpcolor,
+                            alpha = .5)
+  + pn.scale_y_continuous(limits = [0, 1],
+  breaks = [0, .1, .2, .3, .4, .5, .6, .7, .8, .9, 1])
+  + pn.labs(title = 'Prior for First Attribute',
+            x = 'Attribute Prior',
+            y = 'Coefficient')
+)
+```
+
+### Gamma Coefficients
+
+```{python}
+gamma_df = dcmdf.filter(regex = 'gamma')
+gamma_df = pd.DataFrame({
+  'mean': gamma_df.mean(),
+  'std': gamma_df.std(),
+  'q_lower': q_lower(gamma_df),
+  'q_upper': q_upper(gamma_df)
+}).reset_index()
+
+gamma_df.head()
+
+pn.ggplot.show(
+  pn.ggplot(gamma_df,
+            pn.aes('index',
+                   'mean'))
+  + pn.geom_point(alpha = .5,
+                  color = jpcolor)
+  + pn.geom_errorbar(pn.aes(ymin = 'q_lower',
+                            ymax = 'q_upper'),
+                     alpha = .1)
+  + pn.labs(title = 'Coefficient Value Per Variable',
+            x = 'Attribute Baseline & Improvement',
+            y = 'Coefficient')
+)
+```
+
 ### Beta Coefficients
 
 ```{python}
-
 beta_df = dcmdf.filter(regex = 'beta')
 beta_df = pd.DataFrame({
   'mean': beta_df.mean(),
@@ -909,9 +1235,8 @@ attr_mastery = attr_mastery.rename(columns = {1: 'attr1',
 #| eval: true
 #| echo: true
 
-# INCLUDE THE NAMES FOR THE ATTRIBUTES HERE FOR MASTERY
-attr_mastery['attr1'] = np.where(attr_mastery['attr1'] == 1, '', '')
-attr_mastery['attr2'] = np.where(attr_mastery['attr2'] == 1, '', '')
+attr_mastery['attr1'] = np.where(attr_mastery['attr1'] == 1, f'{att1_name} Mastery', f'No Mastery of {att1_name}')
+attr_mastery['attr2'] = np.where(attr_mastery['attr2'] == 1, f'{att2_name} Mastery', f'No Mastery of {att2_name}')
 attr_mastery.to_csv(f'student_data/attribute_mastery_{quiz_num}.csv')
 ```
 
@@ -928,9 +1253,8 @@ attr_prof = attr_prof.rename(columns = {1: 'attr1',
 #| eval: true
 #| echo: true
 
-# INCLUDE THE NAMES FOR THE ATTRIBUTES HERE FOR PROFICIENCY
-attr_prof['attr1'] = np.where(attr_prof['attr1'] == 1, '', '')
-attr_prof['attr2'] = np.where(attr_prof['attr2'] == 1, '', '')
+attr_prof['attr1'] = np.where(attr_prof['attr1'] == 1, f'{att1_name} Proficiency', f'Not Proficient in {att1_name}')
+attr_prof['attr2'] = np.where(attr_prof['attr2'] == 1, f'{att2_name} Proficiency', f'Not Proficient in {att2_name}')
 attr_prof.to_csv(f'student_data/attribute_proficiency_{quiz_num}.csv')
 ```
 
@@ -1041,10 +1365,9 @@ ydcm_wide['stu'] = ydcm_wide['stu'] + 1
 # ydcm_wide.head()
 ```
 
-
 ```{python}
 ydcm_wide['total_correct'] = ydcm_wide.drop(columns = 'stu').sum(axis = 1)
-ydcm_wide['actual_correct'] = y_sub.drop(columns = 'name').sum(axis = 1)
+ydcm_wide['actual_correct'] = y.drop(columns = 'name').sum(axis = 1)
 
 ydcm_compare = ydcm_wide[['stu', 'total_correct', 'actual_correct']].melt(id_vars = 'stu')
 ydcm_compare_count = ydcm_compare.groupby('variable')['value'].value_counts().reset_index()
@@ -1125,7 +1448,6 @@ pn.ggplot.show(
 ```
 
 ```{python}
-
 pn.ggplot.show(
   pn.ggplot(ppp_dcm, pn.aes('item', 'stds'))
   + pn.geom_point(color = jpcolor,

@@ -1,4 +1,4 @@
-data {
+data{
   int<lower=1> J;
   int<lower=1> I;
   int<lower=1> C;
@@ -7,18 +7,26 @@ data {
   matrix<lower=0,upper=1> [I,K] Q;
   matrix<lower=0,upper=1> [C,K] alpha;
 }
-parameters {
-  ordered[C] raw_nu; 
+parameters{
+  real gamma1;
+
+  real gamma2; // baseline for attribute 2
+  real<lower=0> gamma21; // linear effect of attribute 1 --> attribute 2
+
   vector[I] beta0;
   vector<lower=0>[I] beta1;
   vector<lower=0>[I] beta2;
   vector[I] beta12;
 }
 transformed parameters{
-  simplex[C] nu; 
+  simplex[C] nu;
   matrix[I,C] pi;
 
-  nu = softmax(raw_nu);
+  nu[1] = (1 - inv_logit(gamma1)) * (1 - inv_logit(gamma2));
+  nu[2] = inv_logit(gamma1) * (1 - inv_logit(gamma2 + gamma21));
+  nu[3] = (1 - inv_logit(gamma1)) * inv_logit(gamma2);
+  nu[4] = inv_logit(gamma1) * inv_logit(gamma2 + gamma21);
+
   vector[C] log_nu = log(nu);
 
   for (c in 1:C){
@@ -30,13 +38,16 @@ transformed parameters{
     }
   }
 }
-model {
+model{
   array[C] real ps;
   array[I] real eta;
 
   // Priors
-  raw_nu ~ normal(0, 1);
-  // nu  ~ dirichlet(rep_vector(1.0, C));
+  gamma1 ~ normal(0, 1);
+  gamma2 ~ normal(0, 1);
+  gamma21 ~ normal(0, 1);
+
+  //priors for items to attributes
   for (i in 1:I){
     beta0[i] ~ normal(0, 1);
     beta1[i] ~ normal(0, 1);
@@ -47,17 +58,16 @@ model {
   for (j in 1:J) {
     for (c in 1:C){
       for (i in 1:I){
-        // eta[i] = bernoulli_lpmf(Y[j,i] | pi[i,c]);
         real p = fmin(fmax(pi[i,c], 1e-9), 1 - 1e-9);
         eta[i] = Y[j,i] * log(p) + (1 - Y[j,i]) * log1m(p);
       }
       ps[c] = log_nu[c] + sum(eta); 
     }
     target += log_sum_exp(ps);
-  }
+    }
 }
-generated quantities {
-  matrix[J,C] prob_resp_class;      // posterior probabilities of respondent j being in latent class c 
+generated quantities{
+   matrix[J,C] prob_resp_class;      // posterior probabilities of respondent j being in latent class c 
   matrix[J,K] prob_resp_attr;       // posterior probabilities of respondent j being a master of attribute k 
   array[I] real eta;
   row_vector[C] prob_joint;
@@ -66,12 +76,14 @@ generated quantities {
 
   for (j in 1:J){
     for (c in 1:C){
+      for (k in 1:K){
       for (i in 1:I){
         // eta[i] = bernoulli_lpmf(Y[j,i] | pi[i,c]);
         real p = fmin(fmax(pi[i,c], 1e-9), 1 - 1e-9);
         eta[i] = Y[j,i] * log(p) + (1 - Y[j,i]) * log1m(p);
       }
       prob_joint[c] = exp(log_nu[c]) * exp(sum(eta));
+      }
     }
     prob_resp_class[j] = prob_joint/sum(prob_joint);
   }

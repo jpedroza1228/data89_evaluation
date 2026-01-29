@@ -143,7 +143,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </header>
 
 
-<div id="7dc09d6d" class="cell" data-tags="[&quot;parameters&quot;]" data-execution_count="1">
+<div id="0d4d4663" class="cell" data-tags="[&quot;parameters&quot;]" data-execution_count="1">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>jpcolor <span class="op">=</span> <span class="st">'seagreen'</span></span>
@@ -151,10 +151,15 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>irt_num <span class="op">=</span> <span class="st">'1'</span></span>
 <span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>dcm_type <span class="op">=</span> <span class="st">'lcdm'</span></span>
 <span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>mastery_prob <span class="op">=</span> <span class="fl">.8</span></span>
-<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>prof_prob <span class="op">=</span> <span class="fl">.5</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>prof_prob <span class="op">=</span> <span class="fl">.5</span></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>att1_name <span class="op">=</span> <span class="st">''</span></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>att2_name <span class="op">=</span> <span class="st">''</span></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>contact_info_path <span class="op">=</span> <span class="st">'fake_names_emails.csv'</span></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>data_path <span class="op">=</span> <span class="st">'data/quiz/y.csv'</span></span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>qmatrix_path <span class="op">=</span> <span class="st">'data/q_matrix/q.csv'</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 </div>
-<div id="30bce216" class="cell" data-execution_count="2">
+<div id="65d6d870" class="cell" data-execution_count="2">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
@@ -201,18 +206,18 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 <section id="irt-model" class="level1">
 <h1>IRT Model</h1>
-<div id="df999ed6" class="cell" data-execution_count="4">
+<div id="55219509" class="cell" data-execution_count="4">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># irt_file = os.path.join(here('stan_models/irt_1pl.stan'))</span></span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>irt_file <span class="op">=</span> os.path.join(here(<span class="st">'stan_models/irt_2pl.stan'</span>))</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>irt_file <span class="op">=</span> os.path.join(here(<span class="ss">f'stan_models/irt_</span><span class="sc">{</span>irt_num<span class="sc">}</span><span class="ss">pl.stan'</span>))</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="co"># irt_file = os.path.join(here('stan_models/irt_2pl.stan'))</span></span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="co"># irt_file = os.path.join(here('stan_models/irt_3pl.stan'))</span></span>
 <span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>irt_model <span class="op">=</span> CmdStanModel(stan_file <span class="op">=</span> irt_file,</span>
 <span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>                         cpp_options <span class="op">=</span> {<span class="st">'STAN_THREADS'</span>: <span class="st">'TRUE'</span>})</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 </div>
-<div id="b25b71a9" class="cell" data-execution_count="6">
+<div id="838f1a6b" class="cell" data-execution_count="6">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>irt_diagnose.to_csv(here(<span class="ss">f'diagnostics/</span><span class="sc">{</span>irt_num<span class="sc">}</span><span class="ss">pl_irt_</span><span class="sc">{</span>quiz_num<span class="sc">}</span><span class="ss">.csv'</span>))</span>
@@ -224,21 +229,21 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 </div>
-<div id="51b2507b" class="cell" data-execution_count="7">
+<div id="6d3512fd" class="cell" data-execution_count="7">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>irt_diagnose[<span class="st">'R_hat'</span>].sort_values(ascending <span class="op">=</span> <span class="va">False</span>).head()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
-<div class="cell-output cell-output-display" data-execution_count="72">
-<pre><code>theta[64]     1.00258
-theta[79]     1.00239
-theta[102]    1.00225
-theta[40]     1.00205
-theta[53]     1.00196
+<div class="cell-output cell-output-display" data-execution_count="6">
+<pre><code>eta[82,1]             1.00566
+prob_correct[82,1]    1.00566
+eta[21,1]             1.00554
+prob_correct[21,1]    1.00554
+prob_correct[57,1]    1.00528
 Name: R_hat, dtype: float64</code></pre>
 </div>
 </div>
-<div id="f3821712" class="cell" data-execution_count="8">
+<div id="02296d87" class="cell" data-execution_count="8">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>iirt <span class="op">=</span> az.from_cmdstanpy(</span>
@@ -253,17 +258,17 @@ Name: R_hat, dtype: float64</code></pre>
 </div>
 <section id="model-fit" class="level2">
 <h2 class="anchored" data-anchor-id="model-fit">Model Fit</h2>
-<div id="87679eaa" class="cell" data-execution_count="9">
+<div id="2dfeb4bc" class="cell" data-execution_count="9">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>az.loo(iirt)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
-<div class="cell-output cell-output-display" data-execution_count="74">
+<div class="cell-output cell-output-display" data-execution_count="8">
 <pre><code>Computed from 8000 posterior samples and 113 observations log-likelihood matrix.
 
          Estimate       SE
-elpd_loo -9534.78    64.47
-p_loo     8736.13        -
+elpd_loo -2612.26    32.21
+p_loo     1819.65        -
 
 There has been a warning during the calculation. Please check the results.
 ------
@@ -275,17 +280,17 @@ Pareto k diagnostic values:
    (1, Inf)   (very bad)  113  100.0%</code></pre>
 </div>
 </div>
-<div id="43ec98be" class="cell" data-execution_count="10">
+<div id="a5b39477" class="cell" data-execution_count="10">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>az.waic(iirt)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
-<div class="cell-output cell-output-display" data-execution_count="75">
+<div class="cell-output cell-output-display" data-execution_count="9">
 <pre><code>Computed from 8000 posterior samples and 113 observations log-likelihood matrix.
 
           Estimate       SE
-elpd_waic -20558.34   185.41
-p_waic    19759.69        -
+elpd_waic -2595.67    32.62
+p_waic     1803.06        -
 
 There has been a warning during the calculation. Please check the results.</code></pre>
 </div>
@@ -293,7 +298,7 @@ There has been a warning during the calculation. Please check the results.</code
 </section>
 <section id="difficulty-visuals" class="level2">
 <h2 class="anchored" data-anchor-id="difficulty-visuals">Difficulty Visuals</h2>
-<div id="d939c0b9" class="cell" data-execution_count="11">
+<div id="d264c0ce" class="cell" data-execution_count="11">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>az.plot_trace(iirt,</span>
@@ -314,7 +319,7 @@ There has been a warning during the calculation. Please check the results.</code
 </section>
 <section id="discrimination-visuals" class="level2">
 <h2 class="anchored" data-anchor-id="discrimination-visuals">Discrimination Visuals</h2>
-<div id="521a34b3" class="cell" data-execution_count="12">
+<div id="2bff97d7" class="cell" data-execution_count="12">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="co"># only for 2pl | 3pl</span></span>
@@ -330,7 +335,7 @@ There has been a warning during the calculation. Please check the results.</code
 </section>
 <section id="guessing-visuals" class="level2">
 <h2 class="anchored" data-anchor-id="guessing-visuals">Guessing Visuals</h2>
-<div id="7142c5f6" class="cell" data-execution_count="13">
+<div id="2b7d2622" class="cell" data-execution_count="13">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="co"># only for 3pl</span></span>
@@ -344,7 +349,7 @@ There has been a warning during the calculation. Please check the results.</code
 </section>
 <section id="eta-visuals" class="level2">
 <h2 class="anchored" data-anchor-id="eta-visuals">Eta Visuals</h2>
-<div id="351764d3" class="cell" data-execution_count="14">
+<div id="7af2421a" class="cell" data-execution_count="14">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>az.plot_trace(iirt.posterior[<span class="st">"eta"</span>].isel(eta_dim_0 <span class="op">=</span> <span class="bu">slice</span>(<span class="dv">0</span>, <span class="dv">4</span>),</span>
@@ -364,7 +369,7 @@ There has been a warning during the calculation. Please check the results.</code
 </section>
 <section id="student-ability-theta-visuals" class="level2">
 <h2 class="anchored" data-anchor-id="student-ability-theta-visuals">Student Ability (Theta) Visuals</h2>
-<div id="eba95996" class="cell" data-execution_count="15">
+<div id="b303b66a" class="cell" data-execution_count="15">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>az.plot_trace(iirt,</span>
@@ -385,7 +390,7 @@ There has been a warning during the calculation. Please check the results.</code
 </section>
 <section id="ppp-value-visuals" class="level2">
 <h2 class="anchored" data-anchor-id="ppp-value-visuals">PPP Value Visuals</h2>
-<div id="02b88b84" class="cell" data-execution_count="16">
+<div id="2d4964bf" class="cell" data-execution_count="16">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>az.plot_ppc(iirt,</span>
@@ -402,7 +407,7 @@ There has been a warning during the calculation. Please check the results.</code
 </div>
 </div>
 </div>
-<div id="51ad459f" class="cell" data-execution_count="17">
+<div id="09e31e1a" class="cell" data-execution_count="17">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb18"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>az.plot_ppc(iirt,</span>
@@ -420,7 +425,7 @@ There has been a warning during the calculation. Please check the results.</code
 </div>
 </div>
 </div>
-<div id="f399652b" class="cell" data-execution_count="18">
+<div id="47b91ce6" class="cell" data-execution_count="18">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb19"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>az.plot_bpv(iirt,</span>
@@ -437,7 +442,7 @@ There has been a warning during the calculation. Please check the results.</code
 </div>
 </div>
 </div>
-<div id="0c6b4ec3" class="cell" data-execution_count="19">
+<div id="178cc40a" class="cell" data-execution_count="19">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb20"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>az.plot_bpv(iirt,</span>
@@ -457,7 +462,7 @@ There has been a warning during the calculation. Please check the results.</code
 </section>
 <section id="number-of-items-correct-visual" class="level2">
 <h2 class="anchored" data-anchor-id="number-of-items-correct-visual">Number of Items Correct Visual</h2>
-<div id="83a262b8" class="cell" data-execution_count="20">
+<div id="1713872b" class="cell" data-execution_count="20">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb21"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>az.plot_forest(iirt.posterior[<span class="st">"prob_correct"</span>].isel(prob_correct_dim_0 <span class="op">=</span> <span class="bu">slice</span>(<span class="dv">0</span>, <span class="dv">4</span>),</span>
@@ -479,7 +484,7 @@ There has been a warning during the calculation. Please check the results.</code
 </section>
 <section id="irt-dataframe" class="level2">
 <h2 class="anchored" data-anchor-id="irt-dataframe">IRT DataFrame</h2>
-<div id="8fd8c89b" class="cell" data-execution_count="21">
+<div id="d649a034" class="cell" data-execution_count="21">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb22"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>irtdf <span class="op">=</span> irt_fit.draws_pd()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
@@ -488,7 +493,7 @@ There has been a warning during the calculation. Please check the results.</code
 </section>
 <section id="student-ability-uncertainty" class="level2">
 <h2 class="anchored" data-anchor-id="student-ability-uncertainty">Student Ability &amp; Uncertainty</h2>
-<div id="af63d951" class="cell" data-execution_count="22">
+<div id="58e80655" class="cell" data-execution_count="22">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb23"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>ability <span class="op">=</span> irtdf.<span class="bu">filter</span>(regex <span class="op">=</span> <span class="st">'theta'</span>)</span>
@@ -536,7 +541,7 @@ There has been a warning during the calculation. Please check the results.</code
 <h2 class="anchored" data-anchor-id="difficulty-uncertainty">Difficulty &amp; Uncertainty</h2>
 <p>b = difficulty</p>
 <p>0 = average difficulty, 2+ = very hard, -2 = very easy</p>
-<div id="35e51875" class="cell" data-execution_count="23">
+<div id="5db993a5" class="cell" data-execution_count="23">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb24"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a>diff <span class="op">=</span> irtdf.<span class="bu">filter</span>(regex <span class="op">=</span> <span class="st">'^b.*]$'</span>)</span>
@@ -586,7 +591,7 @@ There has been a warning during the calculation. Please check the results.</code
 <p>a = discrimination (differentiate between individuals w/ different ability levels (theta))</p>
 <p>high value = strong discrimination, low value = weak discrimination</p>
 <p>negative = low theta individuals more likely to get responses correct</p>
-<div id="c1466dd1" class="cell" data-execution_count="24">
+<div id="d2d8c50b" class="cell" data-execution_count="24">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb25"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a>dis <span class="op">=</span> irtdf.<span class="bu">filter</span>(regex <span class="op">=</span> <span class="st">'^a.*]$'</span>)</span>
@@ -627,7 +632,7 @@ There has been a warning during the calculation. Please check the results.</code
 <h2 class="anchored" data-anchor-id="guessing">Guessing</h2>
 <p>3pl models only</p>
 <p>higher value = easier to guess</p>
-<div id="7a968ed7" class="cell" data-execution_count="25">
+<div id="cf401f3c" class="cell" data-execution_count="25">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb26"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a>guess <span class="op">=</span> irtdf.<span class="bu">filter</span>(regex <span class="op">=</span> <span class="st">'^c.*]$'</span>)</span>
@@ -666,7 +671,7 @@ There has been a warning during the calculation. Please check the results.</code
 </section>
 <section id="replicated-data" class="level2">
 <h2 class="anchored" data-anchor-id="replicated-data">Replicated Data</h2>
-<div id="01549d90" class="cell" data-execution_count="26">
+<div id="34e4beb3" class="cell" data-execution_count="26">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb27"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a>yirt <span class="op">=</span> irtdf.<span class="bu">filter</span>(regex <span class="op">=</span> <span class="st">'^y_rep'</span>)</span>
@@ -716,7 +721,7 @@ There has been a warning during the calculation. Please check the results.</code
 </div>
 </div>
 </div>
-<div id="39160812" class="cell" data-execution_count="27">
+<div id="7ec73d21" class="cell" data-execution_count="27">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb28"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a>yirt_wide <span class="op">=</span> (</span>
@@ -735,7 +740,7 @@ There has been a warning during the calculation. Please check the results.</code
 <span id="cb28-14"><a href="#cb28-14" aria-hidden="true" tabindex="-1"></a><span class="co"># yirt_wide.head()</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 </div>
-<div id="6b2344f3" class="cell" data-execution_count="28">
+<div id="18438a15" class="cell" data-execution_count="28">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb29"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a>irt_means <span class="op">=</span> [ppp_func(df <span class="op">=</span> yirt_prob, item_num <span class="op">=</span> i, stat <span class="op">=</span> <span class="st">'mean'</span>) <span class="cf">for</span> i <span class="kw">in</span> np.arange(<span class="dv">1</span>, (y_describe.shape[<span class="dv">1</span>]))]</span>
@@ -752,7 +757,7 @@ There has been a warning during the calculation. Please check the results.</code
 <span id="cb29-12"><a href="#cb29-12" aria-hidden="true" tabindex="-1"></a><span class="co"># y_describe</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 </div>
-<div id="cefba7c2" class="cell" data-execution_count="29">
+<div id="192ec890" class="cell" data-execution_count="29">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb30"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a>pn.ggplot.show(</span>
@@ -777,7 +782,7 @@ There has been a warning during the calculation. Please check the results.</code
 </div>
 </div>
 </div>
-<div id="ae2d9efb" class="cell" data-execution_count="30">
+<div id="9d2de056" class="cell" data-execution_count="30">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb31"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a>pn.ggplot.show(</span>
@@ -806,7 +811,7 @@ There has been a warning during the calculation. Please check the results.</code
 </section>
 <section id="diagnostic-model" class="level1">
 <h1>Diagnostic Model</h1>
-<div id="d240e0c1" class="cell" data-execution_count="32">
+<div id="abe9eea8" class="cell" data-execution_count="32">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb32"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a>dcm_diagnose.to_csv(here(<span class="ss">f'diagnostics/</span><span class="sc">{</span>dcm_type<span class="sc">}</span><span class="ss">_</span><span class="sc">{</span>quiz_num<span class="sc">}</span><span class="ss">.csv'</span>))</span>
@@ -817,25 +822,25 @@ There has been a warning during the calculation. Please check the results.</code
 <span id="cb32-6"><a href="#cb32-6" aria-hidden="true" tabindex="-1"></a>              compress <span class="op">=</span> <span class="dv">3</span>)</span>
 <span id="cb32-7"><a href="#cb32-7" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
-<div class="cell-output cell-output-display" data-execution_count="94">
+<div class="cell-output cell-output-display" data-execution_count="28">
 <pre><code>['/Users/jp/Documents/github_projects/CDSS/data89_evaluation/joblib_models/lcdm_quiz1_modfit.joblib']</code></pre>
 </div>
 </div>
-<div id="7fa42b3f" class="cell" data-execution_count="33">
+<div id="b66ae6da" class="cell" data-execution_count="33">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb34"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a>dcm_diagnose[<span class="st">'R_hat'</span>].sort_values(ascending <span class="op">=</span> <span class="va">False</span>).head()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
-<div class="cell-output cell-output-display" data-execution_count="95">
-<pre><code>prob_resp_attr[65,2]    1.00675
-prob_resp_attr[2,2]     1.00644
-prob_resp_attr[90,2]    1.00638
-prob_resp_attr[37,2]    1.00628
-prob_resp_attr[94,2]    1.00628
+<div class="cell-output cell-output-display" data-execution_count="29">
+<pre><code>prob_resp_attr[105,2]    1.00813
+prob_resp_class[64,3]    1.00794
+prob_resp_class[25,3]    1.00781
+prob_resp_class[15,3]    1.00775
+prob_resp_class[92,3]    1.00760
 Name: R_hat, dtype: float64</code></pre>
 </div>
 </div>
-<div id="79310c5f" class="cell" data-execution_count="34">
+<div id="120406ca" class="cell" data-execution_count="34">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb36"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a>idcm <span class="op">=</span> az.from_cmdstanpy(</span>
@@ -849,17 +854,17 @@ Name: R_hat, dtype: float64</code></pre>
 </div>
 <section id="model-fit-1" class="level3">
 <h3 class="anchored" data-anchor-id="model-fit-1">Model Fit</h3>
-<div id="1bcf273c" class="cell" data-execution_count="35">
+<div id="facad25f" class="cell" data-execution_count="35">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb37"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a>az.loo(idcm)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
-<div class="cell-output cell-output-display" data-execution_count="97">
+<div class="cell-output cell-output-display" data-execution_count="31">
 <pre><code>Computed from 8000 posterior samples and 10 observations log-likelihood matrix.
 
          Estimate       SE
-elpd_loo    -9.09     3.08
-p_loo        1.28        -
+elpd_loo    -9.18     3.12
+p_loo        1.37        -
 
 There has been a warning during the calculation. Please check the results.
 ------
@@ -871,17 +876,17 @@ Pareto k diagnostic values:
    (1, Inf)   (very bad)    0    0.0%</code></pre>
 </div>
 </div>
-<div id="7c2dfaa1" class="cell" data-execution_count="36">
+<div id="be40bfd8" class="cell" data-execution_count="36">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb39"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a>az.waic(idcm)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
-<div class="cell-output cell-output-display" data-execution_count="98">
+<div class="cell-output cell-output-display" data-execution_count="32">
 <pre><code>Computed from 8000 posterior samples and 10 observations log-likelihood matrix.
 
           Estimate       SE
-elpd_waic    -8.92     2.97
-p_waic        1.11        -
+elpd_waic    -8.92     2.96
+p_waic        1.10        -
 
 There has been a warning during the calculation. Please check the results.</code></pre>
 </div>
@@ -889,7 +894,7 @@ There has been a warning during the calculation. Please check the results.</code
 </section>
 <section id="class-membership-visuals" class="level2">
 <h2 class="anchored" data-anchor-id="class-membership-visuals">Class Membership Visuals</h2>
-<div id="d2fbef63" class="cell" data-execution_count="37">
+<div id="f032bfd7" class="cell" data-execution_count="37">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb41"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a>az.plot_trace(idcm,</span>
@@ -908,7 +913,7 @@ There has been a warning during the calculation. Please check the results.</code
 </section>
 <section id="pi-matrix-visuals" class="level2">
 <h2 class="anchored" data-anchor-id="pi-matrix-visuals">Pi Matrix Visuals</h2>
-<div id="8041059f" class="cell" data-execution_count="38">
+<div id="d1428c3c" class="cell" data-execution_count="38">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb42"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a>az.plot_trace(idcm,</span>
@@ -927,7 +932,7 @@ There has been a warning during the calculation. Please check the results.</code
 </section>
 <section id="beta-coefficient-visuals" class="level2">
 <h2 class="anchored" data-anchor-id="beta-coefficient-visuals">Beta Coefficient Visuals</h2>
-<div id="57799056" class="cell" data-execution_count="39">
+<div id="d13f0a45" class="cell" data-execution_count="39">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb43"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true" tabindex="-1"></a>az.plot_trace(idcm,</span>
@@ -938,12 +943,12 @@ There has been a warning during the calculation. Please check the results.</code
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="data89_quiz1_files/figure-html/cell-40-output-1.png" width="918" height="209" class="figure-img"></p>
+<p><img src="data89_quiz1_files/figure-html/cell-40-output-1.png" width="912" height="209" class="figure-img"></p>
 </figure>
 </div>
 </div>
 </div>
-<div id="c60b2cc3" class="cell" data-execution_count="40">
+<div id="54c8fa9d" class="cell" data-execution_count="40">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb44"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb44-1"><a href="#cb44-1" aria-hidden="true" tabindex="-1"></a>az.plot_trace(idcm,</span>
@@ -959,7 +964,7 @@ There has been a warning during the calculation. Please check the results.</code
 </div>
 </div>
 </div>
-<div id="f6cf0a0f" class="cell" data-execution_count="41">
+<div id="7a494ca1" class="cell" data-execution_count="41">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb45"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb45-1"><a href="#cb45-1" aria-hidden="true" tabindex="-1"></a>az.plot_trace(idcm,</span>
@@ -975,7 +980,7 @@ There has been a warning during the calculation. Please check the results.</code
 </div>
 </div>
 </div>
-<div id="30aa45f5" class="cell" data-execution_count="42">
+<div id="20bfdc08" class="cell" data-execution_count="42">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb46"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb46-1"><a href="#cb46-1" aria-hidden="true" tabindex="-1"></a>az.plot_trace(idcm,</span>
@@ -986,14 +991,14 @@ There has been a warning during the calculation. Please check the results.</code
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="data89_quiz1_files/figure-html/cell-43-output-1.png" width="929" height="209" class="figure-img"></p>
+<p><img src="data89_quiz1_files/figure-html/cell-43-output-1.png" width="912" height="209" class="figure-img"></p>
 </figure>
 </div>
 </div>
 </div>
 <section id="attribute-mastery-per-class-visual" class="level3">
 <h3 class="anchored" data-anchor-id="attribute-mastery-per-class-visual">Attribute Mastery Per Class Visual</h3>
-<div id="f26a0447" class="cell" data-execution_count="43">
+<div id="4f93466c" class="cell" data-execution_count="43">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb47"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb47-1"><a href="#cb47-1" aria-hidden="true" tabindex="-1"></a>az.plot_forest(idcm.posterior[<span class="st">"prob_resp_class"</span>].isel(prob_resp_class_dim_0 <span class="op">=</span> <span class="bu">slice</span>(<span class="dv">0</span>, <span class="dv">4</span>),</span>
@@ -1015,7 +1020,7 @@ There has been a warning during the calculation. Please check the results.</code
 </section>
 <section id="attribute-mastery-per-student-visual" class="level3">
 <h3 class="anchored" data-anchor-id="attribute-mastery-per-student-visual">Attribute Mastery Per Student Visual</h3>
-<div id="9d35cd15" class="cell" data-execution_count="44">
+<div id="da7df8cf" class="cell" data-execution_count="44">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb48"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb48-1"><a href="#cb48-1" aria-hidden="true" tabindex="-1"></a>az.plot_forest(idcm.posterior[<span class="st">"prob_resp_attr"</span>].isel(prob_resp_attr_dim_0 <span class="op">=</span> <span class="bu">slice</span>(<span class="dv">0</span>, <span class="dv">4</span>),</span>
@@ -1038,7 +1043,7 @@ There has been a warning during the calculation. Please check the results.</code
 </section>
 <section id="ppp-visuals" class="level2">
 <h2 class="anchored" data-anchor-id="ppp-visuals">PPP Visuals</h2>
-<div id="94e4920e" class="cell" data-execution_count="45">
+<div id="48bacdf2" class="cell" data-execution_count="45">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb49"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb49-1"><a href="#cb49-1" aria-hidden="true" tabindex="-1"></a>az.plot_ppc(idcm,</span>
@@ -1055,7 +1060,7 @@ There has been a warning during the calculation. Please check the results.</code
 </div>
 </div>
 </div>
-<div id="eaed7688" class="cell" data-execution_count="46">
+<div id="639b53ed" class="cell" data-execution_count="46">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb50"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb50-1"><a href="#cb50-1" aria-hidden="true" tabindex="-1"></a>az.plot_ppc(idcm,</span>
@@ -1073,7 +1078,7 @@ There has been a warning during the calculation. Please check the results.</code
 </div>
 </div>
 </div>
-<div id="9829196d" class="cell" data-execution_count="47">
+<div id="78f1f9de" class="cell" data-execution_count="47">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb51"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb51-1"><a href="#cb51-1" aria-hidden="true" tabindex="-1"></a>az.plot_bpv(idcm,</span>
@@ -1085,12 +1090,12 @@ There has been a warning during the calculation. Please check the results.</code
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="data89_quiz1_files/figure-html/cell-48-output-1.png" width="546" height="440" class="figure-img"></p>
+<p><img src="data89_quiz1_files/figure-html/cell-48-output-1.png" width="542" height="440" class="figure-img"></p>
 </figure>
 </div>
 </div>
 </div>
-<div id="bad99cf9" class="cell" data-execution_count="48">
+<div id="27e9fe9e" class="cell" data-execution_count="48">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb52"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb52-1"><a href="#cb52-1" aria-hidden="true" tabindex="-1"></a>az.plot_bpv(idcm,</span>
@@ -1102,7 +1107,7 @@ There has been a warning during the calculation. Please check the results.</code
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="data89_quiz1_files/figure-html/cell-49-output-1.png" width="545" height="440" class="figure-img"></p>
+<p><img src="data89_quiz1_files/figure-html/cell-49-output-1.png" width="546" height="440" class="figure-img"></p>
 </figure>
 </div>
 </div>
@@ -1110,7 +1115,7 @@ There has been a warning during the calculation. Please check the results.</code
 </section>
 <section id="pandas-dataframe" class="level2">
 <h2 class="anchored" data-anchor-id="pandas-dataframe">Pandas Dataframe</h2>
-<div id="3208da71" class="cell" data-execution_count="49">
+<div id="0e5bf177" class="cell" data-execution_count="49">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb53"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb53-1"><a href="#cb53-1" aria-hidden="true" tabindex="-1"></a>dcmdf <span class="op">=</span> dcm_fit.draws_pd()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
@@ -1119,7 +1124,7 @@ There has been a warning during the calculation. Please check the results.</code
 </section>
 <section id="pi-matrix" class="level2">
 <h2 class="anchored" data-anchor-id="pi-matrix">Pi Matrix</h2>
-<div id="c09d3264" class="cell" data-execution_count="50">
+<div id="b457a81f" class="cell" data-execution_count="50">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb54"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb54-1"><a href="#cb54-1" aria-hidden="true" tabindex="-1"></a>pi_mat <span class="op">=</span> dcmdf.<span class="bu">filter</span>(regex <span class="op">=</span> <span class="st">'pi'</span>)</span>
@@ -1163,7 +1168,7 @@ There has been a warning during the calculation. Please check the results.</code
 </div>
 </div>
 </div>
-<div id="15a47332" class="cell" data-execution_count="51">
+<div id="47cc74ca" class="cell" data-execution_count="51">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb55"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb55-1"><a href="#cb55-1" aria-hidden="true" tabindex="-1"></a>pn.ggplot.show(</span>
@@ -1188,7 +1193,7 @@ There has been a warning during the calculation. Please check the results.</code
 </div>
 <section id="beta-coefficients" class="level3">
 <h3 class="anchored" data-anchor-id="beta-coefficients">Beta Coefficients</h3>
-<div id="eb01a506" class="cell" data-execution_count="52">
+<div id="a0b76591" class="cell" data-execution_count="52">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb56"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb56-1"><a href="#cb56-1" aria-hidden="true" tabindex="-1"></a>beta_df <span class="op">=</span> dcmdf.<span class="bu">filter</span>(regex <span class="op">=</span> <span class="st">'beta'</span>)</span>
@@ -1228,7 +1233,7 @@ There has been a warning during the calculation. Please check the results.</code
 </div>
 </div>
 </div>
-<div id="cc981399" class="cell" data-execution_count="53">
+<div id="2fb11aec" class="cell" data-execution_count="53">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb57"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb57-1"><a href="#cb57-1" aria-hidden="true" tabindex="-1"></a>pn.ggplot.show(</span>
@@ -1254,7 +1259,7 @@ There has been a warning during the calculation. Please check the results.</code
 </section>
 <section id="attribute-mastery-uncertainty" class="level3">
 <h3 class="anchored" data-anchor-id="attribute-mastery-uncertainty">Attribute Mastery &amp; Uncertainty</h3>
-<div id="840e119d" class="cell" data-execution_count="54">
+<div id="08ce3e2a" class="cell" data-execution_count="54">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb58"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb58-1"><a href="#cb58-1" aria-hidden="true" tabindex="-1"></a>attr_df <span class="op">=</span> dcmdf.<span class="bu">filter</span>(regex <span class="op">=</span> <span class="st">'^prob_resp_attr'</span>)</span>
@@ -1297,7 +1302,7 @@ There has been a warning during the calculation. Please check the results.</code
 </div>
 </div>
 </div>
-<div id="5e436851" class="cell" data-execution_count="55">
+<div id="0cbcc284" class="cell" data-execution_count="55">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb59"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb59-1"><a href="#cb59-1" aria-hidden="true" tabindex="-1"></a>pn.ggplot.show(</span>
@@ -1320,35 +1325,36 @@ There has been a warning during the calculation. Please check the results.</code
 </div>
 </div>
 </div>
-<div id="9dcc4880" class="cell" data-execution_count="56">
+<div id="06e1cf24" class="cell" data-execution_count="56">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb60"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb60-1"><a href="#cb60-1" aria-hidden="true" tabindex="-1"></a>attr_df[<span class="st">'mastery'</span>] <span class="op">=</span> np.where(attr_df[<span class="st">'mean'</span>] <span class="op">&gt;</span> mastery_prob, <span class="dv">1</span>, <span class="dv">0</span>)</span>
 <span id="cb60-2"><a href="#cb60-2" aria-hidden="true" tabindex="-1"></a>attr_df[<span class="st">'proficiency'</span>] <span class="op">=</span> np.where(attr_df[<span class="st">'mean'</span>] <span class="op">&gt;</span> prof_prob, <span class="dv">1</span>, <span class="dv">0</span>)</span>
 <span id="cb60-3"><a href="#cb60-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb60-4"><a href="#cb60-4" aria-hidden="true" tabindex="-1"></a><span class="co"># attr_df.head()</span></span>
+<span id="cb60-4"><a href="#cb60-4" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb60-5"><a href="#cb60-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb60-6"><a href="#cb60-6" aria-hidden="true" tabindex="-1"></a>attr_df.groupby(<span class="st">'attr'</span>)[<span class="st">'mastery'</span>].value_counts().reset_index()</span>
-<span id="cb60-7"><a href="#cb60-7" aria-hidden="true" tabindex="-1"></a>attr_df.groupby(<span class="st">'attr'</span>)[<span class="st">'proficiency'</span>].value_counts().reset_index()</span>
-<span id="cb60-8"><a href="#cb60-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb60-9"><a href="#cb60-9" aria-hidden="true" tabindex="-1"></a>attr_mastery <span class="op">=</span> attr_df.pivot(index <span class="op">=</span> <span class="st">'stu'</span>,</span>
-<span id="cb60-10"><a href="#cb60-10" aria-hidden="true" tabindex="-1"></a>              columns <span class="op">=</span> <span class="st">'attr'</span>,</span>
-<span id="cb60-11"><a href="#cb60-11" aria-hidden="true" tabindex="-1"></a>              values <span class="op">=</span> <span class="st">'mastery'</span>).reset_index()</span>
-<span id="cb60-12"><a href="#cb60-12" aria-hidden="true" tabindex="-1"></a>attr_mastery <span class="op">=</span> attr_mastery.rename(columns <span class="op">=</span> {<span class="dv">1</span>: <span class="st">'attr1'</span>,</span>
-<span id="cb60-13"><a href="#cb60-13" aria-hidden="true" tabindex="-1"></a>                                              <span class="dv">2</span>: <span class="st">'attr2'</span>})</span>
-<span id="cb60-14"><a href="#cb60-14" aria-hidden="true" tabindex="-1"></a><span class="co"># attr_mastery.head()</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb60-6"><a href="#cb60-6" aria-hidden="true" tabindex="-1"></a><span class="co"># attr_df.head()</span></span>
+<span id="cb60-7"><a href="#cb60-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb60-8"><a href="#cb60-8" aria-hidden="true" tabindex="-1"></a>attr_df.groupby(<span class="st">'attr'</span>)[<span class="st">'mastery'</span>].value_counts().reset_index()</span>
+<span id="cb60-9"><a href="#cb60-9" aria-hidden="true" tabindex="-1"></a>attr_df.groupby(<span class="st">'attr'</span>)[<span class="st">'proficiency'</span>].value_counts().reset_index()</span>
+<span id="cb60-10"><a href="#cb60-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb60-11"><a href="#cb60-11" aria-hidden="true" tabindex="-1"></a>attr_mastery <span class="op">=</span> attr_df.pivot(index <span class="op">=</span> <span class="st">'stu'</span>,</span>
+<span id="cb60-12"><a href="#cb60-12" aria-hidden="true" tabindex="-1"></a>              columns <span class="op">=</span> <span class="st">'attr'</span>,</span>
+<span id="cb60-13"><a href="#cb60-13" aria-hidden="true" tabindex="-1"></a>              values <span class="op">=</span> <span class="st">'mastery'</span>).reset_index()</span>
+<span id="cb60-14"><a href="#cb60-14" aria-hidden="true" tabindex="-1"></a>attr_mastery <span class="op">=</span> attr_mastery.rename(columns <span class="op">=</span> {<span class="dv">1</span>: <span class="st">'attr1'</span>,</span>
+<span id="cb60-15"><a href="#cb60-15" aria-hidden="true" tabindex="-1"></a>                                              <span class="dv">2</span>: <span class="st">'attr2'</span>})</span>
+<span id="cb60-16"><a href="#cb60-16" aria-hidden="true" tabindex="-1"></a><span class="co"># attr_mastery.head()</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 </div>
-<div id="df6a162b" class="cell" data-execution_count="57">
+<div id="423523f5" class="cell" data-execution_count="57">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb61"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb61-1"><a href="#cb61-1" aria-hidden="true" tabindex="-1"></a><span class="co"># INCLUDE THE NAMES FOR THE ATTRIBUTES HERE FOR MASTERY</span></span>
-<span id="cb61-2"><a href="#cb61-2" aria-hidden="true" tabindex="-1"></a>attr_mastery[<span class="st">'attr1'</span>] <span class="op">=</span> np.where(attr_mastery[<span class="st">'attr1'</span>] <span class="op">==</span> <span class="dv">1</span>, <span class="st">''</span>, <span class="st">''</span>)</span>
-<span id="cb61-3"><a href="#cb61-3" aria-hidden="true" tabindex="-1"></a>attr_mastery[<span class="st">'attr2'</span>] <span class="op">=</span> np.where(attr_mastery[<span class="st">'attr2'</span>] <span class="op">==</span> <span class="dv">1</span>, <span class="st">''</span>, <span class="st">''</span>)</span>
-<span id="cb61-4"><a href="#cb61-4" aria-hidden="true" tabindex="-1"></a>attr_mastery.to_csv(<span class="ss">f'student_data/attribute_mastery_</span><span class="sc">{</span>quiz_num<span class="sc">}</span><span class="ss">.csv'</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb61"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb61-1"><a href="#cb61-1" aria-hidden="true" tabindex="-1"></a>attr_mastery[<span class="st">'attr1'</span>] <span class="op">=</span> np.where(attr_mastery[<span class="st">'attr1'</span>] <span class="op">==</span> <span class="dv">1</span>, <span class="ss">f'</span><span class="sc">{</span>att1_name<span class="sc">}</span><span class="ss"> Mastery'</span>, <span class="ss">f'No Mastery of </span><span class="sc">{</span>att1_name<span class="sc">}</span><span class="ss">'</span>)</span>
+<span id="cb61-2"><a href="#cb61-2" aria-hidden="true" tabindex="-1"></a>attr_mastery[<span class="st">'attr2'</span>] <span class="op">=</span> np.where(attr_mastery[<span class="st">'attr2'</span>] <span class="op">==</span> <span class="dv">1</span>, <span class="ss">f'</span><span class="sc">{</span>att2_name<span class="sc">}</span><span class="ss"> Mastery'</span>, <span class="ss">f'No Mastery of </span><span class="sc">{</span>att2_name<span class="sc">}</span><span class="ss">'</span>)</span>
+<span id="cb61-3"><a href="#cb61-3" aria-hidden="true" tabindex="-1"></a>attr_mastery.to_csv(<span class="ss">f'student_data/attribute_mastery_</span><span class="sc">{</span>quiz_num<span class="sc">}</span><span class="ss">.csv'</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 </div>
-<div id="a633f83f" class="cell" data-execution_count="58">
+<div id="de03aa23" class="cell" data-execution_count="58">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb62"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb62-1"><a href="#cb62-1" aria-hidden="true" tabindex="-1"></a>attr_prof <span class="op">=</span> attr_df.pivot(index <span class="op">=</span> <span class="st">'stu'</span>,</span>
@@ -1359,19 +1365,18 @@ There has been a warning during the calculation. Please check the results.</code
 <span id="cb62-6"><a href="#cb62-6" aria-hidden="true" tabindex="-1"></a><span class="co"># attr_prof.head()</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 </div>
-<div id="f46547bc" class="cell" data-execution_count="59">
+<div id="52358330" class="cell" data-execution_count="59">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb63"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb63-1"><a href="#cb63-1" aria-hidden="true" tabindex="-1"></a><span class="co"># INCLUDE THE NAMES FOR THE ATTRIBUTES HERE FOR PROFICIENCY</span></span>
-<span id="cb63-2"><a href="#cb63-2" aria-hidden="true" tabindex="-1"></a>attr_prof[<span class="st">'attr1'</span>] <span class="op">=</span> np.where(attr_prof[<span class="st">'attr1'</span>] <span class="op">==</span> <span class="dv">1</span>, <span class="st">''</span>, <span class="st">''</span>)</span>
-<span id="cb63-3"><a href="#cb63-3" aria-hidden="true" tabindex="-1"></a>attr_prof[<span class="st">'attr2'</span>] <span class="op">=</span> np.where(attr_prof[<span class="st">'attr2'</span>] <span class="op">==</span> <span class="dv">1</span>, <span class="st">''</span>, <span class="st">''</span>)</span>
-<span id="cb63-4"><a href="#cb63-4" aria-hidden="true" tabindex="-1"></a>attr_prof.to_csv(<span class="ss">f'student_data/attribute_proficiency_</span><span class="sc">{</span>quiz_num<span class="sc">}</span><span class="ss">.csv'</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb63"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb63-1"><a href="#cb63-1" aria-hidden="true" tabindex="-1"></a>attr_prof[<span class="st">'attr1'</span>] <span class="op">=</span> np.where(attr_prof[<span class="st">'attr1'</span>] <span class="op">==</span> <span class="dv">1</span>, <span class="ss">f'</span><span class="sc">{</span>att1_name<span class="sc">}</span><span class="ss"> Proficiency'</span>, <span class="ss">f'Not Proficient in </span><span class="sc">{</span>att1_name<span class="sc">}</span><span class="ss">'</span>)</span>
+<span id="cb63-2"><a href="#cb63-2" aria-hidden="true" tabindex="-1"></a>attr_prof[<span class="st">'attr2'</span>] <span class="op">=</span> np.where(attr_prof[<span class="st">'attr2'</span>] <span class="op">==</span> <span class="dv">1</span>, <span class="ss">f'</span><span class="sc">{</span>att2_name<span class="sc">}</span><span class="ss"> Proficiency'</span>, <span class="ss">f'Not Proficient in </span><span class="sc">{</span>att2_name<span class="sc">}</span><span class="ss">'</span>)</span>
+<span id="cb63-3"><a href="#cb63-3" aria-hidden="true" tabindex="-1"></a>attr_prof.to_csv(<span class="ss">f'student_data/attribute_proficiency_</span><span class="sc">{</span>quiz_num<span class="sc">}</span><span class="ss">.csv'</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 </div>
 </section>
 <section id="attribute-mastery-per-class" class="level3">
 <h3 class="anchored" data-anchor-id="attribute-mastery-per-class">Attribute Mastery Per Class</h3>
-<div id="1394178b" class="cell" data-execution_count="60">
+<div id="9c24ff90" class="cell" data-execution_count="60">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb64"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb64-1"><a href="#cb64-1" aria-hidden="true" tabindex="-1"></a>attr_class_df <span class="op">=</span> dcmdf.<span class="bu">filter</span>(regex <span class="op">=</span> <span class="st">'^prob_resp_class'</span>)</span>
@@ -1415,7 +1420,7 @@ There has been a warning during the calculation. Please check the results.</code
 </div>
 </div>
 </div>
-<div id="3f481c0a" class="cell" data-execution_count="61">
+<div id="6932664b" class="cell" data-execution_count="61">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb65"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb65-1"><a href="#cb65-1" aria-hidden="true" tabindex="-1"></a>pn.ggplot.show(</span>
@@ -1442,7 +1447,7 @@ There has been a warning during the calculation. Please check the results.</code
 </section>
 <section id="ppp-calculations" class="level2">
 <h2 class="anchored" data-anchor-id="ppp-calculations">PPP Calculations</h2>
-<div id="e5765e8f" class="cell" data-execution_count="62">
+<div id="32c4c8f6" class="cell" data-execution_count="62">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb66"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb66-1"><a href="#cb66-1" aria-hidden="true" tabindex="-1"></a>ydcm <span class="op">=</span> dcmdf.<span class="bu">filter</span>(regex <span class="op">=</span> <span class="st">'^y_rep'</span>)</span>
@@ -1488,7 +1493,7 @@ There has been a warning during the calculation. Please check the results.</code
 </div>
 </div>
 </div>
-<div id="e3567699" class="cell" data-execution_count="63">
+<div id="11de2a81" class="cell" data-execution_count="63">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb67"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb67-1"><a href="#cb67-1" aria-hidden="true" tabindex="-1"></a>ydcm_wide <span class="op">=</span> (</span>
@@ -1507,7 +1512,7 @@ There has been a warning during the calculation. Please check the results.</code
 <span id="cb67-14"><a href="#cb67-14" aria-hidden="true" tabindex="-1"></a><span class="co"># ydcm_wide.head()</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 </div>
-<div id="e895f18b" class="cell" data-execution_count="64">
+<div id="45446aad" class="cell" data-execution_count="64">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb68"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb68-1"><a href="#cb68-1" aria-hidden="true" tabindex="-1"></a>ydcm_wide[<span class="st">'total_correct'</span>] <span class="op">=</span> ydcm_wide.drop(columns <span class="op">=</span> <span class="st">'stu'</span>).<span class="bu">sum</span>(axis <span class="op">=</span> <span class="dv">1</span>)</span>
@@ -1531,7 +1536,7 @@ There has been a warning during the calculation. Please check the results.</code
 </div>
 </div>
 </div>
-<div id="eb534baa" class="cell" data-execution_count="65">
+<div id="ee506ee4" class="cell" data-execution_count="65">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb69"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb69-1"><a href="#cb69-1" aria-hidden="true" tabindex="-1"></a>ydcm_compare_actual <span class="op">=</span> ydcm_compare.loc[ydcm_compare[<span class="st">'variable'</span>] <span class="op">==</span> <span class="st">'actual_correct'</span>, <span class="st">'value'</span>].sort_values()</span>
@@ -1549,7 +1554,7 @@ There has been a warning during the calculation. Please check the results.</code
 <span id="cb69-13"><a href="#cb69-13" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> scipy.stats <span class="im">import</span> chi2_contingency</span>
 <span id="cb69-14"><a href="#cb69-14" aria-hidden="true" tabindex="-1"></a>chi2_contingency(observed <span class="op">=</span> count_tabs)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
-<div class="cell-output cell-output-display" data-execution_count="127">
+<div class="cell-output cell-output-display" data-execution_count="61">
 <pre><code>Chi2ContingencyResult(statistic=0.0, pvalue=1.0, dof=0, expected_freq=array([[ 2.],
        [ 3.],
        [11.],
@@ -1562,30 +1567,30 @@ There has been a warning during the calculation. Please check the results.</code
 </div>
 <section id="overall-ppp-values" class="level3">
 <h3 class="anchored" data-anchor-id="overall-ppp-values">Overall PPP Values</h3>
-<div id="6e779e99" class="cell" data-execution_count="66">
+<div id="974d734a" class="cell" data-execution_count="66">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb71"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb71-1"><a href="#cb71-1" aria-hidden="true" tabindex="-1"></a>overall_ppp(ydcm_prob, <span class="st">'mean'</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
-<div class="cell-output cell-output-display" data-execution_count="128">
+<div class="cell-output cell-output-display" data-execution_count="62">
 <pre><code>np.float64(0.5)</code></pre>
 </div>
 </div>
-<div id="cbb48b71" class="cell" data-execution_count="67">
+<div id="0952a834" class="cell" data-execution_count="67">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb73"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb73-1"><a href="#cb73-1" aria-hidden="true" tabindex="-1"></a><span class="co"># overall, model fits pretty well</span></span>
 <span id="cb73-2"><a href="#cb73-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb73-3"><a href="#cb73-3" aria-hidden="true" tabindex="-1"></a>overall_ppp(ydcm_prob, <span class="st">'std'</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
-<div class="cell-output cell-output-display" data-execution_count="129">
+<div class="cell-output cell-output-display" data-execution_count="63">
 <pre><code>np.float64(0.7)</code></pre>
 </div>
 </div>
 </section>
 <section id="item-specific-ppp-values" class="level3">
 <h3 class="anchored" data-anchor-id="item-specific-ppp-values">Item Specific PPP Values</h3>
-<div id="875f1cf0" class="cell" data-execution_count="68">
+<div id="3aa5fb0e" class="cell" data-execution_count="68">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb75"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb75-1"><a href="#cb75-1" aria-hidden="true" tabindex="-1"></a>dcm_means <span class="op">=</span> [ppp_func(df <span class="op">=</span> ydcm_prob,</span>
@@ -1607,55 +1612,55 @@ There has been a warning during the calculation. Please check the results.</code
 <span id="cb75-17"><a href="#cb75-17" aria-hidden="true" tabindex="-1"></a>gt.show(gt(ppp_dcm))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <div class="cell-output cell-output-display">
-<div id="oasbtwqdjw" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<div id="kcespkxrqa" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
 <style>
-#oasbtwqdjw table {
+#kcespkxrqa table {
           font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif;
           -webkit-font-smoothing: antialiased;
           -moz-osx-font-smoothing: grayscale;
         }
 
-#oasbtwqdjw thead, tbody, tfoot, tr, td, th { border-style: none; }
+#kcespkxrqa thead, tbody, tfoot, tr, td, th { border-style: none; }
  tr { background-color: transparent; }
-#oasbtwqdjw p { margin: 0; padding: 0; }
- #oasbtwqdjw .gt_table { display: table; border-collapse: collapse; line-height: normal; margin-left: auto; margin-right: auto; color: #333333; font-size: 16px; font-weight: normal; font-style: normal; background-color: #FFFFFF; width: auto; border-top-style: solid; border-top-width: 2px; border-top-color: #A8A8A8; border-right-style: none; border-right-width: 2px; border-right-color: #D3D3D3; border-bottom-style: solid; border-bottom-width: 2px; border-bottom-color: #A8A8A8; border-left-style: none; border-left-width: 2px; border-left-color: #D3D3D3; }
- #oasbtwqdjw .gt_caption { padding-top: 4px; padding-bottom: 4px; }
- #oasbtwqdjw .gt_title { color: #333333; font-size: 125%; font-weight: initial; padding-top: 4px; padding-bottom: 4px; padding-left: 5px; padding-right: 5px; border-bottom-color: #FFFFFF; border-bottom-width: 0; }
- #oasbtwqdjw .gt_subtitle { color: #333333; font-size: 85%; font-weight: initial; padding-top: 3px; padding-bottom: 5px; padding-left: 5px; padding-right: 5px; border-top-color: #FFFFFF; border-top-width: 0; }
- #oasbtwqdjw .gt_heading { background-color: #FFFFFF; text-align: center; border-bottom-color: #FFFFFF; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; }
- #oasbtwqdjw .gt_bottom_border { border-bottom-style: solid; border-bottom-width: 2px; border-bottom-color: #D3D3D3; }
- #oasbtwqdjw .gt_col_headings { border-top-style: solid; border-top-width: 2px; border-top-color: #D3D3D3; border-bottom-style: solid; border-bottom-width: 2px; border-bottom-color: #D3D3D3; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; }
- #oasbtwqdjw .gt_col_heading { color: #333333; background-color: #FFFFFF; font-size: 100%; font-weight: normal; text-transform: inherit; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: bottom; padding-top: 5px; padding-bottom: 5px; padding-left: 5px; padding-right: 5px; overflow-x: hidden; }
- #oasbtwqdjw .gt_column_spanner_outer { color: #333333; background-color: #FFFFFF; font-size: 100%; font-weight: normal; text-transform: inherit; padding-top: 0; padding-bottom: 0; padding-left: 4px; padding-right: 4px; }
- #oasbtwqdjw .gt_column_spanner_outer:first-child { padding-left: 0; }
- #oasbtwqdjw .gt_column_spanner_outer:last-child { padding-right: 0; }
- #oasbtwqdjw .gt_column_spanner { border-bottom-style: solid; border-bottom-width: 2px; border-bottom-color: #D3D3D3; vertical-align: bottom; padding-top: 5px; padding-bottom: 5px; overflow-x: hidden; display: inline-block; width: 100%; }
- #oasbtwqdjw .gt_spanner_row { border-bottom-style: hidden; }
- #oasbtwqdjw .gt_group_heading { padding-top: 8px; padding-bottom: 8px; padding-left: 5px; padding-right: 5px; color: #333333; background-color: #FFFFFF; font-size: 100%; font-weight: initial; text-transform: inherit; border-top-style: solid; border-top-width: 2px; border-top-color: #D3D3D3; border-bottom-style: solid; border-bottom-width: 2px; border-bottom-color: #D3D3D3; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; text-align: left; }
- #oasbtwqdjw .gt_empty_group_heading { padding: 0.5px; color: #333333; background-color: #FFFFFF; font-size: 100%; font-weight: initial; border-top-style: solid; border-top-width: 2px; border-top-color: #D3D3D3; border-bottom-style: solid; border-bottom-width: 2px; border-bottom-color: #D3D3D3; vertical-align: middle; }
- #oasbtwqdjw .gt_from_md> :first-child { margin-top: 0; }
- #oasbtwqdjw .gt_from_md> :last-child { margin-bottom: 0; }
- #oasbtwqdjw .gt_row { padding-top: 8px; padding-bottom: 8px; padding-left: 5px; padding-right: 5px; margin: 10px; border-top-style: solid; border-top-width: 1px; border-top-color: #D3D3D3; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; overflow-x: hidden; }
- #oasbtwqdjw .gt_stub { color: #333333; background-color: #FFFFFF; font-size: 100%; font-weight: initial; text-transform: inherit; border-right-style: solid; border-right-width: 2px; border-right-color: #D3D3D3; padding-left: 5px; padding-right: 5px; }
- #oasbtwqdjw .gt_stub_row_group { color: #333333; background-color: #FFFFFF; font-size: 100%; font-weight: initial; text-transform: inherit; border-right-style: solid; border-right-width: 2px; border-right-color: #D3D3D3; padding-left: 5px; padding-right: 5px; vertical-align: top; }
- #oasbtwqdjw .gt_row_group_first td { border-top-width: 2px; }
- #oasbtwqdjw .gt_row_group_first th { border-top-width: 2px; }
- #oasbtwqdjw .gt_striped { color: #333333; background-color: #F4F4F4; }
- #oasbtwqdjw .gt_table_body { border-top-style: solid; border-top-width: 2px; border-top-color: #D3D3D3; border-bottom-style: solid; border-bottom-width: 2px; border-bottom-color: #D3D3D3; }
- #oasbtwqdjw .gt_grand_summary_row { color: #333333; background-color: #FFFFFF; text-transform: inherit; padding-top: 8px; padding-bottom: 8px; padding-left: 5px; padding-right: 5px; }
- #oasbtwqdjw .gt_first_grand_summary_row_bottom { border-top-style: double; border-top-width: 6px; border-top-color: #D3D3D3; }
- #oasbtwqdjw .gt_last_grand_summary_row_top { border-bottom-style: double; border-bottom-width: 6px; border-bottom-color: #D3D3D3; }
- #oasbtwqdjw .gt_sourcenotes { color: #333333; background-color: #FFFFFF; border-bottom-style: none; border-bottom-width: 2px; border-bottom-color: #D3D3D3; border-left-style: none; border-left-width: 2px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 2px; border-right-color: #D3D3D3; }
- #oasbtwqdjw .gt_sourcenote { font-size: 90%; padding-top: 4px; padding-bottom: 4px; padding-left: 5px; padding-right: 5px; text-align: left; }
- #oasbtwqdjw .gt_left { text-align: left; }
- #oasbtwqdjw .gt_center { text-align: center; }
- #oasbtwqdjw .gt_right { text-align: right; font-variant-numeric: tabular-nums; }
- #oasbtwqdjw .gt_font_normal { font-weight: normal; }
- #oasbtwqdjw .gt_font_bold { font-weight: bold; }
- #oasbtwqdjw .gt_font_italic { font-style: italic; }
- #oasbtwqdjw .gt_super { font-size: 65%; }
- #oasbtwqdjw .gt_footnote_marks { font-size: 75%; vertical-align: 0.4em; position: initial; }
- #oasbtwqdjw .gt_asterisk { font-size: 100%; vertical-align: 0; }
+#kcespkxrqa p { margin: 0; padding: 0; }
+ #kcespkxrqa .gt_table { display: table; border-collapse: collapse; line-height: normal; margin-left: auto; margin-right: auto; color: #333333; font-size: 16px; font-weight: normal; font-style: normal; background-color: #FFFFFF; width: auto; border-top-style: solid; border-top-width: 2px; border-top-color: #A8A8A8; border-right-style: none; border-right-width: 2px; border-right-color: #D3D3D3; border-bottom-style: solid; border-bottom-width: 2px; border-bottom-color: #A8A8A8; border-left-style: none; border-left-width: 2px; border-left-color: #D3D3D3; }
+ #kcespkxrqa .gt_caption { padding-top: 4px; padding-bottom: 4px; }
+ #kcespkxrqa .gt_title { color: #333333; font-size: 125%; font-weight: initial; padding-top: 4px; padding-bottom: 4px; padding-left: 5px; padding-right: 5px; border-bottom-color: #FFFFFF; border-bottom-width: 0; }
+ #kcespkxrqa .gt_subtitle { color: #333333; font-size: 85%; font-weight: initial; padding-top: 3px; padding-bottom: 5px; padding-left: 5px; padding-right: 5px; border-top-color: #FFFFFF; border-top-width: 0; }
+ #kcespkxrqa .gt_heading { background-color: #FFFFFF; text-align: center; border-bottom-color: #FFFFFF; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; }
+ #kcespkxrqa .gt_bottom_border { border-bottom-style: solid; border-bottom-width: 2px; border-bottom-color: #D3D3D3; }
+ #kcespkxrqa .gt_col_headings { border-top-style: solid; border-top-width: 2px; border-top-color: #D3D3D3; border-bottom-style: solid; border-bottom-width: 2px; border-bottom-color: #D3D3D3; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; }
+ #kcespkxrqa .gt_col_heading { color: #333333; background-color: #FFFFFF; font-size: 100%; font-weight: normal; text-transform: inherit; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: bottom; padding-top: 5px; padding-bottom: 5px; padding-left: 5px; padding-right: 5px; overflow-x: hidden; }
+ #kcespkxrqa .gt_column_spanner_outer { color: #333333; background-color: #FFFFFF; font-size: 100%; font-weight: normal; text-transform: inherit; padding-top: 0; padding-bottom: 0; padding-left: 4px; padding-right: 4px; }
+ #kcespkxrqa .gt_column_spanner_outer:first-child { padding-left: 0; }
+ #kcespkxrqa .gt_column_spanner_outer:last-child { padding-right: 0; }
+ #kcespkxrqa .gt_column_spanner { border-bottom-style: solid; border-bottom-width: 2px; border-bottom-color: #D3D3D3; vertical-align: bottom; padding-top: 5px; padding-bottom: 5px; overflow-x: hidden; display: inline-block; width: 100%; }
+ #kcespkxrqa .gt_spanner_row { border-bottom-style: hidden; }
+ #kcespkxrqa .gt_group_heading { padding-top: 8px; padding-bottom: 8px; padding-left: 5px; padding-right: 5px; color: #333333; background-color: #FFFFFF; font-size: 100%; font-weight: initial; text-transform: inherit; border-top-style: solid; border-top-width: 2px; border-top-color: #D3D3D3; border-bottom-style: solid; border-bottom-width: 2px; border-bottom-color: #D3D3D3; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; text-align: left; }
+ #kcespkxrqa .gt_empty_group_heading { padding: 0.5px; color: #333333; background-color: #FFFFFF; font-size: 100%; font-weight: initial; border-top-style: solid; border-top-width: 2px; border-top-color: #D3D3D3; border-bottom-style: solid; border-bottom-width: 2px; border-bottom-color: #D3D3D3; vertical-align: middle; }
+ #kcespkxrqa .gt_from_md> :first-child { margin-top: 0; }
+ #kcespkxrqa .gt_from_md> :last-child { margin-bottom: 0; }
+ #kcespkxrqa .gt_row { padding-top: 8px; padding-bottom: 8px; padding-left: 5px; padding-right: 5px; margin: 10px; border-top-style: solid; border-top-width: 1px; border-top-color: #D3D3D3; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; overflow-x: hidden; }
+ #kcespkxrqa .gt_stub { color: #333333; background-color: #FFFFFF; font-size: 100%; font-weight: initial; text-transform: inherit; border-right-style: solid; border-right-width: 2px; border-right-color: #D3D3D3; padding-left: 5px; padding-right: 5px; }
+ #kcespkxrqa .gt_stub_row_group { color: #333333; background-color: #FFFFFF; font-size: 100%; font-weight: initial; text-transform: inherit; border-right-style: solid; border-right-width: 2px; border-right-color: #D3D3D3; padding-left: 5px; padding-right: 5px; vertical-align: top; }
+ #kcespkxrqa .gt_row_group_first td { border-top-width: 2px; }
+ #kcespkxrqa .gt_row_group_first th { border-top-width: 2px; }
+ #kcespkxrqa .gt_striped { color: #333333; background-color: #F4F4F4; }
+ #kcespkxrqa .gt_table_body { border-top-style: solid; border-top-width: 2px; border-top-color: #D3D3D3; border-bottom-style: solid; border-bottom-width: 2px; border-bottom-color: #D3D3D3; }
+ #kcespkxrqa .gt_grand_summary_row { color: #333333; background-color: #FFFFFF; text-transform: inherit; padding-top: 8px; padding-bottom: 8px; padding-left: 5px; padding-right: 5px; }
+ #kcespkxrqa .gt_first_grand_summary_row_bottom { border-top-style: double; border-top-width: 6px; border-top-color: #D3D3D3; }
+ #kcespkxrqa .gt_last_grand_summary_row_top { border-bottom-style: double; border-bottom-width: 6px; border-bottom-color: #D3D3D3; }
+ #kcespkxrqa .gt_sourcenotes { color: #333333; background-color: #FFFFFF; border-bottom-style: none; border-bottom-width: 2px; border-bottom-color: #D3D3D3; border-left-style: none; border-left-width: 2px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 2px; border-right-color: #D3D3D3; }
+ #kcespkxrqa .gt_sourcenote { font-size: 90%; padding-top: 4px; padding-bottom: 4px; padding-left: 5px; padding-right: 5px; text-align: left; }
+ #kcespkxrqa .gt_left { text-align: left; }
+ #kcespkxrqa .gt_center { text-align: center; }
+ #kcespkxrqa .gt_right { text-align: right; font-variant-numeric: tabular-nums; }
+ #kcespkxrqa .gt_font_normal { font-weight: normal; }
+ #kcespkxrqa .gt_font_bold { font-weight: bold; }
+ #kcespkxrqa .gt_font_italic { font-style: italic; }
+ #kcespkxrqa .gt_super { font-size: 65%; }
+ #kcespkxrqa .gt_footnote_marks { font-size: 75%; vertical-align: 0.4em; position: initial; }
+ #kcespkxrqa .gt_asterisk { font-size: 100%; vertical-align: 0; }
  
 </style>
 
@@ -1670,53 +1675,53 @@ There has been a warning during the calculation. Please check the results.</code
 <tbody class="gt_table_body">
 <tr class="odd">
 <td class="gt_row gt_right">1</td>
-<td class="gt_row gt_right">0.3893805309734513</td>
-<td class="gt_row gt_right">0.11504424778761062</td>
+<td class="gt_row gt_right">0.48672566371681414</td>
+<td class="gt_row gt_right">0.07079646017699115</td>
 </tr>
 <tr class="even">
 <td class="gt_row gt_right">2</td>
-<td class="gt_row gt_right">0.09734513274336283</td>
-<td class="gt_row gt_right">0.7610619469026548</td>
+<td class="gt_row gt_right">0.168141592920354</td>
+<td class="gt_row gt_right">0.7079646017699115</td>
 </tr>
 <tr class="odd">
 <td class="gt_row gt_right">3</td>
-<td class="gt_row gt_right">0.07964601769911504</td>
-<td class="gt_row gt_right">0.8584070796460177</td>
+<td class="gt_row gt_right">0.09734513274336283</td>
+<td class="gt_row gt_right">0.8495575221238938</td>
 </tr>
 <tr class="even">
 <td class="gt_row gt_right">4</td>
-<td class="gt_row gt_right">0.3185840707964602</td>
-<td class="gt_row gt_right">0.336283185840708</td>
+<td class="gt_row gt_right">0.37168141592920356</td>
+<td class="gt_row gt_right">0.39823008849557523</td>
 </tr>
 <tr class="odd">
 <td class="gt_row gt_right">5</td>
-<td class="gt_row gt_right">0.4336283185840708</td>
-<td class="gt_row gt_right">0.2920353982300885</td>
+<td class="gt_row gt_right">0.5309734513274337</td>
+<td class="gt_row gt_right">0.25663716814159293</td>
 </tr>
 <tr class="even">
 <td class="gt_row gt_right">6</td>
-<td class="gt_row gt_right">0.5663716814159292</td>
+<td class="gt_row gt_right">0.5221238938053098</td>
 <td class="gt_row gt_right">0.07964601769911504</td>
 </tr>
 <tr class="odd">
 <td class="gt_row gt_right">7</td>
-<td class="gt_row gt_right">0.6106194690265486</td>
-<td class="gt_row gt_right">0.168141592920354</td>
+<td class="gt_row gt_right">0.6283185840707964</td>
+<td class="gt_row gt_right">0.12389380530973451</td>
 </tr>
 <tr class="even">
 <td class="gt_row gt_right">8</td>
-<td class="gt_row gt_right">0.504424778761062</td>
+<td class="gt_row gt_right">0.584070796460177</td>
 <td class="gt_row gt_right">0.0</td>
 </tr>
 <tr class="odd">
 <td class="gt_row gt_right">9</td>
-<td class="gt_row gt_right">0.6814159292035398</td>
-<td class="gt_row gt_right">0.6283185840707964</td>
+<td class="gt_row gt_right">0.8230088495575221</td>
+<td class="gt_row gt_right">0.7345132743362832</td>
 </tr>
 <tr class="even">
 <td class="gt_row gt_right">10</td>
 <td class="gt_row gt_right">0.672566371681416</td>
-<td class="gt_row gt_right">0.2831858407079646</td>
+<td class="gt_row gt_right">0.25663716814159293</td>
 </tr>
 </tbody>
 </table>
@@ -1725,7 +1730,7 @@ There has been a warning during the calculation. Please check the results.</code
 </div>
 </div>
 </div>
-<div id="56388cc8" class="cell" data-execution_count="69">
+<div id="6c591100" class="cell" data-execution_count="69">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb76"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb76-1"><a href="#cb76-1" aria-hidden="true" tabindex="-1"></a>pn.ggplot.show(</span>
@@ -1750,7 +1755,7 @@ There has been a warning during the calculation. Please check the results.</code
 </div>
 </div>
 </div>
-<div id="2ec2cf0f" class="cell" data-execution_count="70">
+<div id="9fdd406e" class="cell" data-execution_count="70">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb77"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb77-1"><a href="#cb77-1" aria-hidden="true" tabindex="-1"></a>pn.ggplot.show(</span>
