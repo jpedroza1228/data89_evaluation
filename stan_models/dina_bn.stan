@@ -8,25 +8,36 @@ data {
   matrix<lower=0,upper=1> [C,K] alpha;
 }
 parameters {
-  ordered[C] raw_nu; 
-  vector[I] beta0;
-  vector<lower=0>[I] beta1;
-  vector<lower=0>[I] beta2;
-  vector[I] beta12;
+  ordered[C] raw_nu;
+  vector<lower=0, upper=1>[I] tp; //slip (1 - tp)
+  vector<lower=0, upper=1>[I] fp; //guess
+  real<lower=0, upper=1> lambda1;
+  real<lower=0, upper=1> lambda2;
 }
 transformed parameters{
-  simplex[C] nu; 
+  simplex[C] nu;
+  vector[C] theta1;
+  vector[C] theta2;
+  matrix[I, C] delta;
   matrix[I,C] pi;
 
   nu = softmax(raw_nu);
   vector[C] log_nu = log(nu);
 
+  for (c in 1 : C) {
+    theta1[c] = (alpha[c, 1] > 0) ? lambda1 : (1 - lambda1);
+    theta2[c] = (alpha[c, 2] > 0) ? lambda2 : (1 - lambda2);
+  }
+  
+  for(c in 1:C){
+    for(i in 1:I){
+      delta[i, c] = pow(theta1[c], Q[i, 1]) * pow(theta2[c], Q[i, 2]);
+    }
+  }
+
   for (c in 1:C){
     for (i in 1:I){
-      pi[i,c] = inv_logit(beta0[i] +
-      beta1[i] * alpha[c,1] +
-      beta2[i] * alpha[c,2] +
-      beta12[i] * alpha[c,1] * alpha[c,2]);
+      pi[i,c] = pow((tp[i]), delta[i,c]) * pow(fp[i], (1 - delta[i,c]));
     }
   }
 }
@@ -36,18 +47,17 @@ model {
 
   // Priors
   raw_nu ~ normal(0, 1);
-  // nu  ~ dirichlet(rep_vector(1.0, C));
+  lambda1 ~ beta(20, 5);
+  lambda2 ~ beta(20, 5);
+  
   for (i in 1:I){
-    beta0[i] ~ normal(0, 1);
-    beta1[i] ~ normal(0, 1);
-    beta2[i] ~ normal(0, 1);
-    beta12[i] ~ normal(0, 1);
+    tp[i] ~ beta(20, 5);
+    fp[i] ~ beta(5, 20);
   }
 
   for (j in 1:J) {
     for (c in 1:C){
       for (i in 1:I){
-        // eta[i] = bernoulli_lpmf(Y[j,i] | pi[i,c]);
         real p = fmin(fmax(pi[i,c], 1e-9), 1 - 1e-9);
         eta[i] = Y[j,i] * log(p) + (1 - Y[j,i]) * log1m(p);
       }

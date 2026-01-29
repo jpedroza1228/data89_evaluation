@@ -8,33 +8,33 @@ data{
   matrix<lower=0,upper=1> [C,K] alpha;
 }
 parameters{
-  real<lower=0,upper=1> theta1;    // P(A1 = 1)
+  real gamma1;
 
-  real gamma0; // baseline for attribute 2
-  real gamma1; // linear effect of attribute 1 --> attribute 2
+  real gamma2; // baseline for attribute 2
+  real<lower=0> gamma21; // linear effect of attribute 1 --> attribute 2
 
-  vector[J] beta0;
-  vector[J] beta1;
-  vector[J] beta2;
-  vector[J] beta12;
+  vector[I] beta0;
+  vector<lower=0>[I] beta1;
+  vector<lower=0>[I] beta2;
+  vector[I] beta12;
 }
 transformed parameters{
-  vector[K] attr_lp;
-  real inv_attr_lp1;
+  simplex[C] nu;
   matrix[I,C] pi;
 
-  for (c in 1:C){
-      attr_lp[1] = alpha[c,1] * log(theta1) + (1 - alpha[c,1]) * log1m(theta1);
-      inv_attr_lp1 = inv_logit(gamma0 + gamma1 * alpha[c,2]);
-      attr_lp[2] = alpha[c,2] * log(inv_attr_lp1) + (1 - alpha[c,2]) * log1m(inv_attr_lp1);
-  }
+  nu[1] = (1 - inv_logit(gamma1)) * (1 - inv_logit(gamma2));
+  nu[2] = inv_logit(gamma1) * (1 - inv_logit(gamma2 + gamma21));
+  nu[3] = (1 - inv_logit(gamma1)) * inv_logit(gamma2);
+  nu[4] = inv_logit(gamma1) * inv_logit(gamma2 + gamma21);
+
+  vector[C] log_nu = log(nu);
 
   for (c in 1:C){
     for (i in 1:I){
       pi[i,c] = inv_logit(beta0[i] +
-      beta1[i] * alpha[c,1] * Q[i,1] +
-      beta2[i] * alpha[c,2] * Q[i,2] +
-      beta12[i] * alpha[c,1] * alpha[c,2] * Q[i,1] * Q[i,2]);
+      beta1[i] * alpha[c,1] +
+      beta2[i] * alpha[c,2] +
+      beta12[i] * alpha[c,1] * alpha[c,2]);
     }
   }
 }
@@ -43,17 +43,17 @@ model{
   array[I] real eta;
 
   // Priors
-  theta1 ~ beta(1, 1); //uniform prior only for attribute 1 only
-
-  //priors for attribute edge att1 --> att2
-  gamma0 ~ normal(0, 1);
   gamma1 ~ normal(0, 1);
+  gamma2 ~ normal(0, 1);
+  gamma21 ~ normal(0, 1);
 
   //priors for items to attributes
-  beta0 ~ normal(0, 1);
-  beta1 ~ normal(0, 1);
-  beta2 ~ normal(0, 1);
-  beta12 ~ normal(0, 1);
+  for (i in 1:I){
+    beta0[i] ~ normal(0, 1);
+    beta1[i] ~ normal(0, 1);
+    beta2[i] ~ normal(0, 1);
+    beta12[i] ~ normal(0, 1);
+  }
 
   for (j in 1:J) {
     for (c in 1:C){
@@ -61,7 +61,7 @@ model{
         real p = fmin(fmax(pi[i,c], 1e-9), 1 - 1e-9);
         eta[i] = Y[j,i] * log(p) + (1 - Y[j,i]) * log1m(p);
       }
-      ps[c] = sum(attr_lp) + sum(eta); 
+      ps[c] = log_nu[c] + sum(eta); 
     }
     target += log_sum_exp(ps);
     }
@@ -72,7 +72,7 @@ generated quantities{
   array[I] real eta;
   row_vector[C] prob_joint;
   array[C] real prob_attr_class;
-  matrix[J,I] Y_rep;
+  matrix[J,I] y_rep;
 
   for (j in 1:J){
     for (c in 1:C){
@@ -82,7 +82,7 @@ generated quantities{
         real p = fmin(fmax(pi[i,c], 1e-9), 1 - 1e-9);
         eta[i] = Y[j,i] * log(p) + (1 - Y[j,i]) * log1m(p);
       }
-      prob_joint[c] = exp(attr_lp[k]) * exp(sum(eta));
+      prob_joint[c] = exp(log_nu[c]) * exp(sum(eta));
       }
     }
     prob_resp_class[j] = prob_joint/sum(prob_joint);
@@ -97,9 +97,9 @@ generated quantities{
   }
   
   for (j in 1:J) {
-    int z = categorical_rng(attr_lp);  // sample class for person j
+    int z = categorical_rng(nu);  // sample class for person j
     for (i in 1:I) {
-      Y_rep[j, i] = bernoulli_rng(pi[i, z]);  // generate response from item-by-class probability
+      y_rep[j, i] = bernoulli_rng(pi[i, z]);  // generate response from item-by-class probability
     }
   }
 }
