@@ -1,0 +1,12 @@
+Item,Attribute_1,Attribute_2,Attribute_3,Attribute_4,Attribute_5
+Item_1,0,1,0,0,0
+Item_2,1,0,0,0,1
+Item_3,0,0,0,0,1
+Item_4,0,1,1,1,0
+Item_5,1,0,1,1,1
+Item_6,1,1,1,1,1
+Item_7,0,0,1,1,1
+Item_8,0,1,0,0,0
+Item_9,0,0,1,1,1
+Item_10,1,1,0,1,1
+Item_11,0,1,0,1,0
