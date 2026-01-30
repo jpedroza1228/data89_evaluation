@@ -20,15 +20,14 @@ matplotlib.rcParams.update({'savefig.bbox': 'tight'})
 
 q1_names = pd.read_csv(here('data/q_matrix/Latent Attributes/quiz1_att_names.csv'))
 
-q1 = (
-  pd
-  .DataFrame({q1_names.loc[0, 'attribute']: [],
-              q1_names.loc[1, 'attribute']: [],
-              q1_names.loc[2, 'attribute']: [],
-              q1_names.loc[3, 'attribute']: [],
-              q1_names.loc[4, 'attribute']: []})
-  .to_csv(here('data/q_matrix/q1.csv'))
-)
+q1 = pd.DataFrame({q1_names.loc[0, 'attribute']: [1, 0, 0, 1, 1, 1, 0, 0, 1, 0, 0],
+                   q1_names.loc[1, 'attribute']: [1, 0, 0, 1, 1, 0, 0, 1, 0, 0, 0],
+                   q1_names.loc[2, 'attribute']: [0, 0, 0, 1, 1, 0, 0, 1, 0, 0, 0],
+                   q1_names.loc[3, 'attribute']: [0, 1, 1, 0, 0, 1, 1, 0, 0, 0, 0],
+                   q1_names.loc[4, 'attribute']: [0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1]})
+gt.show(gt(q1))
+q1.to_csv(here('data/q_matrix/q1_other.csv'))
+# q1.to_csv(here('data/q_matrix/q1.csv'))
 
 q2 = (
   pd
