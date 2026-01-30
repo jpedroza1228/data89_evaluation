@@ -208,3 +208,9 @@ __marimo__/
 
 # Ignore joblib files too
 *.joblib
+
+# Ignore anything with data
+student_data/
+data/
+diagnostics/
+joblib_models/
