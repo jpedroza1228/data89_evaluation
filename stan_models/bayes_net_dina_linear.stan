@@ -8,35 +8,48 @@ data{
   matrix<lower=0,upper=1> [C,K] alpha;
 }
 parameters{
-  // ordered[C] raw_nu; // if label switching happens    
   vector<lower=0, upper=1>[I] tp; //slip (1 - tp)
   vector<lower=0, upper=1>[I] fp; //guess
 
   real<lower=0,upper=1> lambda1;
-  real<lower=0,upper=1> lambda2;
+  real<lower=0,upper=1> lambda20;
+  real<lower=0,upper=1> lambda21;
+  real<lower=0,upper=1> lambda22;
+  real<lower=0,upper=1> lambda30;
+  real<lower=0,upper=1> lambda31;
+  real<lower=0,upper=1> lambda32;
+  real<lower=0,upper=1> lambda40;
+  real<lower=0,upper=1> lambda41;
+  real<lower=0,upper=1> lambda50;
+  real<lower=0,upper=1> lambda51;
 }
 transformed parameters{
+  vector[C] raw_nu;
   simplex[C] nu;
+  // ordered[C] raw_nu; // if label switching happens    
   vector[C] theta1;
   vector[C] theta2;
+  vector[C] theta3;
+  vector[C] theta4;
+  vector[C] theta5;
   matrix[I,C] delta;
   matrix[I,C] pi;
 
-  theta1[1] = (1 - lambda1);
-  theta1[2] = (1 - lambda1);
-  theta1[3] = lambda1;
-  theta1[4] = lambda1;
+  // This model is A1 --> A2 --> A3; A4 & A5
+  // All beta priors, even with linear edges, are predetermined with priors rather than logistic functions
+  // Include option for having inv_logit(gamma10 + gamma11 * alpha[c,1]) with normal priors as another option
 
-  theta2[1] = (1 - lambda2);
-  theta2[2] = lambda2;
-  theta2[3] = (1 - lambda2);
-  theta2[4] = lambda2;
+  for (c in 1:C) {
+    // variable = condition ? value_if_true : value_if_false;
+    theta1[c] = (alpha[c, 1] > 0) ? lambda1 : (1 - lambda1);
+    theta2[c] = (alpha[c,1] > 0 && alpha[c,2] > 0) ? lambda22 : (alpha[c,1] > 0 || alpha[c,2] > 0) ? lambda21 : lambda20; // this show linear relationship with priors
+    theta3[c] = (alpha[c,2] > 0 && alpha[c,3] > 0) ? lambda32 : (alpha[c,2] > 0 || alpha[c,3] > 0) ? lambda31 : lambda30;
+    theta4[c] = (alpha[c, 4] > 0) ? lambda41 : lambda40;
+    theta5[c] = (alpha[c, 5] > 0) ? lambda51 : lambda50;
+    raw_nu[c] = theta1[c] * theta2[c] * theta3[c] * theta4[c] * theta5[c];
+  }
 
-  nu[1] = theta1[1] * theta2[1];
-  nu[2] = theta1[2] * theta2[2];
-  nu[3] = theta1[3] * theta2[3];
-  nu[4] = theta1[4] * theta2[4];
-
+  nu = raw_nu / sum(raw_nu);
   vector[C] log_nu = log(nu);
 
   for(c in 1:C){
@@ -47,7 +60,7 @@ transformed parameters{
 
   for (c in 1:C){
     for (i in 1:I){
-      pi[i,c] = pow((tp[i]), delta[i,c]) * pow(fp[i], (1 - delta[i,c]));
+      pi[i,c] = pow(tp[i], delta[i,c]) * pow(fp[i], (1 - delta[i,c]));
     }
   }
 }
@@ -57,7 +70,16 @@ model{
    
   // Priors for attribute mastery probabilities
   lambda1 ~ beta(20, 5);
-  lambda2 ~ beta(20, 5);
+  lambda20 ~ beta(5, 20);
+  lambda21 ~ beta(12.5, 12.5);
+  lambda22 ~ beta(20, 5);
+  lambda30 ~ beta(5, 20);
+  lambda31 ~ beta(12.5, 12.5);
+  lambda32 ~ beta(20, 5);
+  lambda40 ~ beta(5, 20);
+  lambda41 ~ beta(20, 5);
+  lambda50 ~ beta(5, 20);
+  lambda51 ~ beta(20, 5);
 
   for (i in 1:I){
     tp[i] ~ beta(20, 5);

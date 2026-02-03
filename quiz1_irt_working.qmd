@@ -1,0 +1,632 @@
+---
+title: "Trying out IRT Models"
+author: Jonathan A. Pedroza
+format:
+  html:
+    toc: true
+    toc-depth: 2
+    grid:
+      #sidebar-width: 0px
+      body-width: 1300px
+      #margin-width: 0px
+      gutter-width: 1.5rem
+    theme: lumen
+    code-fold: true
+jupyter: python3
+execute:
+  echo: true
+  eval: true
+  warning: false
+  message: false
+params:
+---
+
+
+```{python}
+import pandas as pd
+import numpy as np
+from scipy import stats
+from janitor import clean_names
+from pyhere import here
+import os
+```
+
+```{python}
+#| tags: [parameters]
+
+jpcolor = 'seagreen'
+irt_num = '3'
+data_path = 'data/quiz_data/q1_scores_anonymized.csv'
+```
+
+```{python}
+import plotnine as pn
+import matplotlib
+import matplotlib.pyplot as plt
+import arviz as az
+import joblib
+from cmdstanpy import CmdStanModel
+from great_tables import GT as gt
+import plotly.express as px
+import plotly.io as pio
+
+os.environ['QT_API'] = 'PyQt6'
+pd.set_option('display.max_columns', None)
+pd.options.mode.copy_on_write = True
+matplotlib.rcParams.update({'savefig.bbox': 'tight'})
+pn.theme_set(pn.theme_light())
+# pio.templates.default = 'simple_white' # 'plotly_white'
+
+def overall_ppp(df, stat):
+    thresh = np.array(y_describe.loc[y_describe['index'] == stat, 'item1':'item10'].mean(axis = 1))[0]
+    cond = df.loc[:, stat] > thresh
+    ppp_val = np.where(cond, 1, 0).mean()
+    return ppp_val
+
+def ppp_func(df, item_num, stat):
+    thresh = np.array(y_describe.loc[y_describe['index'] == stat, f'item{item_num}'])[0]
+    cond = df.loc[df['item'] == item_num, stat] > thresh
+    ppp_val = np.where(cond, 1, 0).mean()
+    return ppp_val
+
+def q_lower(x):
+    return x.quantile(.025)
+  
+def q_upper(x):
+    return x.quantile(.975)
+
+def acceptable_fit_stat(inference_data, func_name = ['waic', 'loo']):
+  if func_name == 'waic':
+    est = np.abs(az.waic(inference_data).iloc[0])
+    se = az.waic(inference_data).iloc[1]
+    
+    if est > se * 2.5:
+      print('Absolute difference is greater than 2.5 x the standard error of the difference. Model is acceptable.')
+      
+    else:
+      print('Absolute difference is not greater than 2.5 x the standard error of the difference. Model is not acceptable.')
+  elif func_name == 'loo':
+    est = np.abs(az.loo(inference_data).iloc[0])
+    se = az.loo(inference_data).iloc[1]
+    
+    if est > se * 2.5:
+      print('Absolute difference is greater than 2.5 x the standard error of the difference. Model is acceptable.')
+      
+    else:
+      print('Absolute difference is not greater than 2.5 x the standard error of the difference. Model is not acceptable.')
+```
+
+```{python}
+y = pd.read_csv(here(f'{data_path}'))
+y.columns = ['anon_id', 'item1', 'item2', 'item3a', 'item3b', 'item4', 'item5', 'item6', 'item7', 'score']
+y.head()
+```
+
+### Data Cleaning
+
+```{python}
+y['item3'] = y['item3a'].astype(str) + y['item3b'].astype(str)
+y['item3'] = y['item3'].str.replace('nan', '')
+y['item3'] = y['item3'].astype(float)
+y = y[['anon_id', 'item1', 'item2', 'item3', 'item4', 'item5', 'item6', 'item7']]
+y_item = y.drop(columns = 'anon_id')
+```
+
+```{python}
+y_item = pd.DataFrame({i: np.where(y_item[i] == 100, 1, 0) for i in y_item.columns})
+y_item.head()
+```
+
+```{python}
+name_mapping = {'y_rep': 'Y'}
+
+irt_dict = {
+  'J': y_item.shape[0],
+  'I': y_item.shape[1],
+  'Y': np.array(y_item)
+}
+
+y_describe = y_item.filter(regex = 'item').agg(['mean', 'std']).reset_index()
+y_describe.drop(columns = 'index').transpose()
+actual_avg = y_describe.loc[y_describe['index'] == 'mean', 'item1':'item10'].mean(axis = 1)[0]
+```
+
+# IRT
+
+```{python}
+irt_file = os.path.join(here(f'stan_models/irt_{irt_num}pl.stan'))
+
+irt_model = CmdStanModel(stan_file = irt_file, cpp_options = {'STAN_THREADS': 'TRUE'})
+```
+
+```{python}
+np.random.seed(12345)
+irt_fit = irt_model.sample(data = irt_dict,
+                        show_console = True,
+                        chains = 4,
+                        # adapt_delta = .95,
+                        iter_warmup = 2000,
+                        iter_sampling = 2000)
+
+irt_diagnose = pd.DataFrame(irt_fit.summary())
+```
+
+```{python}
+irt_prior_file = os.path.join(here(f'stan_models/irt_{irt_num}pl_prior_only.stan'))
+
+irt_prior_model = CmdStanModel(stan_file = irt_prior_file, cpp_options = {'STAN_THREADS': 'TRUE'})
+```
+
+```{python}
+np.random.seed(12345)
+irt_prior_fit = irt_prior_model.sample(data = irt_dict,
+                        show_console = True,
+                        chains = 4,
+                        # adapt_delta = .95,
+                        iter_warmup = 2000,
+                        iter_sampling = 2000)
+
+irt_prior_diagnose = pd.DataFrame(irt_prior_fit.summary())
+```
+
+```{python}
+print(irt_prior_diagnose['R_hat'].sort_values(ascending = False).head())
+print(irt_diagnose['R_hat'].sort_values(ascending = False).head())
+```
+
+```{python}
+iirt = az.from_cmdstanpy(
+    posterior = irt_fit,
+    posterior_predictive = ['y_rep'],
+    observed_data = {'Y': y_item},
+    log_likelihood = {'Y': 'log_lik'})
+
+iirt = iirt.rename(name_dict = name_mapping,
+groups = ["posterior_predictive"])
+
+iirt_prior = az.from_cmdstanpy(prior = irt_prior_fit,
+prior_predictive = ['y_rep'])
+
+iirt_prior = iirt_prior.rename(
+    name_dict = name_mapping,
+    groups = ['prior_predictive']
+)
+
+iirt.extend(iirt_prior)
+```
+
+```{python}
+# student ability
+az.plot_dist_comparison(iirt, var_names = ['theta'])
+plt.show()
+```
+
+```{python}
+# item difficulty parameter
+az.plot_dist_comparison(iirt, var_names = ['b'])
+plt.show()
+```
+
+```{python}
+# discrimination parameter
+az.plot_dist_comparison(iirt, var_names = ['a'])
+plt.show()
+```
+
+```{python}
+# guessing parameter
+az.plot_dist_comparison(iirt, var_names = ['c'])
+plt.show()
+```
+
+## Model Fit
+
+```{python}
+az.loo(iirt)
+```
+
+```{python}
+az.waic(iirt)
+```
+
+
+## Difficulty Visuals
+
+```{python}
+az.plot_trace(iirt,
+              var_names = ('^b'),
+              filter_vars = 'regex'
+)
+plt.show()
+# plt.clf()
+```
+
+## Discrimination Visuals
+
+```{python}
+#| eval: false
+#| echo: true
+
+# only for 2pl | 3pl
+
+az.plot_trace(iirt,
+              var_names = ('^a'),
+              filter_vars = 'regex'
+)
+plt.show()
+# plt.clf()
+```
+
+## Guessing Visuals
+
+```{python}
+#| eval: false
+#| echo: true
+
+# only for 3pl
+
+az.plot_trace(iirt,
+                var_names = 'c')
+plt.show()
+# plt.clf()
+```
+
+## Eta Visuals
+
+```{python}
+az.plot_trace(iirt.posterior["eta"].isel(eta_dim_0 = slice(0, 4),
+                                          eta_dim_1 = slice(None)),
+               var_names = 'eta')
+plt.show()
+# plt.clf()
+```
+
+## PPP Value Visuals
+
+```{python}
+az.plot_ppc(iirt,
+            data_pairs = {'Y': 'Y'},
+            num_pp_samples = 1000)
+plt.show()
+# plt.clf()
+```
+
+```{python}
+az.plot_ppc(iirt,
+            data_pairs = {'Y': 'Y'},
+            num_pp_samples = 1000,
+            kind = 'cumulative')
+plt.show()
+# plt.clf()
+```
+
+```{python}
+az.plot_bpv(iirt,
+            kind = 't_stat', 
+            t_stat = 'mean')
+plt.show()
+# plt.clf()
+```
+
+```{python}
+az.plot_bpv(iirt,
+            kind = 't_stat', 
+            t_stat = 'std')
+plt.show()
+# plt.clf()
+```
+
+## Number of Items Correct Visual
+
+```{python}
+az.plot_forest(iirt.posterior["prob_correct"].isel(prob_correct_dim_0 = slice(0, 4),
+                                                    prob_correct_dim_1 = slice(None)
+                                                    ),
+               var_names = 'prob_correct',
+               colors = jpcolor)
+plt.show()
+# plt.clf()
+```
+
+
+## IRT DataFrame
+
+```{python}
+irtdf = irt_fit.draws_pd()
+```
+
+## Student Ability & Uncertainty
+
+```{python}
+ability = irtdf.filter(regex = 'theta')
+ability = pd.DataFrame({
+  'mean': ability.mean(),
+  'std': ability.std(),
+  'q_lower': q_lower(ability),
+  'q_upper': q_upper(ability)
+}).reset_index()
+
+ability['stu'] = ability['index'].str.replace('theta[', '')
+ability['stu'] = ability['stu'].str.replace(']', '')
+ability = ability.drop(columns = 'index')
+ability.head()
+
+pn.ggplot.show(
+  pn.ggplot(ability,
+            pn.aes('stu',
+                   'mean'))
+  + pn.geom_point(alpha = .5,
+                  color = jpcolor)
+  + pn.geom_errorbar(pn.aes(ymin = 'q_lower',
+                            ymax = 'q_upper'),
+                     alpha = .3,
+                     color = jpcolor)
+  + pn.geom_hline(yintercept = 0,
+                  color = 'black',
+                  linetype = 'dashed')
+  + pn.labs(title = 'Ability Parameter for Each Student',
+            x = 'Student',
+            y = 'Ability')
+  + pn.theme(axis_text_x = pn.element_blank())
+)
+```
+
+## Difficulty & Uncertainty
+
+b = difficulty 
+
+0 = average difficulty, 2+ = very hard, -2 = very easy
+
+```{python}
+diff = irtdf.filter(regex = '^b.*]$')
+diff = pd.DataFrame({
+  'mean': diff.mean(),
+  'std': diff.std(),
+  'q_lower': q_lower(diff),
+  'q_upper': q_upper(diff)
+}).reset_index()
+
+diff['item'] = diff['index'].str.replace('b[', '')
+diff['item'] = diff['item'].str.replace(']', '')
+diff = diff.drop(columns = 'index')
+diff.head()
+
+pn.ggplot.show(
+  pn.ggplot(diff,
+            pn.aes('item',
+                   'mean'))
+  + pn.geom_point(alpha = .5,
+                  color = jpcolor)
+  + pn.geom_errorbar(pn.aes(ymin = 'q_lower',
+                            ymax = 'q_upper'),
+                     alpha = .3,
+                     color = jpcolor)
+  # + pn.geom_hline(yintercept = 0,
+  #                 color = 'black',
+  #                 linetype = 'dashed')
+  + pn.labs(title = 'Difficulty Parameter for Each Item',
+            x = 'Item',
+            y = 'Difficulty')
+  + pn.theme(axis_text_x = pn.element_blank())
+)
+```
+
+## Discrimination & Uncertainty
+
+For 2pl & 3pl IRT models
+
+a = discrimination (differentiate between individuals w/ different ability levels (theta))
+
+high value = strong discrimination, low value = weak discrimination
+
+negative = low theta individuals more likely to get responses correct
+
+```{python}
+#| eval: false
+#| echo: true
+
+dis = irtdf.filter(regex = '^a.*]$')
+dis = pd.DataFrame({
+  'mean': dis.mean(),
+  'std': dis.std(),
+  'q_lower': q_lower(dis),
+  'q_upper': q_upper(dis)
+}).reset_index()
+
+dis['item'] = dis['index'].str.replace('a[', '')
+dis['item'] = dis['item'].str.replace(']', '')
+dis = dis.drop(columns = 'index')
+dis.head()
+
+pn.ggplot.show(
+  pn.ggplot(dis,
+            pn.aes('item',
+                   'mean'))
+  + pn.geom_point(alpha = .5,
+                  color = jpcolor)
+  + pn.geom_errorbar(pn.aes(ymin = 'q_lower',
+                            ymax = 'q_upper'),
+                     alpha = .3,
+                     color = jpcolor)
+  # + pn.geom_hline(yintercept = 0,
+  #                 color = 'black',
+  #                 linetype = 'dashed')
+  + pn.labs(title = 'Discrimination Parameter for Each Item',
+            x = 'Item',
+            y = 'Discrimination')
+  + pn.theme(axis_text_x = pn.element_blank())
+)
+```
+
+## Guessing
+
+3pl models only
+
+higher value = easier to guess
+
+```{python}
+#| eval: false
+#| echo: true
+
+guess = irtdf.filter(regex = '^c.*]$')
+guess = pd.DataFrame({
+  'mean': guess.mean(),
+  'std': guess.std(),
+  'q_lower': q_lower(guess),
+  'q_upper': q_upper(guess)
+}).reset_index()
+
+guess['item'] = guess['index'].str.replace('c[', '')
+guess['item'] = guess['item'].str.replace(']', '')
+guess = guess.drop(columns = 'index')
+guess.head()
+
+pn.ggplot.show(
+  pn.ggplot(guess,
+            pn.aes('item',
+                   'mean'))
+  + pn.geom_point(alpha = .5,
+                  color = jpcolor)
+  + pn.geom_errorbar(pn.aes(ymin = 'q_lower',
+                            ymax = 'q_upper'),
+                     alpha = .3,
+                     color = jpcolor)
+  # + pn.geom_hline(yintercept = 0,
+  #                 color = 'black',
+  #                 linetype = 'dashed')
+  + pn.labs(title = 'Difficulty Parameter for Each Item',
+            x = 'Item',
+            y = 'Difficulty')
+  + pn.theme(axis_text_x = pn.element_blank())
+)
+```
+
+## Replicated Data
+
+```{python}
+yirt = irtdf.filter(regex = '^y_rep')
+yirt.head()
+
+yirt_prob = pd.DataFrame({
+  'mean': yirt.mean(),
+  'std': yirt.std(),
+  'q_lower': q_lower(yirt),
+  'q_upper': q_upper(yirt)
+}).reset_index()
+
+yirt_prob['index'] = yirt_prob['index'].str.replace('y_rep[', '')
+yirt_prob['index'] = yirt_prob['index'].str.replace(']', '')
+yirt_prob[['stu', 'item']] = yirt_prob['index'].str.split(pat = ',', expand = True)
+yirt_prob = yirt_prob[['stu', 'item', 'mean', 'std', 'q_lower', 'q_upper']]
+yirt_prob[['stu', 'item']] = yirt_prob[['stu', 'item']].astype(int)
+yirt_prob['correct'] = np.where(yirt_prob['mean'] >= .5, 1, 0)
+
+# proportion that got each item correct
+yirt_prob.groupby('item')['correct'].sum()
+
+pn.ggplot.show(
+  pn.ggplot(yirt_prob,
+            pn.aes('stu',
+                   'mean'))
+  + pn.geom_point(pn.aes(color = 'factor(item)'),
+                  alpha = .5)
+  # + pn.geom_errorbar(pn.aes(ymin = 'q_lower',
+  #                           ymax = 'q_upper',
+  #                           color = 'factor(item)'),
+  #                    alpha = .1)
+  + pn.geom_hline(yintercept = .5,
+                  color = 'black',
+                  linetype = 'dashed')
+  + pn.labs(title = 'Probability Student Gets Items Correct',
+            x = 'Student',
+            y = 'Probability')
+  + pn.theme(axis_text_x = pn.element_blank())
+)
+```
+
+```{python}
+yirt_wide = (
+  yirt_prob
+  .pivot(
+    index = 'stu',
+    columns = 'item',
+    values = 'correct')
+  .reset_index(drop = True)
+)
+
+yirt_wide.columns = [f'item{i+1}' for i in np.arange(yirt_wide.shape[1])]
+yirt_wide = yirt_wide.reset_index()
+yirt_wide = yirt_wide.rename(columns = {'index': 'stu'})
+yirt_wide['stu'] = yirt_wide['stu'] + 1
+# yirt_wide.head()
+```
+
+```{python}
+irt_means = [ppp_func(df = yirt_prob, item_num = i, stat = 'mean') for i in np.arange(1, (y_describe.shape[1]))]
+irt_stds = [ppp_func(df = yirt_prob, item_num = i, stat = 'std') for i in np.arange(1, (y_describe.shape[1]))]
+
+ppp_irt = pd.DataFrame({'means': pd.Series(irt_means),
+                       'stds': pd.Series(irt_stds)})
+
+ppp_irt = ppp_irt.reset_index()
+ppp_irt = ppp_irt.rename(columns = {'index': 'item'})
+ppp_irt['item'] = ppp_irt['item'] + 1
+
+# ppp_irt.head()
+# y_describe
+```
+
+```{python}
+pn.ggplot.show(
+  pn.ggplot(ppp_irt, pn.aes('item', 'means'))
+  + pn.geom_point(color = jpcolor,
+                  size = 2)
+  + pn.geom_hline(yintercept = .5, linetype = 'dashed')
+  + pn.geom_hline(yintercept = .025, linetype = 'dotted')
+  + pn.geom_hline(yintercept = .975, linetype = 'dotted')
+  + pn.scale_x_continuous(limits = [1, ppp_irt['item'].max() + 1],
+                          breaks = np.arange(1, ppp_irt['item'].max() + 1))
+  + pn.scale_y_continuous(limits = [0, 1.01],
+                          breaks = np.arange(0, 1.01, .1))
+  + pn.theme_light()
+)
+```
+
+```{python}
+pn.ggplot.show(
+  pn.ggplot(ppp_irt, pn.aes('item', 'stds'))
+  + pn.geom_point(color = jpcolor,
+                  size = 2)
+  + pn.geom_hline(yintercept = .5, linetype = 'dashed')
+  + pn.geom_hline(yintercept = .025, linetype = 'dotted')
+  + pn.geom_hline(yintercept = .975, linetype = 'dotted')
+  + pn.scale_x_continuous(limits = [1, ppp_irt['item'].max() + 1],
+                          breaks = np.arange(1, ppp_irt['item'].max() + 1))
+  + pn.scale_y_continuous(limits = [0, 1.01],
+                          breaks = np.arange(0, 1.01, .1))
+  + pn.theme_light()
+)
+```
+
+# If wanting to save IRT models
+
+```{python}
+#| eval: true
+#| echo: true
+
+irt_prior_diagnose.to_csv(here(f'diagnostics/{irt_num}pl_irt_{quiz_num}_prior_only.csv'))
+
+(
+  joblib.dump([irt_prior_model, irt_prior_fit],
+              here(f'joblib_models/{irt_num}pl_irt_{quiz_num}_modfit_prior_only.joblib'),
+              compress = 3)
+)
+
+irt_diagnose.to_csv(here(f'diagnostics/{irt_num}pl_irt_{quiz_num}.csv'))
+
+(
+  joblib.dump([irt_model, irt_fit],
+              here(f'joblib_models/{irt_num}pl_irt_{quiz_num}_modfit.joblib'),
+              compress = 3)
+)
+```

@@ -8,18 +8,19 @@ data {
   matrix<lower=0,upper=1> [C,K] alpha;
 }
 parameters {
-  // simplex[C] nu;
-  ordered[C] raw_nu; // if label switching happens    
+  // ordered[C] raw_nu; 
+  simplex[C] nu; 
   vector[I] beta0;
   vector<lower=0>[I] beta1;
   vector<lower=0>[I] beta2;
-  vector[I] beta12;
+  vector<lower=0>[I] beta3;
+  vector[I] beta13;
+  vector[I] beta23;
 }
 transformed parameters{
-  simplex[C] nu; // if label switching happens    
   matrix[I,C] pi;
 
-  nu = softmax(raw_nu); // if label switching happens    
+  // nu = softmax(raw_nu);
   vector[C] log_nu = log(nu);
 
   for (c in 1:C){
@@ -27,20 +28,24 @@ transformed parameters{
       pi[i,c] = inv_logit(beta0[i] +
       beta1[i] * alpha[c,1] +
       beta2[i] * alpha[c,2] +
-      beta12[i] * alpha[c,1] * alpha[c,2]);
+      beta3[i] * alpha[c,3] +
+      beta13[i] * alpha[c,1] * alpha[c,3] +
+      beta23[i] * alpha[c,2] * alpha[c,3]
+    );
     }
   }
 }
 model {
   // Priors
-  raw_nu ~ normal(0, 1); // if label switching happens    
-  // nu  ~ dirichlet(rep_vector(1.0, C));
-  
+  // raw_nu ~ normal(0, 1);
+  nu  ~ dirichlet(rep_vector(1.0, C));
   for (i in 1:I){
     beta0[i] ~ normal(0, 1);
-    beta1[i] ~ normal(0, 1);
-    beta2[i] ~ normal(0, 1);
-    beta12[i] ~ normal(0, 1);
+    beta1[i] ~ lognormal(0, 1);
+    beta2[i] ~ lognormal(0, 1);
+    beta3[i] ~ lognormal(0, 1);
+    beta13[i] ~ normal(0, 1);
+    beta23[i] ~ normal(0, 1);
   }
 }
 generated quantities {

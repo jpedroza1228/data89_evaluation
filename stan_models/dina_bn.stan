@@ -8,30 +8,33 @@ data {
   matrix<lower=0,upper=1> [C,K] alpha;
 }
 parameters {
-  ordered[C] raw_nu;
+  simplex[C] nu;
   vector<lower=0, upper=1>[I] tp; //slip (1 - tp)
   vector<lower=0, upper=1>[I] fp; //guess
   real<lower=0, upper=1> lambda1;
   real<lower=0, upper=1> lambda2;
+  real<lower=0, upper=1> lambda3;
 }
 transformed parameters{
-  simplex[C] nu;
+  vector[C] raw_nu;
   vector[C] theta1;
   vector[C] theta2;
+  vector[C] theta3;
   matrix[I, C] delta;
   matrix[I,C] pi;
-
-  nu = softmax(raw_nu);
-  vector[C] log_nu = log(nu);
 
   for (c in 1 : C) {
     theta1[c] = (alpha[c, 1] > 0) ? lambda1 : (1 - lambda1);
     theta2[c] = (alpha[c, 2] > 0) ? lambda2 : (1 - lambda2);
+    theta3[c] = (alpha[c, 3] > 0) ? lambda3 : (1 - lambda3);
+    raw_nu[c] = theta1[c] * theta2[c] * theta3[c];
   }
+
+  vector[C] log_nu = log(nu);
   
   for(c in 1:C){
     for(i in 1:I){
-      delta[i, c] = pow(theta1[c], Q[i, 1]) * pow(theta2[c], Q[i, 2]);
+      delta[i, c] = pow(theta1[c], Q[i, 1]) * pow(theta2[c], Q[i, 2]) * pow(theta3[c], Q[i, 3]);
     }
   }
 
@@ -49,6 +52,7 @@ model {
   raw_nu ~ normal(0, 1);
   lambda1 ~ beta(20, 5);
   lambda2 ~ beta(20, 5);
+  lambda3 ~ beta(20, 5);
   
   for (i in 1:I){
     tp[i] ~ beta(20, 5);
