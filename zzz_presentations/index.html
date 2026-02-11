@@ -1,0 +1,2995 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js" integrity="sha384-ZvpUoO/+PpLXR1lu4jmpXWu80pZlYUAfxl5NsBMWOEPSjUn/6Z/hRTt8+pR6L4N2" crossorigin="anonymous"></script><script src="index_files/libs/clipboard/clipboard.min.js"></script>
+<script src="index_files/libs/quarto-html/tabby.min.js"></script>
+<script src="index_files/libs/quarto-html/popper.min.js"></script>
+<script src="index_files/libs/quarto-html/tippy.umd.min.js"></script>
+<link href="index_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="index_files/libs/quarto-html/light-border.css" rel="stylesheet">
+<link href="index_files/libs/quarto-html/quarto-syntax-highlighting-587c61ba64f3a5504c4d52d930310e48.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
+  <meta name="generator" content="quarto-1.8.26">
+
+  <meta name="author" content="Jonathan A. Pedroza, PhD">
+  <meta name="dcterms.date" content="2026-02-11">
+  <title>Introduction to Bayesian Analyses &amp; Stan</title>
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+  <link rel="stylesheet" href="index_files/libs/revealjs/dist/reset.css">
+  <link rel="stylesheet" href="index_files/libs/revealjs/dist/reveal.css">
+  <style>
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: min(4vw, 1.5em);}
+    div.column{flex: auto; overflow-x: auto;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+      vertical-align: middle;
+    }
+    /* CSS for syntax highlighting */
+    html { -webkit-text-size-adjust: 100%; }
+    pre > code.sourceCode { white-space: pre; position: relative; }
+    pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+    pre > code.sourceCode > span:empty { height: 1.2em; }
+    .sourceCode { overflow: visible; }
+    code.sourceCode > span { color: inherit; text-decoration: inherit; }
+    div.sourceCode { margin: 1em 0; }
+    pre.sourceCode { margin: 0; }
+    @media screen {
+    div.sourceCode { overflow: auto; }
+    }
+    @media print {
+    pre > code.sourceCode { white-space: pre-wrap; }
+    pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+    }
+    pre.numberSource code
+      { counter-reset: source-line 0; }
+    pre.numberSource code > span
+      { position: relative; left: -4em; counter-increment: source-line; }
+    pre.numberSource code > span > a:first-child::before
+      { content: counter(source-line);
+        position: relative; left: -1em; text-align: right; vertical-align: baseline;
+        border: none; display: inline-block;
+        -webkit-touch-callout: none; -webkit-user-select: none;
+        -khtml-user-select: none; -moz-user-select: none;
+        -ms-user-select: none; user-select: none;
+        padding: 0 4px; width: 4em;
+        color: #aaaaaa;
+      }
+    pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+    div.sourceCode
+      { color: #003b4f; background-color: #f1f3f5; }
+    @media screen {
+    pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+    }
+    code span { color: #003b4f; } /* Normal */
+    code span.al { color: #ad0000; } /* Alert */
+    code span.an { color: #5e5e5e; } /* Annotation */
+    code span.at { color: #657422; } /* Attribute */
+    code span.bn { color: #ad0000; } /* BaseN */
+    code span.bu { } /* BuiltIn */
+    code span.cf { color: #003b4f; font-weight: bold; } /* ControlFlow */
+    code span.ch { color: #20794d; } /* Char */
+    code span.cn { color: #8f5902; } /* Constant */
+    code span.co { color: #5e5e5e; } /* Comment */
+    code span.cv { color: #5e5e5e; font-style: italic; } /* CommentVar */
+    code span.do { color: #5e5e5e; font-style: italic; } /* Documentation */
+    code span.dt { color: #ad0000; } /* DataType */
+    code span.dv { color: #ad0000; } /* DecVal */
+    code span.er { color: #ad0000; } /* Error */
+    code span.ex { } /* Extension */
+    code span.fl { color: #ad0000; } /* Float */
+    code span.fu { color: #4758ab; } /* Function */
+    code span.im { color: #00769e; } /* Import */
+    code span.in { color: #5e5e5e; } /* Information */
+    code span.kw { color: #003b4f; font-weight: bold; } /* Keyword */
+    code span.op { color: #5e5e5e; } /* Operator */
+    code span.ot { color: #003b4f; } /* Other */
+    code span.pp { color: #ad0000; } /* Preprocessor */
+    code span.sc { color: #5e5e5e; } /* SpecialChar */
+    code span.ss { color: #20794d; } /* SpecialString */
+    code span.st { color: #20794d; } /* String */
+    code span.va { color: #111111; } /* Variable */
+    code span.vs { color: #20794d; } /* VerbatimString */
+    code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
+  </style>
+  <link rel="stylesheet" href="index_files/libs/revealjs/dist/theme/quarto-832775eafbd512325564c8c290c39367.css">
+  <link href="index_files/libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
+  <link href="index_files/libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
+  <link href="index_files/libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
+  <link href="index_files/libs/revealjs/plugin/quarto-support/footer.css" rel="stylesheet">
+  <style type="text/css">
+    .reveal div.sourceCode {
+      margin: 0;
+      overflow: auto;
+    }
+    .reveal div.hanging-indent {
+      margin-left: 1em;
+      text-indent: -1em;
+    }
+    .reveal .slide:not(.center) {
+      height: 100%;
+      overflow-y: auto;
+    }
+    .reveal .slide.scrollable {
+      overflow-y: auto;
+    }
+    .reveal .footnotes {
+      height: 100%;
+      overflow-y: auto;
+    }
+    .reveal .slide .absolute {
+      position: absolute;
+      display: block;
+    }
+    .reveal .footnotes ol {
+      counter-reset: ol;
+      list-style-type: none; 
+      margin-left: 0;
+    }
+    .reveal .footnotes ol li:before {
+      counter-increment: ol;
+      content: counter(ol) ". "; 
+    }
+    .reveal .footnotes ol li > p:first-child {
+      display: inline-block;
+    }
+    .reveal .slide ul,
+    .reveal .slide ol {
+      margin-bottom: 0.5em;
+    }
+    .reveal .slide ul li,
+    .reveal .slide ol li {
+      margin-top: 0.4em;
+      margin-bottom: 0.2em;
+    }
+    .reveal .slide ul[role="tablist"] li {
+      margin-bottom: 0;
+    }
+    .reveal .slide ul li > *:first-child,
+    .reveal .slide ol li > *:first-child {
+      margin-block-start: 0;
+    }
+    .reveal .slide ul li > *:last-child,
+    .reveal .slide ol li > *:last-child {
+      margin-block-end: 0;
+    }
+    .reveal .slide .columns:nth-child(3) {
+      margin-block-start: 0.8em;
+    }
+    .reveal blockquote {
+      box-shadow: none;
+    }
+    .reveal .tippy-content>* {
+      margin-top: 0.2em;
+      margin-bottom: 0.7em;
+    }
+    .reveal .tippy-content>*:last-child {
+      margin-bottom: 0.2em;
+    }
+    .reveal .slide > img.stretch.quarto-figure-center,
+    .reveal .slide > img.r-stretch.quarto-figure-center {
+      display: block;
+      margin-left: auto;
+      margin-right: auto; 
+    }
+    .reveal .slide > img.stretch.quarto-figure-left,
+    .reveal .slide > img.r-stretch.quarto-figure-left  {
+      display: block;
+      margin-left: 0;
+      margin-right: auto; 
+    }
+    .reveal .slide > img.stretch.quarto-figure-right,
+    .reveal .slide > img.r-stretch.quarto-figure-right  {
+      display: block;
+      margin-left: auto;
+      margin-right: 0; 
+    }
+  </style>
+  <script src="https://cdn.jsdelivr.net/npm/requirejs@2.3.6/require.min.js" integrity="sha384-c9c+LnTbwQ3aujuU7ULEPVvgLs+Fn6fJUvIGTsuu1ZcCf11fiEubah0ttpca4ntM sha384-6V1/AdqZRWk1KAlWbKBlGhN7VG4iE/yAZcO6NZPMF8od0vukrvr0tg4qY6NSrItx" crossorigin="anonymous"></script>
+  
+  <script type="application/javascript">define('jquery', [],function() {return window.jQuery;})</script>
+</head>
+<body class="quarto-light">
+  <div class="reveal">
+    <div class="slides">
+
+<section id="title-slide" class="quarto-title-block center">
+  <h1 class="title">Introduction to Bayesian Analyses &amp; Stan</h1>
+  <p class="subtitle">By Examining Student Proficiency on Statistical Concepts</p>
+
+<div class="quarto-title-authors">
+<div class="quarto-title-author">
+<div class="quarto-title-author-name">
+Jonathan A. Pedroza, PhD 
+</div>
+</div>
+</div>
+
+  <p class="date">2026-02-11</p>
+</section>
+<section id="my-useful-resources" class="slide level2">
+<h2>My Useful Resource(s)</h2>
+<div class="columns">
+<div class="column" style="width:55%;">
+<ul>
+<li><p>I found <a href="https://distribution-explorer.github.io/continuous/halfnormal.html">the Distribution Explorer site</a> and have been using it constantly</p>
+<ul>
+<li><p>Constant need for visualizing distributions</p>
+<ul>
+<li>Priors</li>
+</ul></li>
+</ul></li>
+<li><p><a href="https://mc-stan.org/docs/stan-users-guide/">Stan Documentation</a></p></li>
+<li><p><a href="https://www.dagitty.net/">Dagitty</a> for building Directed Acyclic Graphs (DAGs)</p></li>
+</ul>
+</div><div class="column" style="width:45%;">
+<div class="quarto-figure quarto-figure-left">
+<figure>
+<p><img data-src="./images/half_moon.jpg" style="width:5in;height:4in" alt="Image where only the right half of the moon is visible."></p>
+<figcaption>Photo by <a href="https://unsplash.com/@nastya_kvokka?utm_source=unsplash&amp;utm_medium=referral&amp;utm_content=creditCopyText">Nastya Kvokka</a> on <a href="https://unsplash.com/photos/half-moon-photography-Ifk3WssHNRw?utm_source=unsplash&amp;utm_medium=referral&amp;utm_content=creditCopyText">Unsplash</a></figcaption>
+</figure>
+</div>
+</div></div>
+<aside class="notes">
+
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="feedback" class="slide level2">
+<h2>Feedback</h2>
+<ul>
+<li><p>Feedback on additional considerations to think about</p>
+<ul>
+<li><p>Bi-monthly check-in surveys (level of understanding)</p></li>
+<li><p>Pre- &amp; Post-test considerations</p></li>
+</ul></li>
+<li><p>Next Steps</p>
+<ul>
+<li><p>Include more measures for pre-/post-test &amp; check ins</p></li>
+<li><p>Interviews/Focus Groups</p></li>
+<li><p>Assessing Instructor Effectiveness</p></li>
+<li><p>Parameterizing and automating models and check ins</p></li>
+</ul></li>
+</ul>
+<aside class="notes">
+<p>Speaker Notes here</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="before-we-begin-begin" class="slide level2">
+<h2>Before We Begin Begin</h2>
+<ul>
+<li><p>Terminology</p>
+<ul>
+<li><p>Latent = Hidden/Unknown/Not seen in our data</p></li>
+<li><p>Attribute = Latent Variable/Skill/Concept</p></li>
+<li><p>(Latent) Class = Group based on which items/questions get correct</p></li>
+<li><p>Node(s) = Variable in Bayesian Network (Bayes Net) terminology</p></li>
+<li><p>Edges = Relationships/Associations in Bayes Net terminology</p></li>
+</ul></li>
+</ul>
+<aside class="notes">
+<ul>
+<li><p>Latent thinking</p></li>
+<li><p>Know tuberculosis is a bacteria infection; deadly if left untreated</p>
+<ul>
+<li><p>Now you get a blood test; before you would check for the bump</p></li>
+<li><p>Latent tuberculosis: you have the bacteria in your system FOREVER, but it remains dormant; no symptoms no illness</p></li>
+</ul></li>
+</ul>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="before-we-actually-begin" class="slide level2">
+<h2>Before We Actually Begin</h2>
+<div class="columns">
+<div class="column" style="width:50%;">
+<div class="quarto-figure quarto-figure-left">
+<figure>
+<p><img data-src="./images/slow_down.jpg" style="width:5in;height:4in" alt="Image of yellow sign that states 'Please Slow Down'."></p>
+<figcaption>Photo by <a href="https://unsplash.com/@jontyson?utm_source=unsplash&amp;utm_medium=referral&amp;utm_content=creditCopyText">Jon Tyson</a> on <a href="https://unsplash.com/photos/yellow-and-black-caution-wet-floor-sign-u7xG81ob0HE?utm_source=unsplash&amp;utm_medium=referral&amp;utm_content=creditCopyText">Unsplash</a></figcaption>
+</figure>
+</div>
+</div><div class="column" style="width:50%;">
+<ul>
+<li><p>This is a quick dive into Diagnostic Classification Models (DCM) and Item Response Theory (IRT) models</p>
+<ul>
+<li>There is vast world of psychometric models, including Mixture IRT models, Multidimensional IRT (more than 1 latent skill), IRT Factor Analysis (polychoric correlation matrix)</li>
+</ul></li>
+<li><p>I’ll provide enough information to follow along and share a little about models I think are interesting to use</p></li>
+<li><p>Really interested in the design/questions to ask students</p></li>
+</ul>
+</div></div>
+<aside class="notes">
+<ul>
+<li><p>To confuse you immediately, these are also called Cognitive Diagnostic Models (CDM)</p></li>
+<li><p>I’ll stick to DCMs</p></li>
+<li><p>The models are only as strong as the design</p></li>
+</ul>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="why-bayesian-statistics" class="slide level2">
+<h2>Why Bayesian Statistics</h2>
+<ul>
+<li><p>Why not?</p>
+<ul>
+<li>We have the computing power</li>
+</ul></li>
+<li><p>Can use prior information to update our beliefs</p>
+<ul>
+<li><p>How many students do we think would/should know the skill</p>
+<ul>
+<li><p>Previous course performance</p></li>
+<li><p>Previous quizzes</p></li>
+<li><p>Instructor expectations</p></li>
+</ul></li>
+</ul></li>
+<li><p>no p-values</p></li>
+<li><p>Credible Intervals &gt; Confidence Intervals</p></li>
+</ul>
+<p><span class="math display">\[ Pr(A|B) = \frac{Pr(B|A)Pr(A)}{Pr(B)}\]</span></p>
+<aside class="notes">
+<ul>
+<li><p>Both Frequentist and Bayesian approaches have their pros and cons</p>
+<ul>
+<li>Interested in probability and uncertainty</li>
+</ul></li>
+<li><p>Bayesian statistics provides a distribution as the estimate (posterior distribution) compared to Frequentists having point estimates &amp; p-values</p>
+<ul>
+<li><strong>Bootstrapping</strong> is resampling from data (may be overlap in resamples) randomly from the point estimate, Markov Chain Monte Carlo (MCMC) is a random walk that moves across space</li>
+</ul></li>
+<li><p>Credible intervals are interpreted as having 95% probability a value is within the intervals</p></li>
+<li><p>Confidence intervals are interpreted as: if we ran this analysis a bunch of times, 95% of the time our true parameter would be in between the intervals</p></li>
+<li><p>Probability of A happening given B happened; <span class="math inline">\(Pr(A|B)\)</span></p></li>
+<li><p>Probability of B given A; <span class="math inline">\(Pr(B|A)\)</span>; or our likelihood; how likely to get answer correct given our prior information</p></li>
+<li><p>Probability of A; <span class="math inline">\(Pr(A)\)</span> is our prior information; how many students should/would know this concept</p></li>
+<li><p>Probability of B; <span class="math inline">\(Pr(B)\)</span> is how likely a student got an item correct</p></li>
+</ul>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="markov-chain-monte-carlo-mcmc---hamiltonian-monte-carlo-hmc" class="slide level2">
+<h2>Markov Chain Monte Carlo (MCMC) - Hamiltonian Monte Carlo (HMC)</h2>
+<ul>
+<li><p>We explore the parameter space for each parameter to get our posterior distribution</p>
+<ul>
+<li>We do this with thousands of samples/draws with a predetermined number of chains/simulations</li>
+</ul></li>
+<li><p>We also want to only use the meaningful measurements</p>
+<ul>
+<li>Burn in with a number of draws to get started</li>
+</ul></li>
+</ul>
+<aside class="notes">
+<ul>
+<li><p>We are focused on getting distributions, not point estimates</p></li>
+<li><p>I’ve read about going around a lake on a boat and measuring the depth at thousands of differnt points</p>
+<ul>
+<li>We would also need multiple boats starting at different points going around measuring points</li>
+</ul></li>
+</ul>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="psychometric-models-vs-classifical-test-theory" class="slide level2">
+<h2>Psychometric Models vs Classifical Test Theory</h2>
+<div class="columns">
+<div class="column" style="width:60%;">
+<ul>
+<li><p>Various types of psychometrics models</p>
+<ul>
+<li><p>(M)IRT</p>
+<ul>
+<li>Umbrella term for models where our latent skill(s) is/are continuous</li>
+</ul></li>
+<li><p>DCM</p>
+<ul>
+<li><p>Umbrella term for models where our latent skill(s) is/are categorical</p>
+<ul>
+<li>Most focus on binary latent skills (proficient vs not proficient)</li>
+</ul></li>
+</ul></li>
+</ul></li>
+<li><p>Classical Test Theory</p>
+<ul>
+<li><p>Get an average/total and error</p></li>
+<li><p>No focus on items or individuals</p></li>
+</ul></li>
+</ul>
+</div><div class="column" style="width:40%;">
+<div class="quarto-figure quarto-figure-left">
+<figure>
+<p><img data-src="./images/hidden.jpg" style="width:5in;height:4in" alt="Image of Someone hiding behind a thin curtain that shows the outline of their body and face."></p>
+<figcaption>Photo by <a href="https://unsplash.com/@iankeefe?utm_source=unsplash&amp;utm_medium=referral&amp;utm_content=creditCopyText">Ian Keefe</a> on <a href="https://unsplash.com/photos/person-hiding-on-white-curtain-gV7l2YslRS4?utm_source=unsplash&amp;utm_medium=referral&amp;utm_content=creditCopyText">Unsplash</a></figcaption>
+</figure>
+</div>
+</div></div>
+<aside class="notes">
+<ul>
+<li>MIRT = multidimensional item response theory</li>
+</ul>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="why-dcms" class="slide level2">
+<h2>Why DCMs</h2>
+<ul>
+<li><p>Interested in binary outcomes for skills (proficient vs not proficient)</p></li>
+<li><p>Two major components</p>
+<ul>
+<li><p>Probabilistically putting individuals into classes</p></li>
+<li><p>Identifying individuals who are proficient in skills assessed</p></li>
+</ul></li>
+<li><p>Allows for specific research questions</p>
+<ul>
+<li><p>How many students know the skills? –&gt; Should I teach this differently?</p></li>
+<li><p>How likely is it for students to guess and get items correctly?</p></li>
+</ul></li>
+<li><p>Takes into consideration expert opinion (Q-Matrix)</p>
+<ul>
+<li><strong>Different experts may have different opinions</strong></li>
+</ul></li>
+</ul>
+<aside class="notes">
+<ul>
+<li><p>Extension from Latent Class Analysis</p></li>
+<li><p>These models do not put individuals on a continuum</p></li>
+<li><p>Can be used for various fields, not just education</p>
+<ul>
+<li><p>Assess many skills/attributes</p></li>
+<li><p>Quiz/exam proficiency, intervention materials covered, large assessment system (Duolingo), observational/evaluation (Did they welcome person at door? , Did they smile? , Did they engage in small talk? –&gt; Customer Service)</p></li>
+</ul></li>
+</ul>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="q-matrix" class="slide level2">
+<h2>Q-Matrix</h2>
+<div class="columns">
+<div class="column" style="width:60%;">
+<ul>
+<li><p>Matrix with items (rows) and skills (columns)</p></li>
+<li><p>Items can assess a single attribute or multiple attributes</p></li>
+<li><p>Handled differently based on the model (we’ll discuss this)</p></li>
+</ul>
+</div><div class="column" style="width:40%;">
+<div id="036ca696" class="cell" data-execution_count="1">
+<div class="cell-output cell-output-display">
+<div id="aedfnrucxg" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>
+#aedfnrucxg table {
+          font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif;
+          -webkit-font-smoothing: antialiased;
+          -moz-osx-font-smoothing: grayscale;
+        }
+
+#aedfnrucxg thead, tbody, tfoot, tr, td, th { border-style: none; }
+ tr { background-color: transparent; }
+#aedfnrucxg p { margin: 0; padding: 0; }
+ #aedfnrucxg .gt_table { display: table; border-collapse: collapse; line-height: normal; margin-left: auto; margin-right: auto; color: #333333; font-size: 16px; font-weight: normal; font-style: normal; background-color: #FFFFFF; width: auto; border-top-style: solid; border-top-width: 2px; border-top-color: #A8A8A8; border-right-style: none; border-right-width: 2px; border-right-color: #D3D3D3; border-bottom-style: solid; border-bottom-width: 2px; border-bottom-color: #A8A8A8; border-left-style: none; border-left-width: 2px; border-left-color: #D3D3D3; }
+ #aedfnrucxg .gt_caption { padding-top: 4px; padding-bottom: 4px; }
+ #aedfnrucxg .gt_title { color: #333333; font-size: 125%; font-weight: initial; padding-top: 4px; padding-bottom: 4px; padding-left: 5px; padding-right: 5px; border-bottom-color: #FFFFFF; border-bottom-width: 0; }
+ #aedfnrucxg .gt_subtitle { color: #333333; font-size: 85%; font-weight: initial; padding-top: 3px; padding-bottom: 5px; padding-left: 5px; padding-right: 5px; border-top-color: #FFFFFF; border-top-width: 0; }
+ #aedfnrucxg .gt_heading { background-color: #FFFFFF; text-align: center; border-bottom-color: #FFFFFF; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; }
+ #aedfnrucxg .gt_bottom_border { border-bottom-style: solid; border-bottom-width: 2px; border-bottom-color: #D3D3D3; }
+ #aedfnrucxg .gt_col_headings { border-top-style: solid; border-top-width: 2px; border-top-color: #D3D3D3; border-bottom-style: solid; border-bottom-width: 2px; border-bottom-color: #D3D3D3; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; }
+ #aedfnrucxg .gt_col_heading { color: #333333; background-color: #FFFFFF; font-size: 100%; font-weight: normal; text-transform: inherit; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: bottom; padding-top: 5px; padding-bottom: 5px; padding-left: 5px; padding-right: 5px; overflow-x: hidden; }
+ #aedfnrucxg .gt_column_spanner_outer { color: #333333; background-color: #FFFFFF; font-size: 100%; font-weight: normal; text-transform: inherit; padding-top: 0; padding-bottom: 0; padding-left: 4px; padding-right: 4px; }
+ #aedfnrucxg .gt_column_spanner_outer:first-child { padding-left: 0; }
+ #aedfnrucxg .gt_column_spanner_outer:last-child { padding-right: 0; }
+ #aedfnrucxg .gt_column_spanner { border-bottom-style: solid; border-bottom-width: 2px; border-bottom-color: #D3D3D3; vertical-align: bottom; padding-top: 5px; padding-bottom: 5px; overflow-x: hidden; display: inline-block; width: 100%; }
+ #aedfnrucxg .gt_spanner_row { border-bottom-style: hidden; }
+ #aedfnrucxg .gt_group_heading { padding-top: 8px; padding-bottom: 8px; padding-left: 5px; padding-right: 5px; color: #333333; background-color: #FFFFFF; font-size: 100%; font-weight: initial; text-transform: inherit; border-top-style: solid; border-top-width: 2px; border-top-color: #D3D3D3; border-bottom-style: solid; border-bottom-width: 2px; border-bottom-color: #D3D3D3; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; text-align: left; }
+ #aedfnrucxg .gt_empty_group_heading { padding: 0.5px; color: #333333; background-color: #FFFFFF; font-size: 100%; font-weight: initial; border-top-style: solid; border-top-width: 2px; border-top-color: #D3D3D3; border-bottom-style: solid; border-bottom-width: 2px; border-bottom-color: #D3D3D3; vertical-align: middle; }
+ #aedfnrucxg .gt_from_md> :first-child { margin-top: 0; }
+ #aedfnrucxg .gt_from_md> :last-child { margin-bottom: 0; }
+ #aedfnrucxg .gt_row { padding-top: 8px; padding-bottom: 8px; padding-left: 5px; padding-right: 5px; margin: 10px; border-top-style: solid; border-top-width: 1px; border-top-color: #D3D3D3; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; overflow-x: hidden; }
+ #aedfnrucxg .gt_stub { color: #333333; background-color: #FFFFFF; font-size: 100%; font-weight: initial; text-transform: inherit; border-right-style: solid; border-right-width: 2px; border-right-color: #D3D3D3; padding-left: 5px; padding-right: 5px; }
+ #aedfnrucxg .gt_stub_row_group { color: #333333; background-color: #FFFFFF; font-size: 100%; font-weight: initial; text-transform: inherit; border-right-style: solid; border-right-width: 2px; border-right-color: #D3D3D3; padding-left: 5px; padding-right: 5px; vertical-align: top; }
+ #aedfnrucxg .gt_row_group_first td { border-top-width: 2px; }
+ #aedfnrucxg .gt_row_group_first th { border-top-width: 2px; }
+ #aedfnrucxg .gt_striped { color: #333333; background-color: #F4F4F4; }
+ #aedfnrucxg .gt_table_body { border-top-style: solid; border-top-width: 2px; border-top-color: #D3D3D3; border-bottom-style: solid; border-bottom-width: 2px; border-bottom-color: #D3D3D3; }
+ #aedfnrucxg .gt_grand_summary_row { color: #333333; background-color: #FFFFFF; text-transform: inherit; padding-top: 8px; padding-bottom: 8px; padding-left: 5px; padding-right: 5px; }
+ #aedfnrucxg .gt_first_grand_summary_row_bottom { border-top-style: double; border-top-width: 6px; border-top-color: #D3D3D3; }
+ #aedfnrucxg .gt_last_grand_summary_row_top { border-bottom-style: double; border-bottom-width: 6px; border-bottom-color: #D3D3D3; }
+ #aedfnrucxg .gt_sourcenotes { color: #333333; background-color: #FFFFFF; border-bottom-style: none; border-bottom-width: 2px; border-bottom-color: #D3D3D3; border-left-style: none; border-left-width: 2px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 2px; border-right-color: #D3D3D3; }
+ #aedfnrucxg .gt_sourcenote { font-size: 90%; padding-top: 4px; padding-bottom: 4px; padding-left: 5px; padding-right: 5px; text-align: left; }
+ #aedfnrucxg .gt_left { text-align: left; }
+ #aedfnrucxg .gt_center { text-align: center; }
+ #aedfnrucxg .gt_right { text-align: right; font-variant-numeric: tabular-nums; }
+ #aedfnrucxg .gt_font_normal { font-weight: normal; }
+ #aedfnrucxg .gt_font_bold { font-weight: bold; }
+ #aedfnrucxg .gt_font_italic { font-style: italic; }
+ #aedfnrucxg .gt_super { font-size: 65%; }
+ #aedfnrucxg .gt_footnote_marks { font-size: 75%; vertical-align: 0.4em; position: initial; }
+ #aedfnrucxg .gt_asterisk { font-size: 100%; vertical-align: 0; }
+ 
+</style>
+
+<table class="gt_table caption-top" data-quarto-bootstrap="false">
+<thead>
+<tr class="gt_heading header">
+<td colspan="4" class="gt_heading gt_title gt_font_normal">Q Matrix</td>
+</tr>
+<tr class="gt_col_headings even">
+<th id="Item" class="gt_col_heading gt_columns_bottom_border gt_left" data-quarto-table-cell-role="th" scope="col">Item</th>
+<th id="Addition" class="gt_col_heading gt_columns_bottom_border gt_right" data-quarto-table-cell-role="th" scope="col">Addition</th>
+<th id="Subtraction" class="gt_col_heading gt_columns_bottom_border gt_right" data-quarto-table-cell-role="th" scope="col">Subtraction</th>
+<th id="Multiplication" class="gt_col_heading gt_columns_bottom_border gt_right" data-quarto-table-cell-role="th" scope="col">Multiplication</th>
+</tr>
+</thead>
+<tbody class="gt_table_body">
+<tr class="odd">
+<td class="gt_row gt_left">2 + 3</td>
+<td class="gt_row gt_right">1</td>
+<td class="gt_row gt_right">0</td>
+<td class="gt_row gt_right">0</td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_left">2 + 3 - 1</td>
+<td class="gt_row gt_right">1</td>
+<td class="gt_row gt_right">1</td>
+<td class="gt_row gt_right">0</td>
+</tr>
+<tr class="odd">
+<td class="gt_row gt_left">3 x 2</td>
+<td class="gt_row gt_right">0</td>
+<td class="gt_row gt_right">0</td>
+<td class="gt_row gt_right">1</td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_left">10(6 + 2)</td>
+<td class="gt_row gt_right">1</td>
+<td class="gt_row gt_right">0</td>
+<td class="gt_row gt_right">1</td>
+</tr>
+<tr class="odd">
+<td class="gt_row gt_left">(4 + 5) + 2(10 - 7)</td>
+<td class="gt_row gt_right">1</td>
+<td class="gt_row gt_right">1</td>
+<td class="gt_row gt_right">1</td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_left">2(5)</td>
+<td class="gt_row gt_right">0</td>
+<td class="gt_row gt_right">0</td>
+<td class="gt_row gt_right">1</td>
+</tr>
+</tbody>
+</table>
+
+
+</div>
+</div>
+</div>
+</div></div>
+<aside class="notes">
+<ul>
+<li><p>Multiple attributes are handled differently by different DCMs</p></li>
+<li><p>This leads to panic time OR theory/empirical evidence</p></li>
+</ul>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="more-matrices" class="slide level2">
+<h2>More Matrices</h2>
+<ul>
+<li><p>Attribute Profile Matrix (Latent Class x Attribute)</p>
+<ul>
+<li><p>Creating a matrix based on the number of possible classes based on binary skills, or <span class="math inline">\(2^x\)</span></p></li>
+<li><p>With 1 skill, you can only have 0 or 1</p></li>
+<li><p>2 skills allow for 4 classes, 00, 10, 01, 11</p></li>
+</ul></li>
+</ul>
+<div id="f0a16906" class="cell" data-execution_count="2">
+<div class="cell-output cell-output-display">
+<div id="bfzsjtypxp" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>
+#bfzsjtypxp table {
+          font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif;
+          -webkit-font-smoothing: antialiased;
+          -moz-osx-font-smoothing: grayscale;
+        }
+
+#bfzsjtypxp thead, tbody, tfoot, tr, td, th { border-style: none; }
+ tr { background-color: transparent; }
+#bfzsjtypxp p { margin: 0; padding: 0; }
+ #bfzsjtypxp .gt_table { display: table; border-collapse: collapse; line-height: normal; margin-left: auto; margin-right: auto; color: #333333; font-size: 16px; font-weight: normal; font-style: normal; background-color: #FFFFFF; width: auto; border-top-style: solid; border-top-width: 2px; border-top-color: #A8A8A8; border-right-style: none; border-right-width: 2px; border-right-color: #D3D3D3; border-bottom-style: solid; border-bottom-width: 2px; border-bottom-color: #A8A8A8; border-left-style: none; border-left-width: 2px; border-left-color: #D3D3D3; }
+ #bfzsjtypxp .gt_caption { padding-top: 4px; padding-bottom: 4px; }
+ #bfzsjtypxp .gt_title { color: #333333; font-size: 125%; font-weight: initial; padding-top: 4px; padding-bottom: 4px; padding-left: 5px; padding-right: 5px; border-bottom-color: #FFFFFF; border-bottom-width: 0; }
+ #bfzsjtypxp .gt_subtitle { color: #333333; font-size: 85%; font-weight: initial; padding-top: 3px; padding-bottom: 5px; padding-left: 5px; padding-right: 5px; border-top-color: #FFFFFF; border-top-width: 0; }
+ #bfzsjtypxp .gt_heading { background-color: #FFFFFF; text-align: center; border-bottom-color: #FFFFFF; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; }
+ #bfzsjtypxp .gt_bottom_border { border-bottom-style: solid; border-bottom-width: 2px; border-bottom-color: #D3D3D3; }
+ #bfzsjtypxp .gt_col_headings { border-top-style: solid; border-top-width: 2px; border-top-color: #D3D3D3; border-bottom-style: solid; border-bottom-width: 2px; border-bottom-color: #D3D3D3; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; }
+ #bfzsjtypxp .gt_col_heading { color: #333333; background-color: #FFFFFF; font-size: 100%; font-weight: normal; text-transform: inherit; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: bottom; padding-top: 5px; padding-bottom: 5px; padding-left: 5px; padding-right: 5px; overflow-x: hidden; }
+ #bfzsjtypxp .gt_column_spanner_outer { color: #333333; background-color: #FFFFFF; font-size: 100%; font-weight: normal; text-transform: inherit; padding-top: 0; padding-bottom: 0; padding-left: 4px; padding-right: 4px; }
+ #bfzsjtypxp .gt_column_spanner_outer:first-child { padding-left: 0; }
+ #bfzsjtypxp .gt_column_spanner_outer:last-child { padding-right: 0; }
+ #bfzsjtypxp .gt_column_spanner { border-bottom-style: solid; border-bottom-width: 2px; border-bottom-color: #D3D3D3; vertical-align: bottom; padding-top: 5px; padding-bottom: 5px; overflow-x: hidden; display: inline-block; width: 100%; }
+ #bfzsjtypxp .gt_spanner_row { border-bottom-style: hidden; }
+ #bfzsjtypxp .gt_group_heading { padding-top: 8px; padding-bottom: 8px; padding-left: 5px; padding-right: 5px; color: #333333; background-color: #FFFFFF; font-size: 100%; font-weight: initial; text-transform: inherit; border-top-style: solid; border-top-width: 2px; border-top-color: #D3D3D3; border-bottom-style: solid; border-bottom-width: 2px; border-bottom-color: #D3D3D3; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; text-align: left; }
+ #bfzsjtypxp .gt_empty_group_heading { padding: 0.5px; color: #333333; background-color: #FFFFFF; font-size: 100%; font-weight: initial; border-top-style: solid; border-top-width: 2px; border-top-color: #D3D3D3; border-bottom-style: solid; border-bottom-width: 2px; border-bottom-color: #D3D3D3; vertical-align: middle; }
+ #bfzsjtypxp .gt_from_md> :first-child { margin-top: 0; }
+ #bfzsjtypxp .gt_from_md> :last-child { margin-bottom: 0; }
+ #bfzsjtypxp .gt_row { padding-top: 8px; padding-bottom: 8px; padding-left: 5px; padding-right: 5px; margin: 10px; border-top-style: solid; border-top-width: 1px; border-top-color: #D3D3D3; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; overflow-x: hidden; }
+ #bfzsjtypxp .gt_stub { color: #333333; background-color: #FFFFFF; font-size: 100%; font-weight: initial; text-transform: inherit; border-right-style: solid; border-right-width: 2px; border-right-color: #D3D3D3; padding-left: 5px; padding-right: 5px; }
+ #bfzsjtypxp .gt_stub_row_group { color: #333333; background-color: #FFFFFF; font-size: 100%; font-weight: initial; text-transform: inherit; border-right-style: solid; border-right-width: 2px; border-right-color: #D3D3D3; padding-left: 5px; padding-right: 5px; vertical-align: top; }
+ #bfzsjtypxp .gt_row_group_first td { border-top-width: 2px; }
+ #bfzsjtypxp .gt_row_group_first th { border-top-width: 2px; }
+ #bfzsjtypxp .gt_striped { color: #333333; background-color: #F4F4F4; }
+ #bfzsjtypxp .gt_table_body { border-top-style: solid; border-top-width: 2px; border-top-color: #D3D3D3; border-bottom-style: solid; border-bottom-width: 2px; border-bottom-color: #D3D3D3; }
+ #bfzsjtypxp .gt_grand_summary_row { color: #333333; background-color: #FFFFFF; text-transform: inherit; padding-top: 8px; padding-bottom: 8px; padding-left: 5px; padding-right: 5px; }
+ #bfzsjtypxp .gt_first_grand_summary_row_bottom { border-top-style: double; border-top-width: 6px; border-top-color: #D3D3D3; }
+ #bfzsjtypxp .gt_last_grand_summary_row_top { border-bottom-style: double; border-bottom-width: 6px; border-bottom-color: #D3D3D3; }
+ #bfzsjtypxp .gt_sourcenotes { color: #333333; background-color: #FFFFFF; border-bottom-style: none; border-bottom-width: 2px; border-bottom-color: #D3D3D3; border-left-style: none; border-left-width: 2px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 2px; border-right-color: #D3D3D3; }
+ #bfzsjtypxp .gt_sourcenote { font-size: 90%; padding-top: 4px; padding-bottom: 4px; padding-left: 5px; padding-right: 5px; text-align: left; }
+ #bfzsjtypxp .gt_left { text-align: left; }
+ #bfzsjtypxp .gt_center { text-align: center; }
+ #bfzsjtypxp .gt_right { text-align: right; font-variant-numeric: tabular-nums; }
+ #bfzsjtypxp .gt_font_normal { font-weight: normal; }
+ #bfzsjtypxp .gt_font_bold { font-weight: bold; }
+ #bfzsjtypxp .gt_font_italic { font-style: italic; }
+ #bfzsjtypxp .gt_super { font-size: 65%; }
+ #bfzsjtypxp .gt_footnote_marks { font-size: 75%; vertical-align: 0.4em; position: initial; }
+ #bfzsjtypxp .gt_asterisk { font-size: 100%; vertical-align: 0; }
+ 
+</style>
+
+<table class="gt_table caption-top" data-quarto-bootstrap="false">
+<thead>
+<tr class="gt_heading header">
+<td colspan="3" class="gt_heading gt_title gt_font_normal">Attribute Profile Matrix</td>
+</tr>
+<tr class="gt_col_headings even">
+<th id="Addition" class="gt_col_heading gt_columns_bottom_border gt_right" data-quarto-table-cell-role="th" scope="col">Addition</th>
+<th id="Subtraction" class="gt_col_heading gt_columns_bottom_border gt_right" data-quarto-table-cell-role="th" scope="col">Subtraction</th>
+<th id="Multiplication" class="gt_col_heading gt_columns_bottom_border gt_right" data-quarto-table-cell-role="th" scope="col">Multiplication</th>
+</tr>
+</thead>
+<tbody class="gt_table_body">
+<tr class="odd">
+<td class="gt_row gt_right">0</td>
+<td class="gt_row gt_right">0</td>
+<td class="gt_row gt_right">0</td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_right">0</td>
+<td class="gt_row gt_right">0</td>
+<td class="gt_row gt_right">1</td>
+</tr>
+<tr class="odd">
+<td class="gt_row gt_right">0</td>
+<td class="gt_row gt_right">1</td>
+<td class="gt_row gt_right">0</td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_right">0</td>
+<td class="gt_row gt_right">1</td>
+<td class="gt_row gt_right">1</td>
+</tr>
+<tr class="odd">
+<td class="gt_row gt_right">1</td>
+<td class="gt_row gt_right">0</td>
+<td class="gt_row gt_right">0</td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_right">1</td>
+<td class="gt_row gt_right">0</td>
+<td class="gt_row gt_right">1</td>
+</tr>
+<tr class="odd">
+<td class="gt_row gt_right">1</td>
+<td class="gt_row gt_right">1</td>
+<td class="gt_row gt_right">0</td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_right">1</td>
+<td class="gt_row gt_right">1</td>
+<td class="gt_row gt_right">1</td>
+</tr>
+</tbody>
+</table>
+
+
+</div>
+</div>
+</div>
+</section>
+<section id="some-types-of-dcms" class="slide level2">
+<h2>(Some) Types of DCMs</h2>
+<ul>
+<li><p>DINO = Deterministic Inputs, Noisy <strong>Or</strong> Gate</p>
+<ul>
+<li>To get an item correct, you must have <strong>at least</strong> one skill required for that item</li>
+</ul></li>
+<li><p>DINA = Deterministic Inputs, Noisy <strong>And</strong> Gate</p>
+<ul>
+<li><p>Stricter model</p></li>
+<li><p>To get an item correct, you must have <strong>all</strong> the skills required for that item</p></li>
+</ul></li>
+<li><p>LCDM = Loglinear Cognitive Diagnostic Model</p>
+<ul>
+<li><p>General DCM = computationally expensive</p></li>
+<li><p>models every combination of skills</p></li>
+</ul></li>
+</ul>
+<aside class="notes">
+<ul>
+<li><p>DINO &amp; DINA models explicitly model slipping (silly mistake): get answer wrong even though you know the concept &amp; guessing (that worked): choosing an answer and it being right</p></li>
+<li><p>slipping and guessing are implicit in LCDM</p></li>
+</ul>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="please-move-on-jp-were-tired" class="slide level2">
+<h2>Please Move on JP, We’re Tired</h2>
+<div class="columns">
+<div class="column" style="width:50%;">
+<div class="quarto-figure quarto-figure-left">
+<figure>
+<p><img data-src="./images/tired_dog.jpg" style="width:5in;height:5in" alt="Image of corgi facing the camera panting."></p>
+<figcaption>Photo by <a href="https://unsplash.com/@alvannee?utm_source=unsplash&amp;utm_medium=referral&amp;utm_content=creditCopyText">Alvan Nee</a> on <a href="https://unsplash.com/photos/a-corgi-dog-looking-up-with-its-tongue-out-NVvq634BljM?utm_source=unsplash&amp;utm_medium=referral&amp;utm_content=creditCopyText">Unsplash</a></figcaption>
+</figure>
+</div>
+</div><div class="column" style="width:50%;">
+<ul>
+<li><p>I’m almost done with providing information</p></li>
+<li><p>I promise this is important because</p>
+<ul>
+<li>This was an 100% “trust the process” learning opportunity</li>
+</ul></li>
+<li><p>I’m also going to try and walk through this without a bunch of formulas</p></li>
+</ul>
+</div></div>
+<aside class="notes">
+<ul>
+<li><p>Nu = Prounounced Ne</p></li>
+<li><p>We’re going to break down what each section means because</p></li>
+</ul>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="structuralproficiency-model" class="slide level2">
+<h2>Structural/Proficiency Model</h2>
+<ul>
+<li><p>Different literature calls this different names</p>
+<ul>
+<li><strong>This is the relationship between skills</strong></li>
+</ul></li>
+<li><p><span class="math inline">\(\nu_{c}\)</span> is the proportion of students that are in each class</p>
+<ul>
+<li>It <strong>has</strong> to add up to 1 or 100%</li>
+</ul></li>
+</ul>
+<div id="43cf2f3c" class="cell" data-execution_count="3">
+<div class="cell-output cell-output-display">
+<div id="akraawprwe" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>
+#akraawprwe table {
+          font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif;
+          -webkit-font-smoothing: antialiased;
+          -moz-osx-font-smoothing: grayscale;
+        }
+
+#akraawprwe thead, tbody, tfoot, tr, td, th { border-style: none; }
+ tr { background-color: transparent; }
+#akraawprwe p { margin: 0; padding: 0; }
+ #akraawprwe .gt_table { display: table; border-collapse: collapse; line-height: normal; margin-left: auto; margin-right: auto; color: #333333; font-size: 16px; font-weight: normal; font-style: normal; background-color: #FFFFFF; width: auto; border-top-style: solid; border-top-width: 2px; border-top-color: #A8A8A8; border-right-style: none; border-right-width: 2px; border-right-color: #D3D3D3; border-bottom-style: solid; border-bottom-width: 2px; border-bottom-color: #A8A8A8; border-left-style: none; border-left-width: 2px; border-left-color: #D3D3D3; }
+ #akraawprwe .gt_caption { padding-top: 4px; padding-bottom: 4px; }
+ #akraawprwe .gt_title { color: #333333; font-size: 125%; font-weight: initial; padding-top: 4px; padding-bottom: 4px; padding-left: 5px; padding-right: 5px; border-bottom-color: #FFFFFF; border-bottom-width: 0; }
+ #akraawprwe .gt_subtitle { color: #333333; font-size: 85%; font-weight: initial; padding-top: 3px; padding-bottom: 5px; padding-left: 5px; padding-right: 5px; border-top-color: #FFFFFF; border-top-width: 0; }
+ #akraawprwe .gt_heading { background-color: #FFFFFF; text-align: center; border-bottom-color: #FFFFFF; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; }
+ #akraawprwe .gt_bottom_border { border-bottom-style: solid; border-bottom-width: 2px; border-bottom-color: #D3D3D3; }
+ #akraawprwe .gt_col_headings { border-top-style: solid; border-top-width: 2px; border-top-color: #D3D3D3; border-bottom-style: solid; border-bottom-width: 2px; border-bottom-color: #D3D3D3; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; }
+ #akraawprwe .gt_col_heading { color: #333333; background-color: #FFFFFF; font-size: 100%; font-weight: normal; text-transform: inherit; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: bottom; padding-top: 5px; padding-bottom: 5px; padding-left: 5px; padding-right: 5px; overflow-x: hidden; }
+ #akraawprwe .gt_column_spanner_outer { color: #333333; background-color: #FFFFFF; font-size: 100%; font-weight: normal; text-transform: inherit; padding-top: 0; padding-bottom: 0; padding-left: 4px; padding-right: 4px; }
+ #akraawprwe .gt_column_spanner_outer:first-child { padding-left: 0; }
+ #akraawprwe .gt_column_spanner_outer:last-child { padding-right: 0; }
+ #akraawprwe .gt_column_spanner { border-bottom-style: solid; border-bottom-width: 2px; border-bottom-color: #D3D3D3; vertical-align: bottom; padding-top: 5px; padding-bottom: 5px; overflow-x: hidden; display: inline-block; width: 100%; }
+ #akraawprwe .gt_spanner_row { border-bottom-style: hidden; }
+ #akraawprwe .gt_group_heading { padding-top: 8px; padding-bottom: 8px; padding-left: 5px; padding-right: 5px; color: #333333; background-color: #FFFFFF; font-size: 100%; font-weight: initial; text-transform: inherit; border-top-style: solid; border-top-width: 2px; border-top-color: #D3D3D3; border-bottom-style: solid; border-bottom-width: 2px; border-bottom-color: #D3D3D3; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; text-align: left; }
+ #akraawprwe .gt_empty_group_heading { padding: 0.5px; color: #333333; background-color: #FFFFFF; font-size: 100%; font-weight: initial; border-top-style: solid; border-top-width: 2px; border-top-color: #D3D3D3; border-bottom-style: solid; border-bottom-width: 2px; border-bottom-color: #D3D3D3; vertical-align: middle; }
+ #akraawprwe .gt_from_md> :first-child { margin-top: 0; }
+ #akraawprwe .gt_from_md> :last-child { margin-bottom: 0; }
+ #akraawprwe .gt_row { padding-top: 8px; padding-bottom: 8px; padding-left: 5px; padding-right: 5px; margin: 10px; border-top-style: solid; border-top-width: 1px; border-top-color: #D3D3D3; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; overflow-x: hidden; }
+ #akraawprwe .gt_stub { color: #333333; background-color: #FFFFFF; font-size: 100%; font-weight: initial; text-transform: inherit; border-right-style: solid; border-right-width: 2px; border-right-color: #D3D3D3; padding-left: 5px; padding-right: 5px; }
+ #akraawprwe .gt_stub_row_group { color: #333333; background-color: #FFFFFF; font-size: 100%; font-weight: initial; text-transform: inherit; border-right-style: solid; border-right-width: 2px; border-right-color: #D3D3D3; padding-left: 5px; padding-right: 5px; vertical-align: top; }
+ #akraawprwe .gt_row_group_first td { border-top-width: 2px; }
+ #akraawprwe .gt_row_group_first th { border-top-width: 2px; }
+ #akraawprwe .gt_striped { color: #333333; background-color: #F4F4F4; }
+ #akraawprwe .gt_table_body { border-top-style: solid; border-top-width: 2px; border-top-color: #D3D3D3; border-bottom-style: solid; border-bottom-width: 2px; border-bottom-color: #D3D3D3; }
+ #akraawprwe .gt_grand_summary_row { color: #333333; background-color: #FFFFFF; text-transform: inherit; padding-top: 8px; padding-bottom: 8px; padding-left: 5px; padding-right: 5px; }
+ #akraawprwe .gt_first_grand_summary_row_bottom { border-top-style: double; border-top-width: 6px; border-top-color: #D3D3D3; }
+ #akraawprwe .gt_last_grand_summary_row_top { border-bottom-style: double; border-bottom-width: 6px; border-bottom-color: #D3D3D3; }
+ #akraawprwe .gt_sourcenotes { color: #333333; background-color: #FFFFFF; border-bottom-style: none; border-bottom-width: 2px; border-bottom-color: #D3D3D3; border-left-style: none; border-left-width: 2px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 2px; border-right-color: #D3D3D3; }
+ #akraawprwe .gt_sourcenote { font-size: 90%; padding-top: 4px; padding-bottom: 4px; padding-left: 5px; padding-right: 5px; text-align: left; }
+ #akraawprwe .gt_left { text-align: left; }
+ #akraawprwe .gt_center { text-align: center; }
+ #akraawprwe .gt_right { text-align: right; font-variant-numeric: tabular-nums; }
+ #akraawprwe .gt_font_normal { font-weight: normal; }
+ #akraawprwe .gt_font_bold { font-weight: bold; }
+ #akraawprwe .gt_font_italic { font-style: italic; }
+ #akraawprwe .gt_super { font-size: 65%; }
+ #akraawprwe .gt_footnote_marks { font-size: 75%; vertical-align: 0.4em; position: initial; }
+ #akraawprwe .gt_asterisk { font-size: 100%; vertical-align: 0; }
+ 
+</style>
+
+<table class="gt_table caption-top" data-quarto-bootstrap="false">
+<thead>
+<tr class="gt_heading header">
+<td colspan="4" class="gt_heading gt_title gt_font_normal">Attribute Profile Matrix</td>
+</tr>
+<tr class="gt_col_headings even">
+<th id="Addition" class="gt_col_heading gt_columns_bottom_border gt_right" data-quarto-table-cell-role="th" scope="col">Addition</th>
+<th id="Subtraction" class="gt_col_heading gt_columns_bottom_border gt_right" data-quarto-table-cell-role="th" scope="col">Subtraction</th>
+<th id="Multiplication" class="gt_col_heading gt_columns_bottom_border gt_right" data-quarto-table-cell-role="th" scope="col">Multiplication</th>
+<th id="prop" class="gt_col_heading gt_columns_bottom_border gt_right" data-quarto-table-cell-role="th" scope="col">prop</th>
+</tr>
+</thead>
+<tbody class="gt_table_body">
+<tr class="odd">
+<td class="gt_row gt_right">0</td>
+<td class="gt_row gt_right">0</td>
+<td class="gt_row gt_right">0</td>
+<td class="gt_row gt_right">0.1</td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_right">0</td>
+<td class="gt_row gt_right">0</td>
+<td class="gt_row gt_right">1</td>
+<td class="gt_row gt_right">0.18</td>
+</tr>
+<tr class="odd">
+<td class="gt_row gt_right">0</td>
+<td class="gt_row gt_right">1</td>
+<td class="gt_row gt_right">0</td>
+<td class="gt_row gt_right">0.07</td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_right">0</td>
+<td class="gt_row gt_right">1</td>
+<td class="gt_row gt_right">1</td>
+<td class="gt_row gt_right">0.07</td>
+</tr>
+<tr class="odd">
+<td class="gt_row gt_right">1</td>
+<td class="gt_row gt_right">0</td>
+<td class="gt_row gt_right">0</td>
+<td class="gt_row gt_right">0.1</td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_right">1</td>
+<td class="gt_row gt_right">0</td>
+<td class="gt_row gt_right">1</td>
+<td class="gt_row gt_right">0.32</td>
+</tr>
+<tr class="odd">
+<td class="gt_row gt_right">1</td>
+<td class="gt_row gt_right">1</td>
+<td class="gt_row gt_right">0</td>
+<td class="gt_row gt_right">0.02</td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_right">1</td>
+<td class="gt_row gt_right">1</td>
+<td class="gt_row gt_right">1</td>
+<td class="gt_row gt_right">0.13</td>
+</tr>
+</tbody>
+</table>
+
+
+</div>
+</div>
+</div>
+</section>
+<section id="structuralproficiency-model-1" class="slide level2">
+<h2>Structural/Proficiency Model</h2>
+<div class="columns">
+<div class="column" style="width:60%;">
+<ul>
+<li><p><strong>Skills are not Classes</strong></p>
+<ul>
+<li><p>Skills are shown visually</p></li>
+<li><p>We can think of classes as the combination of the skills (e.g., 000, 111, etc.)</p></li>
+</ul></li>
+<li><p>For most DCMs, the two most common structural models are unconstrained or independent</p>
+<ul>
+<li><p>Unconstrained –&gt; We allow attributes to be correlated</p></li>
+<li><p>Independent –&gt; Belief that attributes are not correlated</p></li>
+</ul></li>
+</ul>
+</div><div class="column" style="width:40%;">
+<div id="5487981f" class="cell" data-execution_count="4">
+<div class="cell-output cell-output-display">
+<div id="ryyirzqnyu" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>
+#ryyirzqnyu table {
+          font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif;
+          -webkit-font-smoothing: antialiased;
+          -moz-osx-font-smoothing: grayscale;
+        }
+
+#ryyirzqnyu thead, tbody, tfoot, tr, td, th { border-style: none; }
+ tr { background-color: transparent; }
+#ryyirzqnyu p { margin: 0; padding: 0; }
+ #ryyirzqnyu .gt_table { display: table; border-collapse: collapse; line-height: normal; margin-left: auto; margin-right: auto; color: #333333; font-size: 16px; font-weight: normal; font-style: normal; background-color: #FFFFFF; width: auto; border-top-style: solid; border-top-width: 2px; border-top-color: #A8A8A8; border-right-style: none; border-right-width: 2px; border-right-color: #D3D3D3; border-bottom-style: solid; border-bottom-width: 2px; border-bottom-color: #A8A8A8; border-left-style: none; border-left-width: 2px; border-left-color: #D3D3D3; }
+ #ryyirzqnyu .gt_caption { padding-top: 4px; padding-bottom: 4px; }
+ #ryyirzqnyu .gt_title { color: #333333; font-size: 125%; font-weight: initial; padding-top: 4px; padding-bottom: 4px; padding-left: 5px; padding-right: 5px; border-bottom-color: #FFFFFF; border-bottom-width: 0; }
+ #ryyirzqnyu .gt_subtitle { color: #333333; font-size: 85%; font-weight: initial; padding-top: 3px; padding-bottom: 5px; padding-left: 5px; padding-right: 5px; border-top-color: #FFFFFF; border-top-width: 0; }
+ #ryyirzqnyu .gt_heading { background-color: #FFFFFF; text-align: center; border-bottom-color: #FFFFFF; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; }
+ #ryyirzqnyu .gt_bottom_border { border-bottom-style: solid; border-bottom-width: 2px; border-bottom-color: #D3D3D3; }
+ #ryyirzqnyu .gt_col_headings { border-top-style: solid; border-top-width: 2px; border-top-color: #D3D3D3; border-bottom-style: solid; border-bottom-width: 2px; border-bottom-color: #D3D3D3; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; }
+ #ryyirzqnyu .gt_col_heading { color: #333333; background-color: #FFFFFF; font-size: 100%; font-weight: normal; text-transform: inherit; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: bottom; padding-top: 5px; padding-bottom: 5px; padding-left: 5px; padding-right: 5px; overflow-x: hidden; }
+ #ryyirzqnyu .gt_column_spanner_outer { color: #333333; background-color: #FFFFFF; font-size: 100%; font-weight: normal; text-transform: inherit; padding-top: 0; padding-bottom: 0; padding-left: 4px; padding-right: 4px; }
+ #ryyirzqnyu .gt_column_spanner_outer:first-child { padding-left: 0; }
+ #ryyirzqnyu .gt_column_spanner_outer:last-child { padding-right: 0; }
+ #ryyirzqnyu .gt_column_spanner { border-bottom-style: solid; border-bottom-width: 2px; border-bottom-color: #D3D3D3; vertical-align: bottom; padding-top: 5px; padding-bottom: 5px; overflow-x: hidden; display: inline-block; width: 100%; }
+ #ryyirzqnyu .gt_spanner_row { border-bottom-style: hidden; }
+ #ryyirzqnyu .gt_group_heading { padding-top: 8px; padding-bottom: 8px; padding-left: 5px; padding-right: 5px; color: #333333; background-color: #FFFFFF; font-size: 100%; font-weight: initial; text-transform: inherit; border-top-style: solid; border-top-width: 2px; border-top-color: #D3D3D3; border-bottom-style: solid; border-bottom-width: 2px; border-bottom-color: #D3D3D3; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; text-align: left; }
+ #ryyirzqnyu .gt_empty_group_heading { padding: 0.5px; color: #333333; background-color: #FFFFFF; font-size: 100%; font-weight: initial; border-top-style: solid; border-top-width: 2px; border-top-color: #D3D3D3; border-bottom-style: solid; border-bottom-width: 2px; border-bottom-color: #D3D3D3; vertical-align: middle; }
+ #ryyirzqnyu .gt_from_md> :first-child { margin-top: 0; }
+ #ryyirzqnyu .gt_from_md> :last-child { margin-bottom: 0; }
+ #ryyirzqnyu .gt_row { padding-top: 8px; padding-bottom: 8px; padding-left: 5px; padding-right: 5px; margin: 10px; border-top-style: solid; border-top-width: 1px; border-top-color: #D3D3D3; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; overflow-x: hidden; }
+ #ryyirzqnyu .gt_stub { color: #333333; background-color: #FFFFFF; font-size: 100%; font-weight: initial; text-transform: inherit; border-right-style: solid; border-right-width: 2px; border-right-color: #D3D3D3; padding-left: 5px; padding-right: 5px; }
+ #ryyirzqnyu .gt_stub_row_group { color: #333333; background-color: #FFFFFF; font-size: 100%; font-weight: initial; text-transform: inherit; border-right-style: solid; border-right-width: 2px; border-right-color: #D3D3D3; padding-left: 5px; padding-right: 5px; vertical-align: top; }
+ #ryyirzqnyu .gt_row_group_first td { border-top-width: 2px; }
+ #ryyirzqnyu .gt_row_group_first th { border-top-width: 2px; }
+ #ryyirzqnyu .gt_striped { color: #333333; background-color: #F4F4F4; }
+ #ryyirzqnyu .gt_table_body { border-top-style: solid; border-top-width: 2px; border-top-color: #D3D3D3; border-bottom-style: solid; border-bottom-width: 2px; border-bottom-color: #D3D3D3; }
+ #ryyirzqnyu .gt_grand_summary_row { color: #333333; background-color: #FFFFFF; text-transform: inherit; padding-top: 8px; padding-bottom: 8px; padding-left: 5px; padding-right: 5px; }
+ #ryyirzqnyu .gt_first_grand_summary_row_bottom { border-top-style: double; border-top-width: 6px; border-top-color: #D3D3D3; }
+ #ryyirzqnyu .gt_last_grand_summary_row_top { border-bottom-style: double; border-bottom-width: 6px; border-bottom-color: #D3D3D3; }
+ #ryyirzqnyu .gt_sourcenotes { color: #333333; background-color: #FFFFFF; border-bottom-style: none; border-bottom-width: 2px; border-bottom-color: #D3D3D3; border-left-style: none; border-left-width: 2px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 2px; border-right-color: #D3D3D3; }
+ #ryyirzqnyu .gt_sourcenote { font-size: 90%; padding-top: 4px; padding-bottom: 4px; padding-left: 5px; padding-right: 5px; text-align: left; }
+ #ryyirzqnyu .gt_left { text-align: left; }
+ #ryyirzqnyu .gt_center { text-align: center; }
+ #ryyirzqnyu .gt_right { text-align: right; font-variant-numeric: tabular-nums; }
+ #ryyirzqnyu .gt_font_normal { font-weight: normal; }
+ #ryyirzqnyu .gt_font_bold { font-weight: bold; }
+ #ryyirzqnyu .gt_font_italic { font-style: italic; }
+ #ryyirzqnyu .gt_super { font-size: 65%; }
+ #ryyirzqnyu .gt_footnote_marks { font-size: 75%; vertical-align: 0.4em; position: initial; }
+ #ryyirzqnyu .gt_asterisk { font-size: 100%; vertical-align: 0; }
+ 
+</style>
+
+<table class="gt_table caption-top" data-quarto-bootstrap="false">
+<thead>
+<tr class="gt_heading header">
+<td colspan="4" class="gt_heading gt_title gt_font_normal">Q Matrix</td>
+</tr>
+<tr class="gt_col_headings even">
+<th id="Item" class="gt_col_heading gt_columns_bottom_border gt_left" data-quarto-table-cell-role="th" scope="col">Item</th>
+<th id="Addition" class="gt_col_heading gt_columns_bottom_border gt_right" data-quarto-table-cell-role="th" scope="col">Addition</th>
+<th id="Subtraction" class="gt_col_heading gt_columns_bottom_border gt_right" data-quarto-table-cell-role="th" scope="col">Subtraction</th>
+<th id="Multiplication" class="gt_col_heading gt_columns_bottom_border gt_right" data-quarto-table-cell-role="th" scope="col">Multiplication</th>
+</tr>
+</thead>
+<tbody class="gt_table_body">
+<tr class="odd">
+<td class="gt_row gt_left">2 + 3</td>
+<td class="gt_row gt_right">1</td>
+<td class="gt_row gt_right">0</td>
+<td class="gt_row gt_right">0</td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_left">2 + 3 - 1</td>
+<td class="gt_row gt_right">1</td>
+<td class="gt_row gt_right">1</td>
+<td class="gt_row gt_right">0</td>
+</tr>
+<tr class="odd">
+<td class="gt_row gt_left">3 x 2</td>
+<td class="gt_row gt_right">0</td>
+<td class="gt_row gt_right">0</td>
+<td class="gt_row gt_right">1</td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_left">10(6 + 2)</td>
+<td class="gt_row gt_right">1</td>
+<td class="gt_row gt_right">0</td>
+<td class="gt_row gt_right">1</td>
+</tr>
+<tr class="odd">
+<td class="gt_row gt_left">(4 + 5) + 2(10 - 7)</td>
+<td class="gt_row gt_right">1</td>
+<td class="gt_row gt_right">1</td>
+<td class="gt_row gt_right">1</td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_left">2(5)</td>
+<td class="gt_row gt_right">0</td>
+<td class="gt_row gt_right">0</td>
+<td class="gt_row gt_right">1</td>
+</tr>
+</tbody>
+</table>
+
+
+</div>
+</div>
+</div>
+<p><img data-src="images/dcm_structural.png"></p>
+</div></div>
+<aside class="notes">
+<ul>
+<li><p>Independent attributes must be supported theoretically/empirically</p></li>
+<li><p>Also, if you are asking yourself “JP did you really put all that work into getting random images for your presentation but could not make another DAG for the latent skills? Really?”</p>
+<ul>
+<li>Yeah that is really the case</li>
+</ul></li>
+</ul>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="psssthere-are-other-structural-models" class="slide level2">
+<h2>Psss…There Are Other Structural Models</h2>
+<div class="columns">
+<div class="column" style="width:50%;">
+<ul>
+<li><p>There can be hierarchies between skills (Hiearchical DCM)</p>
+<ul>
+<li>All the skills in our Q-matrix are related to arithmetic</li>
+</ul></li>
+</ul>
+<p><img data-src="images/hdcm_structural.png" style="width:3in;height:3in"></p>
+</div><div class="column" style="width:50%;">
+<ul>
+<li>We might think students learn addition –&gt; Subtraction –&gt; Multiplication (linear)</li>
+</ul>
+<p><img data-src="images/linear.png" style="width:3in;height:3in"></p>
+</div></div>
+</section>
+<section id="umwere-not-done-yet" class="slide level2">
+<h2>Um…We’re Not Done Yet</h2>
+<div class="columns">
+<div class="column" style="width:50%;">
+<ul>
+<li>We might think that addition and subtraction converge at multiplication (convergent)</li>
+</ul>
+<p><img data-src="images/convergent.png" style="width:3in;height:3in"></p>
+</div><div class="column" style="width:50%;">
+<ul>
+<li>Or we might think that subtraction and multiplication diverge from addition (divergent)</li>
+</ul>
+<p><img data-src="images/divergent.png" style="width:3in;height:3in"></p>
+</div></div>
+</section>
+<section id="structural-models" class="slide level2">
+<h2>Structural Models</h2>
+<ul>
+<li><p>Bayesian Networks (Bayes Net)</p>
+<ul>
+<li>Modeling relationships between skills</li>
+</ul></li>
+<li><p>Linear, convergent, and divergent edges are calculated to get class proportions (<span class="math inline">\(\nu_{c}\)</span>)</p>
+<ul>
+<li><p>Proficiency for skills at the end of –&gt; are conditional based on the node’s parents</p></li>
+<li><p>Addition –&gt; Subtraction –&gt; Multiplication</p>
+<ul>
+<li>Addition is the parent to subtraction, but not multiplication</li>
+</ul></li>
+</ul></li>
+</ul>
+<aside class="notes">
+<ul>
+<li><p>Technically all of the previous examples that have edges/relationships between skills are bayesian networks</p></li>
+<li><p>There are more specific rules for DAGs and bayes nets, but I’ve already gone into the weeds enough</p></li>
+</ul>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="measurementevidence-model" class="slide level2">
+<h2>Measurement/Evidence Model</h2>
+<ul>
+<li><p>Our <span class="math inline">\(pi_{ic}\)</span> matrix is the probability of getting an item correct based on each of the classes</p></li>
+<li><p>The <span class="math inline">\(pi_{ic}\)</span> matrix is created differently for each DCM</p>
+<ul>
+<li><p>I’m only going to focus on the matrix through a DINO model framework</p></li>
+<li><p>Some use another matrix (global attribute mastery indicator (product of alpha^q-element))</p>
+<ul>
+<li>I use something similar but base it on probabilities rather than hard coded values (0s and 1s)</li>
+</ul></li>
+</ul></li>
+</ul>
+<aside class="notes">
+<ul>
+<li>My actual Q-matrix has items measuring single attributes, so DINO and DINA models would result in similar answers</li>
+</ul>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="lets-apply-everything-weve-covered" class="slide level2">
+<h2>Let’s Apply Everything We’ve Covered</h2>
+<ul>
+<li><p>We’ll use a DINO model for the measurement model</p></li>
+<li><p>We’ll use unconstrained structural model</p></li>
+</ul>
+<aside class="notes">
+<p>Speaker Notes here</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="background" class="slide level2">
+<h2>Background</h2>
+<ul>
+<li><p>Interest is growing in data science</p>
+<ul>
+<li>Diverse groups of students are majoring in DS</li>
+</ul></li>
+<li><p>Leads to issues of students being at different levels of math and computing</p></li>
+<li><p>Currently instructor-led assessments may focus on reaching out to students after the first exam</p></li>
+<li><p>How can we reach students early in an attempt to stop students from falling behind?</p>
+<ul>
+<li><p>Do alternative methods of grading help students pass a statistics course?</p></li>
+<li><p>Do emails recommending what skills to focus on help with grade improvement? Do they help with students knowing what to focus on?</p></li>
+</ul></li>
+</ul>
+<aside class="notes">
+<ul>
+<li>Speaker notes here</li>
+</ul>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="data89" class="slide level2">
+<h2>Data89</h2>
+<ul>
+<li><p>Students in Data89 (Probability Course)</p>
+<ul>
+<li>Course is designed to be more introductory than traditional statistics courses on probability</li>
+</ul></li>
+<li><p>The design of the course has more weight on homework (seen as practice), quizzes (seen as measures of proficiency), and exams (seen as mastery)</p>
+<ul>
+<li><p>To help students pass by practicing and showing proficiency</p>
+<ul>
+<li>Students have the opportunity to retake each quiz based on their grade and/or DCM findings</li>
+</ul></li>
+<li><p>Those with mastery will still pass the class</p></li>
+<li><p>Those with proficiency will be able to pass</p>
+<ul>
+<li>Knowing the course content is enough for some students</li>
+</ul></li>
+</ul></li>
+</ul>
+<aside class="notes">
+<ul>
+<li><p>Focus is mainly on students in the middle third of the class</p>
+<ul>
+<li>Not directly focused on those that are most likely to not pass the course</li>
+</ul></li>
+</ul>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="data89-1" class="slide level2">
+<h2>Data89</h2>
+<ul>
+<li><p>Ways we are measuring proficiency</p>
+<ul>
+<li><p>DCMs to model proficiency of each skill from items correct</p>
+<ul>
+<li>Modeling retakes with dynamic bayes nets that look at skills for the original quiz and the retake</li>
+</ul></li>
+<li><p>Check-in surveys that assess self-reported understanding of the content</p>
+<ul>
+<li><p>Slider items (1 - 10) on rating level of understanding</p>
+<ul>
+<li>Please rate your level of understanding for each concept, with 1 being “I do not understand anything about this concept.” to 10 being “I understand this concept completely and could teach others about the concept.”</li>
+</ul></li>
+<li><p>Two Likert scale items (Strongly Disagree to Strongly Agree)</p>
+<ul>
+<li><p>I know what I would need to do in order to stay on track to succeed in the course</p></li>
+<li><p>I am capable of doing what I need to do in order to stay on track to succeed in the course</p></li>
+</ul></li>
+</ul></li>
+</ul></li>
+</ul>
+</section>
+<section id="data89-2" class="slide level2">
+<h2>Data89</h2>
+<ul>
+<li><p>Also collecting data on pre- &amp; post-test</p>
+<ul>
+<li><p>Would love thoughts on what might be important to collect from students</p></li>
+<li><p>Currently have math anxiety and self-efficacy measure</p></li>
+</ul></li>
+</ul>
+<aside class="notes">
+<ul>
+<li><p>We are going to change the wording of the anxiety and self-efficacy measure because it comes off very negative</p>
+<ul>
+<li>We’ll most likely change the wording and get psychometrics from that</li>
+</ul></li>
+<li><p>We also are only looking at the models currently because this is more passion project than it is my job</p></li>
+</ul>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="lets-talk-about-stan" class="slide level2">
+<h2>Let’s Talk About Stan</h2>
+<div class="columns">
+<div class="column" style="width:60%;">
+<ul>
+<li><p>Stan is judgey</p></li>
+<li><p>He does not like discrete parameters</p>
+<ul>
+<li>Especially latent parameters</li>
+</ul></li>
+<li><p>It gets him so upset, he starts breaking things</p></li>
+<li><p>We try our hardest to be on Stan’s good side</p></li>
+<li><p>Stan also loves the log scale, so we will have to make changes sometimes</p></li>
+</ul>
+</div><div class="column" style="width:40%;">
+<div class="quarto-figure quarto-figure-left">
+<figure>
+<p><img data-src="./images/stan.jpg" style="width:5in;height:5in" alt="Image of a posing guy smoking in a button down shirt and sunglasses."></p>
+<figcaption>Photo by <a href="https://unsplash.com/@hamza01nsr?utm_source=unsplash&amp;utm_medium=referral&amp;utm_content=creditCopyText">HamZa NOUASRIA</a> on <a href="https://unsplash.com/photos/man-in-white-dress-shirt-and-black-pants-standing-beside-black-and-white-wall-DsIftC2M3co?utm_source=unsplash&amp;utm_medium=referral&amp;utm_content=creditCopyText">Unsplash</a></figcaption>
+</figure>
+</div>
+</div></div>
+<aside class="notes">
+<ul>
+<li>Speaker notes here</li>
+</ul>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="stan-code---data" class="slide level2">
+<h2>Stan Code - Data</h2>
+<div class="columns">
+<div class="column" style="width:50%;">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode numberSource {stan} number-lines code-with-copy"><code class="sourceCode"><span id="cb1-1"><a href=""></a>#| echo: true</span>
+<span id="cb1-2"><a href=""></a>#| eval: false</span>
+<span id="cb1-3"><a href=""></a></span>
+<span id="cb1-4"><a href=""></a>data{</span>
+<span id="cb1-5"><a href=""></a>  int&lt;lower=1&gt; J; // Number of students</span>
+<span id="cb1-6"><a href=""></a>  int&lt;lower=1&gt; I; // Number of items</span>
+<span id="cb1-7"><a href=""></a>  int&lt;lower=1&gt; C; // Number of classes</span>
+<span id="cb1-8"><a href=""></a>  int&lt;lower=1&gt; K; // Number of Attributes/Skills</span>
+<span id="cb1-9"><a href=""></a>  matrix&lt;lower=0,upper=1&gt; [J,I] Y; // Observed Data [student x item]</span>
+<span id="cb1-10"><a href=""></a>  matrix&lt;lower=0,upper=1&gt; [I,K] Q; // Q-matrix [item x attribute]</span>
+<span id="cb1-11"><a href=""></a>  matrix&lt;lower=0,upper=1&gt; [C,K] alpha; // Attribute mastery profile [class x attribute]</span>
+<span id="cb1-12"><a href=""></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div><div class="column" style="width:50%;">
+<div id="6cfe12d1" class="cell" data-execution_count="5">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href=""></a>stan_dict <span class="op">=</span> {</span>
+<span id="cb2-2"><a href=""></a>  <span class="st">'J'</span>: y.shape[<span class="dv">0</span>],</span>
+<span id="cb2-3"><a href=""></a>  <span class="st">'I'</span>: y.shape[<span class="dv">1</span>],</span>
+<span id="cb2-4"><a href=""></a>  <span class="st">'C'</span>: alpha.shape[<span class="dv">0</span>],</span>
+<span id="cb2-5"><a href=""></a>  <span class="st">'K'</span>: qmatrix.shape[<span class="dv">1</span>],</span>
+<span id="cb2-6"><a href=""></a>  <span class="st">'Y'</span>: np.array(y),</span>
+<span id="cb2-7"><a href=""></a>  <span class="st">'Q'</span>: np.array(qmatrix),</span>
+<span id="cb2-8"><a href=""></a>  <span class="st">'alpha'</span>: np.array(alpha)</span>
+<span id="cb2-9"><a href=""></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</div></div>
+<aside class="notes">
+<ul>
+<li>Speaker Notes</li>
+</ul>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="parameters" class="slide level2">
+<h2>Parameters</h2>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode numberSource {stan} number-lines code-with-copy"><code class="sourceCode"><span id="cb3-1"><a href=""></a>#| echo: true</span>
+<span id="cb3-2"><a href=""></a>#| eval: false</span>
+<span id="cb3-3"><a href=""></a></span>
+<span id="cb3-4"><a href=""></a>parameters{ //  parameters here are what get sampled/can have priors</span>
+<span id="cb3-5"><a href=""></a>  simplex[C] nu; // class proprtions (simplex makes it sum up to be 1)</span>
+<span id="cb3-6"><a href=""></a>  vector&lt;lower=0, upper=1&gt;[I] tp; // True positive/Did not slip (Know the answer but got it wrong [1 - tp])</span>
+<span id="cb3-7"><a href=""></a>  vector&lt;lower=0, upper=1&gt;[I] fp; // False positive/Guss and got answer right</span>
+<span id="cb3-8"><a href=""></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</section>
+<section id="unconstrained" class="slide level2">
+<h2>Unconstrained</h2>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode numberSource {stan} number-lines code-with-copy"><code class="sourceCode"><span id="cb4-1"><a href=""></a>#| echo: true</span>
+<span id="cb4-2"><a href=""></a>#| eval: false</span>
+<span id="cb4-3"><a href=""></a></span>
+<span id="cb4-4"><a href=""></a>transformed parameters{ //  used for calculations/are derived from calculatinos</span>
+<span id="cb4-5"><a href=""></a>  matrix[I,C] delta;  //  global attribute mastery indicator (product of alpha ** Q-matrix) </span>
+<span id="cb4-6"><a href=""></a>  matrix[I,C] pi;     //  probabilities of getting items correct based on latent class</span>
+<span id="cb4-7"><a href=""></a></span>
+<span id="cb4-8"><a href=""></a>  vector[C] log_nu = log(nu);</span>
+<span id="cb4-9"><a href=""></a></span>
+<span id="cb4-10"><a href=""></a>  for(c in 1:C){{</span>
+<span id="cb4-11"><a href=""></a>    for(i in 1:I){</span>
+<span id="cb4-12"><a href=""></a>      delta[i, c] = 1 - (pow(1 - alpha[c,1], Q[i,1]) * pow(1 - alpha[c,2], Q[i,2]) * pow(1 - alpha[c,3], Q[i,3]));  </span>
+<span id="cb4-13"><a href=""></a>    }</span>
+<span id="cb4-14"><a href=""></a>  }}</span>
+<span id="cb4-15"><a href=""></a></span>
+<span id="cb4-16"><a href=""></a>  for (c in 1:C){</span>
+<span id="cb4-17"><a href=""></a>    for (i in 1:I){</span>
+<span id="cb4-18"><a href=""></a>      pi[i,c] = pow(tp[i], delta[i,c]) * pow(fp[i], (1 - delta[i,c]));</span>
+<span id="cb4-19"><a href=""></a>    }</span>
+<span id="cb4-20"><a href=""></a>  }</span>
+<span id="cb4-21"><a href=""></a>} </span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</section>
+<section id="model" class="slide level2">
+<h2>Model</h2>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="sourceCode numberSource {stan} number-lines code-with-copy"><code class="sourceCode"><span id="cb5-1"><a href=""></a>#| eval: false</span>
+<span id="cb5-2"><a href=""></a>#| echo: true</span>
+<span id="cb5-3"><a href=""></a></span>
+<span id="cb5-4"><a href=""></a>model{</span>
+<span id="cb5-5"><a href=""></a>  array[C] real ps;</span>
+<span id="cb5-6"><a href=""></a>  array[I] real eta;</span>
+<span id="cb5-7"><a href=""></a>   </span>
+<span id="cb5-8"><a href=""></a>  // Prior for class membership</span>
+<span id="cb5-9"><a href=""></a>  nu ~ dirichlet(rep_vector(1.0, C)); // uniform prior for the number of classes</span>
+<span id="cb5-10"><a href=""></a></span>
+<span id="cb5-11"><a href=""></a>  for (i in 1:I){{</span>
+<span id="cb5-12"><a href=""></a>    tp[i] ~ beta(20, 5);</span>
+<span id="cb5-13"><a href=""></a>    fp[i] ~ beta(5, 20);</span>
+<span id="cb5-14"><a href=""></a>  }}</span>
+<span id="cb5-15"><a href=""></a></span>
+<span id="cb5-16"><a href=""></a>  // likelihood</span>
+<span id="cb5-17"><a href=""></a>  for (j in 1:J) {</span>
+<span id="cb5-18"><a href=""></a>    for (c in 1:C){</span>
+<span id="cb5-19"><a href=""></a>      for (i in 1:I){</span>
+<span id="cb5-20"><a href=""></a>        real p = fmin(fmax(pi[i,c], 1e-9), 1 - 1e-9);</span>
+<span id="cb5-21"><a href=""></a>        eta[i] = Y[j,i] * log(p) + (1 - Y[j,i]) * log1m(p);</span>
+<span id="cb5-22"><a href=""></a>      }</span>
+<span id="cb5-23"><a href=""></a>      ps[c] = log_nu[c] + sum(eta); </span>
+<span id="cb5-24"><a href=""></a>    }</span>
+<span id="cb5-25"><a href=""></a>    target += log_sum_exp(ps);</span>
+<span id="cb5-26"><a href=""></a>  }</span>
+<span id="cb5-27"><a href=""></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</section>
+<section id="generated-quantities" class="slide level2">
+<h2>Generated Quantities</h2>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="sourceCode numberSource {stan} number-lines code-with-copy"><code class="sourceCode"><span id="cb6-1"><a href=""></a>generated quantities {</span>
+<span id="cb6-2"><a href=""></a>  matrix[J,C] prob_resp_class;      // posterior probabilities of respondent j being in latent class c </span>
+<span id="cb6-3"><a href=""></a>  matrix[J,K] prob_resp_attr;       // posterior probabilities of respondent j being a master of attribute k </span>
+<span id="cb6-4"><a href=""></a>  array[I] real eta;</span>
+<span id="cb6-5"><a href=""></a>  row_vector[C] prob_joint;</span>
+<span id="cb6-6"><a href=""></a>  array[C] real prob_attr_class;</span>
+<span id="cb6-7"><a href=""></a>  matrix[J,I] y_rep;</span>
+<span id="cb6-8"><a href=""></a></span>
+<span id="cb6-9"><a href=""></a>  // likelihood</span>
+<span id="cb6-10"><a href=""></a>  for (j in 1:J){{</span>
+<span id="cb6-11"><a href=""></a>    for (c in 1:C){{</span>
+<span id="cb6-12"><a href=""></a>      for (i in 1:I){{</span>
+<span id="cb6-13"><a href=""></a>        real p = fmin(fmax(pi[i,c], 1e-9), 1 - 1e-9);</span>
+<span id="cb6-14"><a href=""></a>        eta[i] = Y[j,i] * log(p) + (1 - Y[j,i]) * log1m(p);</span>
+<span id="cb6-15"><a href=""></a>      }}</span>
+<span id="cb6-16"><a href=""></a>      prob_joint[c] = exp(log_nu[c]) * exp(sum(eta));</span>
+<span id="cb6-17"><a href=""></a>    }}</span>
+<span id="cb6-18"><a href=""></a>    prob_resp_class[j] = prob_joint/sum(prob_joint);</span>
+<span id="cb6-19"><a href=""></a>  }}</span>
+<span id="cb6-20"><a href=""></a>  for (j in 1:J){{</span>
+<span id="cb6-21"><a href=""></a>    for (k in 1:K){{</span>
+<span id="cb6-22"><a href=""></a>      for (c in 1:C){{</span>
+<span id="cb6-23"><a href=""></a>        prob_attr_class[c] = prob_resp_class[j,c] * alpha[c,k];</span>
+<span id="cb6-24"><a href=""></a>      }}</span>
+<span id="cb6-25"><a href=""></a>      prob_resp_attr[j,k] = sum(prob_attr_class);</span>
+<span id="cb6-26"><a href=""></a>    }}</span>
+<span id="cb6-27"><a href=""></a>  }}</span>
+<span id="cb6-28"><a href=""></a>  </span>
+<span id="cb6-29"><a href=""></a>  for (j in 1:J) {{</span>
+<span id="cb6-30"><a href=""></a>    int z = categorical_rng(nu);  // sample class for person j</span>
+<span id="cb6-31"><a href=""></a>    for (i in 1:I) {{</span>
+<span id="cb6-32"><a href=""></a>      y_rep[j, i] = bernoulli_rng(pi[i, z]);  // generate response from item-by-class probability</span>
+<span id="cb6-33"><a href=""></a>    }}</span>
+<span id="cb6-34"><a href=""></a>  }}</span>
+<span id="cb6-35"><a href=""></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</section>
+<section id="lets-look-at-some-simulated-data" class="slide level2">
+<h2>Let’s Look At Some (Simulated) Data</h2>
+<div id="3162c475" class="cell" data-execution_count="7">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href=""></a>stan_dict <span class="op">=</span> {</span>
+<span id="cb7-2"><a href=""></a>  <span class="st">'J'</span>: y.shape[<span class="dv">0</span>], <span class="co"># rows/students</span></span>
+<span id="cb7-3"><a href=""></a>  <span class="st">'I'</span>: y.shape[<span class="dv">1</span>], <span class="co"># columnts/items</span></span>
+<span id="cb7-4"><a href=""></a>  <span class="st">'C'</span>: alpha.shape[<span class="dv">0</span>], <span class="co"># number of rows/classes</span></span>
+<span id="cb7-5"><a href=""></a>  <span class="st">'K'</span>: qmatrix.shape[<span class="dv">1</span>], <span class="co"># number of attributes/skills</span></span>
+<span id="cb7-6"><a href=""></a>  <span class="st">'Y'</span>: np.array(y), <span class="co"># our observed data/students x items</span></span>
+<span id="cb7-7"><a href=""></a>  <span class="st">'Q'</span>: np.array(qmatrix), <span class="co"># our q-matrix/items x attributes</span></span>
+<span id="cb7-8"><a href=""></a>  <span class="st">'alpha'</span>: np.array(alpha) <span class="co"># our attribute mastery profile/class x attribute</span></span>
+<span id="cb7-9"><a href=""></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<ul>
+<li>Our data is simulated so this is more a proof of concept</li>
+</ul>
+</section>
+<section id="quick-look-at-data" class="slide level2">
+<h2>Quick Look at Data</h2>
+<div id="518e1c61" class="cell" data-execution_count="8">
+<div class="cell-output cell-output-display">
+<div id="lnttcditvl" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>
+#lnttcditvl table {
+          font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif;
+          -webkit-font-smoothing: antialiased;
+          -moz-osx-font-smoothing: grayscale;
+        }
+
+#lnttcditvl thead, tbody, tfoot, tr, td, th { border-style: none; }
+ tr { background-color: transparent; }
+#lnttcditvl p { margin: 0; padding: 0; }
+ #lnttcditvl .gt_table { display: table; border-collapse: collapse; line-height: normal; margin-left: auto; margin-right: auto; color: #333333; font-size: 16px; font-weight: normal; font-style: normal; background-color: #FFFFFF; width: auto; border-top-style: solid; border-top-width: 2px; border-top-color: #A8A8A8; border-right-style: none; border-right-width: 2px; border-right-color: #D3D3D3; border-bottom-style: solid; border-bottom-width: 2px; border-bottom-color: #A8A8A8; border-left-style: none; border-left-width: 2px; border-left-color: #D3D3D3; }
+ #lnttcditvl .gt_caption { padding-top: 4px; padding-bottom: 4px; }
+ #lnttcditvl .gt_title { color: #333333; font-size: 125%; font-weight: initial; padding-top: 4px; padding-bottom: 4px; padding-left: 5px; padding-right: 5px; border-bottom-color: #FFFFFF; border-bottom-width: 0; }
+ #lnttcditvl .gt_subtitle { color: #333333; font-size: 85%; font-weight: initial; padding-top: 3px; padding-bottom: 5px; padding-left: 5px; padding-right: 5px; border-top-color: #FFFFFF; border-top-width: 0; }
+ #lnttcditvl .gt_heading { background-color: #FFFFFF; text-align: center; border-bottom-color: #FFFFFF; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; }
+ #lnttcditvl .gt_bottom_border { border-bottom-style: solid; border-bottom-width: 2px; border-bottom-color: #D3D3D3; }
+ #lnttcditvl .gt_col_headings { border-top-style: solid; border-top-width: 2px; border-top-color: #D3D3D3; border-bottom-style: solid; border-bottom-width: 2px; border-bottom-color: #D3D3D3; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; }
+ #lnttcditvl .gt_col_heading { color: #333333; background-color: #FFFFFF; font-size: 100%; font-weight: normal; text-transform: inherit; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: bottom; padding-top: 5px; padding-bottom: 5px; padding-left: 5px; padding-right: 5px; overflow-x: hidden; }
+ #lnttcditvl .gt_column_spanner_outer { color: #333333; background-color: #FFFFFF; font-size: 100%; font-weight: normal; text-transform: inherit; padding-top: 0; padding-bottom: 0; padding-left: 4px; padding-right: 4px; }
+ #lnttcditvl .gt_column_spanner_outer:first-child { padding-left: 0; }
+ #lnttcditvl .gt_column_spanner_outer:last-child { padding-right: 0; }
+ #lnttcditvl .gt_column_spanner { border-bottom-style: solid; border-bottom-width: 2px; border-bottom-color: #D3D3D3; vertical-align: bottom; padding-top: 5px; padding-bottom: 5px; overflow-x: hidden; display: inline-block; width: 100%; }
+ #lnttcditvl .gt_spanner_row { border-bottom-style: hidden; }
+ #lnttcditvl .gt_group_heading { padding-top: 8px; padding-bottom: 8px; padding-left: 5px; padding-right: 5px; color: #333333; background-color: #FFFFFF; font-size: 100%; font-weight: initial; text-transform: inherit; border-top-style: solid; border-top-width: 2px; border-top-color: #D3D3D3; border-bottom-style: solid; border-bottom-width: 2px; border-bottom-color: #D3D3D3; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; text-align: left; }
+ #lnttcditvl .gt_empty_group_heading { padding: 0.5px; color: #333333; background-color: #FFFFFF; font-size: 100%; font-weight: initial; border-top-style: solid; border-top-width: 2px; border-top-color: #D3D3D3; border-bottom-style: solid; border-bottom-width: 2px; border-bottom-color: #D3D3D3; vertical-align: middle; }
+ #lnttcditvl .gt_from_md> :first-child { margin-top: 0; }
+ #lnttcditvl .gt_from_md> :last-child { margin-bottom: 0; }
+ #lnttcditvl .gt_row { padding-top: 8px; padding-bottom: 8px; padding-left: 5px; padding-right: 5px; margin: 10px; border-top-style: solid; border-top-width: 1px; border-top-color: #D3D3D3; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; overflow-x: hidden; }
+ #lnttcditvl .gt_stub { color: #333333; background-color: #FFFFFF; font-size: 100%; font-weight: initial; text-transform: inherit; border-right-style: solid; border-right-width: 2px; border-right-color: #D3D3D3; padding-left: 5px; padding-right: 5px; }
+ #lnttcditvl .gt_stub_row_group { color: #333333; background-color: #FFFFFF; font-size: 100%; font-weight: initial; text-transform: inherit; border-right-style: solid; border-right-width: 2px; border-right-color: #D3D3D3; padding-left: 5px; padding-right: 5px; vertical-align: top; }
+ #lnttcditvl .gt_row_group_first td { border-top-width: 2px; }
+ #lnttcditvl .gt_row_group_first th { border-top-width: 2px; }
+ #lnttcditvl .gt_striped { color: #333333; background-color: #F4F4F4; }
+ #lnttcditvl .gt_table_body { border-top-style: solid; border-top-width: 2px; border-top-color: #D3D3D3; border-bottom-style: solid; border-bottom-width: 2px; border-bottom-color: #D3D3D3; }
+ #lnttcditvl .gt_grand_summary_row { color: #333333; background-color: #FFFFFF; text-transform: inherit; padding-top: 8px; padding-bottom: 8px; padding-left: 5px; padding-right: 5px; }
+ #lnttcditvl .gt_first_grand_summary_row_bottom { border-top-style: double; border-top-width: 6px; border-top-color: #D3D3D3; }
+ #lnttcditvl .gt_last_grand_summary_row_top { border-bottom-style: double; border-bottom-width: 6px; border-bottom-color: #D3D3D3; }
+ #lnttcditvl .gt_sourcenotes { color: #333333; background-color: #FFFFFF; border-bottom-style: none; border-bottom-width: 2px; border-bottom-color: #D3D3D3; border-left-style: none; border-left-width: 2px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 2px; border-right-color: #D3D3D3; }
+ #lnttcditvl .gt_sourcenote { font-size: 90%; padding-top: 4px; padding-bottom: 4px; padding-left: 5px; padding-right: 5px; text-align: left; }
+ #lnttcditvl .gt_left { text-align: left; }
+ #lnttcditvl .gt_center { text-align: center; }
+ #lnttcditvl .gt_right { text-align: right; font-variant-numeric: tabular-nums; }
+ #lnttcditvl .gt_font_normal { font-weight: normal; }
+ #lnttcditvl .gt_font_bold { font-weight: bold; }
+ #lnttcditvl .gt_font_italic { font-style: italic; }
+ #lnttcditvl .gt_super { font-size: 65%; }
+ #lnttcditvl .gt_footnote_marks { font-size: 75%; vertical-align: 0.4em; position: initial; }
+ #lnttcditvl .gt_asterisk { font-size: 100%; vertical-align: 0; }
+ 
+</style>
+
+<table class="gt_table caption-top" data-quarto-bootstrap="false">
+<thead>
+<tr class="gt_heading header">
+<td colspan="7" class="gt_heading gt_title gt_font_normal">First 5 rows of observed data</td>
+</tr>
+<tr class="gt_col_headings even">
+<th id="item1" class="gt_col_heading gt_columns_bottom_border gt_right" data-quarto-table-cell-role="th" scope="col">item1</th>
+<th id="item2" class="gt_col_heading gt_columns_bottom_border gt_right" data-quarto-table-cell-role="th" scope="col">item2</th>
+<th id="item3" class="gt_col_heading gt_columns_bottom_border gt_right" data-quarto-table-cell-role="th" scope="col">item3</th>
+<th id="item4" class="gt_col_heading gt_columns_bottom_border gt_right" data-quarto-table-cell-role="th" scope="col">item4</th>
+<th id="item5" class="gt_col_heading gt_columns_bottom_border gt_right" data-quarto-table-cell-role="th" scope="col">item5</th>
+<th id="item6" class="gt_col_heading gt_columns_bottom_border gt_right" data-quarto-table-cell-role="th" scope="col">item6</th>
+<th id="item7" class="gt_col_heading gt_columns_bottom_border gt_right" data-quarto-table-cell-role="th" scope="col">item7</th>
+</tr>
+</thead>
+<tbody class="gt_table_body">
+<tr class="odd">
+<td class="gt_row gt_right">1</td>
+<td class="gt_row gt_right">0</td>
+<td class="gt_row gt_right">1</td>
+<td class="gt_row gt_right">0</td>
+<td class="gt_row gt_right">1</td>
+<td class="gt_row gt_right">1</td>
+<td class="gt_row gt_right">1</td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_right">1</td>
+<td class="gt_row gt_right">0</td>
+<td class="gt_row gt_right">0</td>
+<td class="gt_row gt_right">0</td>
+<td class="gt_row gt_right">0</td>
+<td class="gt_row gt_right">1</td>
+<td class="gt_row gt_right">1</td>
+</tr>
+<tr class="odd">
+<td class="gt_row gt_right">0</td>
+<td class="gt_row gt_right">1</td>
+<td class="gt_row gt_right">1</td>
+<td class="gt_row gt_right">0</td>
+<td class="gt_row gt_right">0</td>
+<td class="gt_row gt_right">1</td>
+<td class="gt_row gt_right">0</td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_right">0</td>
+<td class="gt_row gt_right">1</td>
+<td class="gt_row gt_right">0</td>
+<td class="gt_row gt_right">1</td>
+<td class="gt_row gt_right">0</td>
+<td class="gt_row gt_right">0</td>
+<td class="gt_row gt_right">1</td>
+</tr>
+<tr class="odd">
+<td class="gt_row gt_right">0</td>
+<td class="gt_row gt_right">0</td>
+<td class="gt_row gt_right">0</td>
+<td class="gt_row gt_right">0</td>
+<td class="gt_row gt_right">0</td>
+<td class="gt_row gt_right">0</td>
+<td class="gt_row gt_right">0</td>
+</tr>
+</tbody>
+</table>
+
+
+</div>
+</div>
+</div>
+</section>
+<section id="running-our-stan-model" class="slide level2">
+<h2>Running Our Stan Model</h2>
+<div id="afacf040" class="cell" data-execution_count="9">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href=""></a>dcm_file <span class="op">=</span> os.path.join(here(<span class="st">'zzz_presentations/model.stan'</span>))</span>
+<span id="cb8-2"><a href=""></a>dcm_model <span class="op">=</span> CmdStanModel(stan_file <span class="op">=</span> dcm_file,</span>
+<span id="cb8-3"><a href=""></a>                         cpp_options<span class="op">=</span>{<span class="st">'STAN_THREADS'</span>: <span class="st">'TRUE'</span>})</span>
+<span id="cb8-4"><a href=""></a></span>
+<span id="cb8-5"><a href=""></a>np.random.seed(<span class="dv">12345</span>)</span>
+<span id="cb8-6"><a href=""></a>dcm_fit <span class="op">=</span> dcm_model.sample(data <span class="op">=</span> stan_dict,</span>
+<span id="cb8-7"><a href=""></a>                        show_console <span class="op">=</span> <span class="va">True</span>,</span>
+<span id="cb8-8"><a href=""></a>                        chains <span class="op">=</span> <span class="dv">4</span>,</span>
+<span id="cb8-9"><a href=""></a>                        <span class="co"># adapt_delta = .90,</span></span>
+<span id="cb8-10"><a href=""></a>                        iter_warmup <span class="op">=</span> <span class="dv">2000</span>,</span>
+<span id="cb8-11"><a href=""></a>                        iter_sampling <span class="op">=</span> <span class="dv">2000</span>)</span>
+<span id="cb8-12"><a href=""></a></span>
+<span id="cb8-13"><a href=""></a>dcm_diagnose <span class="op">=</span> pd.DataFrame(dcm_fit.summary())</span>
+<span id="cb8-14"><a href=""></a></span>
+<span id="cb8-15"><a href=""></a>dcmdf <span class="op">=</span> dino_fit.draws_pd()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<ul>
+<li><p>We can then run our model from a stan file and then I like to save the diagnostics to share</p></li>
+<li><p>For ease of use, I also make my draws/samples into a pandas dataframe</p></li>
+</ul>
+</section>
+<section id="running-our-prior-only-stan-model" class="slide level2">
+<h2>Running Our Prior Only Stan Model</h2>
+<div id="caacfbdb" class="cell" data-execution_count="10">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href=""></a>dcm_prior_file <span class="op">=</span> os.path.join(here(<span class="st">'zzz_presentations/prior.stan'</span>))</span>
+<span id="cb9-2"><a href=""></a>dcm_prior_model <span class="op">=</span> CmdStanModel(stan_file <span class="op">=</span> dcm_prior_file,</span>
+<span id="cb9-3"><a href=""></a>                         cpp_options<span class="op">=</span>{<span class="st">'STAN_THREADS'</span>: <span class="st">'TRUE'</span>})</span>
+<span id="cb9-4"><a href=""></a></span>
+<span id="cb9-5"><a href=""></a>np.random.seed(<span class="dv">12345</span>)</span>
+<span id="cb9-6"><a href=""></a>dcm_prior_fit <span class="op">=</span> dcm_prior_model.sample(data <span class="op">=</span> stan_dict,</span>
+<span id="cb9-7"><a href=""></a>                        show_console <span class="op">=</span> <span class="va">True</span>,</span>
+<span id="cb9-8"><a href=""></a>                        chains <span class="op">=</span> <span class="dv">4</span>,</span>
+<span id="cb9-9"><a href=""></a>                        <span class="co"># adapt_delta = .90,</span></span>
+<span id="cb9-10"><a href=""></a>                        iter_warmup <span class="op">=</span> <span class="dv">2000</span>,</span>
+<span id="cb9-11"><a href=""></a>                        iter_sampling <span class="op">=</span> <span class="dv">2000</span>)</span>
+<span id="cb9-12"><a href=""></a></span>
+<span id="cb9-13"><a href=""></a>dcm_prior_diagnose <span class="op">=</span> pd.DataFrame(dcm_prior_fit.summary())</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<ul>
+<li>I also run a prior only model (no likelihood calculations) to compare prior to posterior distributions</li>
+</ul>
+</section>
+<section id="save-the-model-for-later" class="slide level2">
+<h2>Save the Model for Later</h2>
+<div id="6b1337fc" class="cell" data-execution_count="11">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href=""></a><span class="im">import</span> joblib</span>
+<span id="cb10-2"><a href=""></a></span>
+<span id="cb10-3"><a href=""></a>dcm_diagnose.to_csv(here(<span class="st">'zzz_presentations/diagnose.csv'</span>))</span>
+<span id="cb10-4"><a href=""></a>(</span>
+<span id="cb10-5"><a href=""></a>  joblib.dump([dcm_model, dcm_fit],</span>
+<span id="cb10-6"><a href=""></a>              here(<span class="st">'zzz_presentations/modfit.joblib'</span>),</span>
+<span id="cb10-7"><a href=""></a>              compress <span class="op">=</span> <span class="dv">3</span>)</span>
+<span id="cb10-8"><a href=""></a>)</span>
+<span id="cb10-9"><a href=""></a></span>
+<span id="cb10-10"><a href=""></a>dcm_prior_diagnose.to_csv(here(<span class="st">'zzz_presentations/diagnose_prior_only.csv'</span>))</span>
+<span id="cb10-11"><a href=""></a>(</span>
+<span id="cb10-12"><a href=""></a>  joblib.dump([dcm_prior_model, dcm_prior_fit],</span>
+<span id="cb10-13"><a href=""></a>              here(<span class="st">'zzz_presentations/modfit_prior_only.joblib'</span>),</span>
+<span id="cb10-14"><a href=""></a>              compress <span class="op">=</span> <span class="dv">3</span>)</span>
+<span id="cb10-15"><a href=""></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</section>
+<section id="quick-diagnostics" class="slide level2">
+<h2>Quick Diagnostics</h2>
+<div class="columns">
+<div class="column" style="width:50%;">
+<div id="7062657f" class="cell" data-execution_count="13">
+<div class="cell-output cell-output-stdout">
+<pre><code>1049    1.00176
+140     1.00142
+132     1.00141
+128     1.00141
+15      1.00141
+Name: R_hat, dtype: float64
+
+
+
+2115    1.00170
+2109    1.00170
+2038    1.00167
+1906    1.00167
+226     1.00162
+Name: R_hat, dtype: float64</code></pre>
+</div>
+</div>
+</div><div class="column" style="width:50%;">
+<ul>
+<li><p>There are other diagnostics, but we want Rhat values under 1.1</p>
+<ul>
+<li><p>Checks between- and within-chain variation to make sure the 4 chains converge to the same target distribution</p></li>
+<li><p>A lot of reasons this could be bad; most come down to bad Stan code</p></li>
+</ul></li>
+</ul>
+</div></div>
+</section>
+<section id="plotting-helps-everything-true-positivesno-slipping" class="slide level2">
+<h2>Plotting Helps Everything (True Positives/No Slipping)</h2>
+<div id="fd0a46e9" class="cell" data-execution_count="15">
+<div class="cell-output cell-output-display">
+<div>
+<figure>
+<p><img data-src="index_files/figure-revealjs/cell-16-output-1.png" width="1763" height="6031"></p>
+</figure>
+</div>
+</div>
+</div>
+<aside class="notes">
+<ul>
+<li><p>We can compare our estimates of 80% correctly getting each item correct</p></li>
+<li><p>Posteriors are how our data actually looked</p></li>
+</ul>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="more-prior-vs-posterior-plots-guessing" class="slide level2">
+<h2>More Prior vs Posterior Plots (Guessing)</h2>
+<div id="a767f05c" class="cell" data-execution_count="16">
+<div class="cell-output cell-output-display">
+<div>
+<figure>
+<p><img data-src="index_files/figure-revealjs/cell-17-output-1.png" width="1770" height="6031"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="trace-plots---how-did-our-boats-do" class="slide level2">
+<h2>Trace Plots - How Did Our Boats Do?</h2>
+<div id="1c667f9f" class="cell" data-execution_count="17">
+<div class="cell-output cell-output-display">
+<div>
+<figure>
+<p><img data-src="index_files/figure-revealjs/cell-18-output-1.png" width="912" height="209"></p>
+</figure>
+</div>
+</div>
+</div>
+<div id="41b31d44" class="cell" data-execution_count="18">
+<div class="cell-output cell-output-display">
+<div>
+<figure>
+<p><img data-src="index_files/figure-revealjs/cell-19-output-1.png" width="918" height="209"></p>
+</figure>
+</div>
+</div>
+</div>
+<aside class="notes">
+<ul>
+<li><p>Squiggly lines are good</p></li>
+<li><p>Straight lines are bad</p></li>
+</ul>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="what-class-did-students-probabilistically-belong-to" class="slide level2">
+<h2>What Class Did Students Probabilistically Belong To</h2>
+<div id="0435d819" class="cell" data-execution_count="19">
+<div class="cell-output cell-output-display">
+<div>
+<figure>
+<p><img data-src="index_files/figure-revealjs/cell-20-output-1.png" width="649" height="604"></p>
+</figure>
+</div>
+</div>
+</div>
+<aside class="notes">
+<ul>
+<li><p>This doesn’t give us much confidence in what class this first student belongs to</p></li>
+<li><p>These credible intervals should be a lot smaller to make more accurate diagnostic decisions</p></li>
+</ul>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="what-about-attribute-mastery-per-student" class="slide level2">
+<h2>What About Attribute Mastery Per Student</h2>
+<div id="876f2197" class="cell" data-execution_count="20">
+<div class="cell-output cell-output-display">
+<div>
+<figure>
+<p><img data-src="index_files/figure-revealjs/cell-21-output-1.png" width="660" height="1254"></p>
+</figure>
+</div>
+</div>
+</div>
+<aside class="notes">
+<ul>
+<li><p>Same can be stated here</p></li>
+<li><p>This is a little easier because we know our threshold for proficiency is at .8</p></li>
+<li><p>So if the entire distribution is under .8 then they did not master even if the credible intervals are wide</p></li>
+</ul>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="does-our-model-fit-our-data" class="slide level2">
+<h2>Does Our Model Fit our Data</h2>
+<div id="d4ebdc87" class="cell" data-execution_count="21">
+<div class="cell-output cell-output-display">
+<div>
+<figure>
+<p><img data-src="index_files/figure-revealjs/cell-22-output-1.png" width="763" height="442"></p>
+</figure>
+</div>
+</div>
+</div>
+<aside class="notes">
+<ul>
+<li>This is only 100 samples, but you’d probably want to see more to make sure it is matching the observed data overall</li>
+</ul>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="does-our-model-fit-our-data-1" class="slide level2">
+<h2>Does Our Model Fit our Data</h2>
+<div id="99d23a85" class="cell" data-execution_count="22">
+<div class="cell-output cell-output-display">
+<div>
+<figure>
+<p><img data-src="index_files/figure-revealjs/cell-23-output-1.png" width="794" height="436"></p>
+</figure>
+</div>
+</div>
+</div>
+<aside class="notes">
+<ul>
+<li>This is just a different method of viewing the comparison between our posterior replicated data and our observed data</li>
+</ul>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="bayesian-posterior-predictive-p-values" class="slide level2">
+<h2>Bayesian Posterior Predictive p-values</h2>
+<div id="6fa8531d" class="cell" data-execution_count="23">
+<div class="cell-output cell-output-display">
+<div>
+<figure>
+<p><img data-src="index_files/figure-revealjs/cell-24-output-1.png" width="763" height="440"></p>
+</figure>
+</div>
+</div>
+</div>
+<aside class="notes">
+<ul>
+<li><p>This is a t-test that compares the a t-value of our observed data to each draw</p></li>
+<li><p>Then you see what the percentage of the average t-value from all the draws are compared to the observed t-value</p>
+<ul>
+<li>The best would be .5 because that means half are over and half and under</li>
+</ul></li>
+</ul>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="bayesian-ppp-values" class="slide level2">
+<h2>Bayesian PPP values</h2>
+<div id="8fe44fbd" class="cell" data-execution_count="24">
+<div class="cell-output cell-output-display">
+<div>
+<figure>
+<p><img data-src="index_files/figure-revealjs/cell-25-output-1.png" width="779" height="440"></p>
+</figure>
+</div>
+</div>
+</div>
+<aside class="notes">
+<ul>
+<li><p>Only relying on one value can end with problematic conclusions about how your replicated data fits your observed data</p></li>
+<li><p>It is recommended having multiple statistics to compare on</p></li>
+<li><p>Here this is a t-test with standard deviation</p></li>
+</ul>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="guessingslipping" class="slide level2">
+<h2>Guessing/Slipping</h2>
+<div id="f15e3d00" class="cell" data-execution_count="26">
+<div class="cell-output cell-output-display">
+<div>
+<figure>
+<p><img data-src="index_files/figure-revealjs/cell-27-output-1.png" width="979" height="499"></p>
+</figure>
+</div>
+</div>
+</div>
+<aside class="notes">
+<ul>
+<li><p>This is visualizing that there was a ~.4 probability of students guessing for item 5</p>
+<ul>
+<li><p>We should look into that and assess how that is taught</p></li>
+<li><p>We’ll focus on this for the retake as well</p></li>
+</ul></li>
+<li><p>Item 4 seems to have slightly more slipping, even though students may know the content</p></li>
+</ul>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="now-we-can-look-at-classes-items-they-got-correct" class="slide level2">
+<h2>Now We Can Look At Classes &amp; Items They Got Correct</h2>
+<div id="d0c42b98" class="cell" data-execution_count="28">
+<div class="cell-output cell-output-display">
+<div>
+<figure>
+<p><img data-src="index_files/figure-revealjs/cell-29-output-1.png" width="979" height="499"></p>
+</figure>
+</div>
+</div>
+</div>
+<aside class="notes">
+<ul>
+<li><p>The focus for me here is our class that should know each attribute (class 8 [1, 1, 1]) is not past the threshold of .5 for getting those items correct</p></li>
+<li><p>Why is that?</p>
+<ul>
+<li><p>What is wrong with item 5?</p></li>
+<li><p>None of the classes were likely to get that answer correct</p></li>
+</ul></li>
+</ul>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="lets-see-how-many-students-are-in-each-class" class="slide level2">
+<h2>Let’s See How Many Students Are in Each Class</h2>
+<div id="58a7cb4c" class="cell" data-execution_count="30">
+<div class="cell-output cell-output-display">
+<div id="ywwvlaayva" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>
+#ywwvlaayva table {
+          font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif;
+          -webkit-font-smoothing: antialiased;
+          -moz-osx-font-smoothing: grayscale;
+        }
+
+#ywwvlaayva thead, tbody, tfoot, tr, td, th { border-style: none; }
+ tr { background-color: transparent; }
+#ywwvlaayva p { margin: 0; padding: 0; }
+ #ywwvlaayva .gt_table { display: table; border-collapse: collapse; line-height: normal; margin-left: auto; margin-right: auto; color: #333333; font-size: 16px; font-weight: normal; font-style: normal; background-color: #FFFFFF; width: auto; border-top-style: solid; border-top-width: 2px; border-top-color: #A8A8A8; border-right-style: none; border-right-width: 2px; border-right-color: #D3D3D3; border-bottom-style: solid; border-bottom-width: 2px; border-bottom-color: #A8A8A8; border-left-style: none; border-left-width: 2px; border-left-color: #D3D3D3; }
+ #ywwvlaayva .gt_caption { padding-top: 4px; padding-bottom: 4px; }
+ #ywwvlaayva .gt_title { color: #333333; font-size: 125%; font-weight: initial; padding-top: 4px; padding-bottom: 4px; padding-left: 5px; padding-right: 5px; border-bottom-color: #FFFFFF; border-bottom-width: 0; }
+ #ywwvlaayva .gt_subtitle { color: #333333; font-size: 85%; font-weight: initial; padding-top: 3px; padding-bottom: 5px; padding-left: 5px; padding-right: 5px; border-top-color: #FFFFFF; border-top-width: 0; }
+ #ywwvlaayva .gt_heading { background-color: #FFFFFF; text-align: center; border-bottom-color: #FFFFFF; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; }
+ #ywwvlaayva .gt_bottom_border { border-bottom-style: solid; border-bottom-width: 2px; border-bottom-color: #D3D3D3; }
+ #ywwvlaayva .gt_col_headings { border-top-style: solid; border-top-width: 2px; border-top-color: #D3D3D3; border-bottom-style: solid; border-bottom-width: 2px; border-bottom-color: #D3D3D3; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; }
+ #ywwvlaayva .gt_col_heading { color: #333333; background-color: #FFFFFF; font-size: 100%; font-weight: normal; text-transform: inherit; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: bottom; padding-top: 5px; padding-bottom: 5px; padding-left: 5px; padding-right: 5px; overflow-x: hidden; }
+ #ywwvlaayva .gt_column_spanner_outer { color: #333333; background-color: #FFFFFF; font-size: 100%; font-weight: normal; text-transform: inherit; padding-top: 0; padding-bottom: 0; padding-left: 4px; padding-right: 4px; }
+ #ywwvlaayva .gt_column_spanner_outer:first-child { padding-left: 0; }
+ #ywwvlaayva .gt_column_spanner_outer:last-child { padding-right: 0; }
+ #ywwvlaayva .gt_column_spanner { border-bottom-style: solid; border-bottom-width: 2px; border-bottom-color: #D3D3D3; vertical-align: bottom; padding-top: 5px; padding-bottom: 5px; overflow-x: hidden; display: inline-block; width: 100%; }
+ #ywwvlaayva .gt_spanner_row { border-bottom-style: hidden; }
+ #ywwvlaayva .gt_group_heading { padding-top: 8px; padding-bottom: 8px; padding-left: 5px; padding-right: 5px; color: #333333; background-color: #FFFFFF; font-size: 100%; font-weight: initial; text-transform: inherit; border-top-style: solid; border-top-width: 2px; border-top-color: #D3D3D3; border-bottom-style: solid; border-bottom-width: 2px; border-bottom-color: #D3D3D3; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; text-align: left; }
+ #ywwvlaayva .gt_empty_group_heading { padding: 0.5px; color: #333333; background-color: #FFFFFF; font-size: 100%; font-weight: initial; border-top-style: solid; border-top-width: 2px; border-top-color: #D3D3D3; border-bottom-style: solid; border-bottom-width: 2px; border-bottom-color: #D3D3D3; vertical-align: middle; }
+ #ywwvlaayva .gt_from_md> :first-child { margin-top: 0; }
+ #ywwvlaayva .gt_from_md> :last-child { margin-bottom: 0; }
+ #ywwvlaayva .gt_row { padding-top: 8px; padding-bottom: 8px; padding-left: 5px; padding-right: 5px; margin: 10px; border-top-style: solid; border-top-width: 1px; border-top-color: #D3D3D3; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; overflow-x: hidden; }
+ #ywwvlaayva .gt_stub { color: #333333; background-color: #FFFFFF; font-size: 100%; font-weight: initial; text-transform: inherit; border-right-style: solid; border-right-width: 2px; border-right-color: #D3D3D3; padding-left: 5px; padding-right: 5px; }
+ #ywwvlaayva .gt_stub_row_group { color: #333333; background-color: #FFFFFF; font-size: 100%; font-weight: initial; text-transform: inherit; border-right-style: solid; border-right-width: 2px; border-right-color: #D3D3D3; padding-left: 5px; padding-right: 5px; vertical-align: top; }
+ #ywwvlaayva .gt_row_group_first td { border-top-width: 2px; }
+ #ywwvlaayva .gt_row_group_first th { border-top-width: 2px; }
+ #ywwvlaayva .gt_striped { color: #333333; background-color: #F4F4F4; }
+ #ywwvlaayva .gt_table_body { border-top-style: solid; border-top-width: 2px; border-top-color: #D3D3D3; border-bottom-style: solid; border-bottom-width: 2px; border-bottom-color: #D3D3D3; }
+ #ywwvlaayva .gt_grand_summary_row { color: #333333; background-color: #FFFFFF; text-transform: inherit; padding-top: 8px; padding-bottom: 8px; padding-left: 5px; padding-right: 5px; }
+ #ywwvlaayva .gt_first_grand_summary_row_bottom { border-top-style: double; border-top-width: 6px; border-top-color: #D3D3D3; }
+ #ywwvlaayva .gt_last_grand_summary_row_top { border-bottom-style: double; border-bottom-width: 6px; border-bottom-color: #D3D3D3; }
+ #ywwvlaayva .gt_sourcenotes { color: #333333; background-color: #FFFFFF; border-bottom-style: none; border-bottom-width: 2px; border-bottom-color: #D3D3D3; border-left-style: none; border-left-width: 2px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 2px; border-right-color: #D3D3D3; }
+ #ywwvlaayva .gt_sourcenote { font-size: 90%; padding-top: 4px; padding-bottom: 4px; padding-left: 5px; padding-right: 5px; text-align: left; }
+ #ywwvlaayva .gt_left { text-align: left; }
+ #ywwvlaayva .gt_center { text-align: center; }
+ #ywwvlaayva .gt_right { text-align: right; font-variant-numeric: tabular-nums; }
+ #ywwvlaayva .gt_font_normal { font-weight: normal; }
+ #ywwvlaayva .gt_font_bold { font-weight: bold; }
+ #ywwvlaayva .gt_font_italic { font-style: italic; }
+ #ywwvlaayva .gt_super { font-size: 65%; }
+ #ywwvlaayva .gt_footnote_marks { font-size: 75%; vertical-align: 0.4em; position: initial; }
+ #ywwvlaayva .gt_asterisk { font-size: 100%; vertical-align: 0; }
+ 
+</style>
+
+<table class="gt_table caption-top" data-quarto-bootstrap="false">
+<thead>
+<tr class="gt_heading header">
+<td colspan="2" class="gt_heading gt_title gt_font_normal">Latent Classes Counts</td>
+</tr>
+<tr class="gt_col_headings even">
+<th id="class_mastery" class="gt_col_heading gt_columns_bottom_border gt_right" data-quarto-table-cell-role="th" scope="col">class_mastery</th>
+<th id="count" class="gt_col_heading gt_columns_bottom_border gt_right" data-quarto-table-cell-role="th" scope="col">count</th>
+</tr>
+</thead>
+<tbody class="gt_table_body">
+<tr class="odd">
+<td class="gt_row gt_right">110</td>
+<td class="gt_row gt_right">72</td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_right">001</td>
+<td class="gt_row gt_right">66</td>
+</tr>
+<tr class="odd">
+<td class="gt_row gt_right">011</td>
+<td class="gt_row gt_right">33</td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_right">100</td>
+<td class="gt_row gt_right">14</td>
+</tr>
+<tr class="odd">
+<td class="gt_row gt_right">000</td>
+<td class="gt_row gt_right">13</td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_right">111</td>
+<td class="gt_row gt_right">2</td>
+</tr>
+</tbody>
+</table>
+
+
+</div>
+</div>
+</div>
+<aside class="notes">
+<ul>
+<li>We can also report the proportions of each class, we can see that there are more than have no proficiency, as well as those that are proficient in the first and last attribute, but not the second attribute</li>
+</ul>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="attribute-proficiency" class="slide level2">
+<h2>Attribute Proficiency</h2>
+<div id="aee7077c" class="cell" data-execution_count="32">
+<div class="cell-output cell-output-display">
+<div>
+<figure>
+<p><img data-src="index_files/figure-revealjs/cell-33-output-1.png" width="979" height="499"></p>
+</figure>
+</div>
+</div>
+</div>
+<aside class="notes">
+<ul>
+<li><p>Here is a plot that shows the proficiency for each attribute</p></li>
+<li><p>We can see that most are not proficient in the second attribute</p></li>
+</ul>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="setting-a-threshold-for-proficiency" class="slide level2">
+<h2>Setting A Threshold For Proficiency</h2>
+<div class="columns">
+<div class="column" style="width:50%;">
+<div id="431ff6e5" class="cell" data-execution_count="33">
+<div class="cell-output cell-output-display">
+<div id="glcdkxrcbq" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>
+#glcdkxrcbq table {
+          font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif;
+          -webkit-font-smoothing: antialiased;
+          -moz-osx-font-smoothing: grayscale;
+        }
+
+#glcdkxrcbq thead, tbody, tfoot, tr, td, th { border-style: none; }
+ tr { background-color: transparent; }
+#glcdkxrcbq p { margin: 0; padding: 0; }
+ #glcdkxrcbq .gt_table { display: table; border-collapse: collapse; line-height: normal; margin-left: auto; margin-right: auto; color: #333333; font-size: 16px; font-weight: normal; font-style: normal; background-color: #FFFFFF; width: auto; border-top-style: solid; border-top-width: 2px; border-top-color: #A8A8A8; border-right-style: none; border-right-width: 2px; border-right-color: #D3D3D3; border-bottom-style: solid; border-bottom-width: 2px; border-bottom-color: #A8A8A8; border-left-style: none; border-left-width: 2px; border-left-color: #D3D3D3; }
+ #glcdkxrcbq .gt_caption { padding-top: 4px; padding-bottom: 4px; }
+ #glcdkxrcbq .gt_title { color: #333333; font-size: 125%; font-weight: initial; padding-top: 4px; padding-bottom: 4px; padding-left: 5px; padding-right: 5px; border-bottom-color: #FFFFFF; border-bottom-width: 0; }
+ #glcdkxrcbq .gt_subtitle { color: #333333; font-size: 85%; font-weight: initial; padding-top: 3px; padding-bottom: 5px; padding-left: 5px; padding-right: 5px; border-top-color: #FFFFFF; border-top-width: 0; }
+ #glcdkxrcbq .gt_heading { background-color: #FFFFFF; text-align: center; border-bottom-color: #FFFFFF; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; }
+ #glcdkxrcbq .gt_bottom_border { border-bottom-style: solid; border-bottom-width: 2px; border-bottom-color: #D3D3D3; }
+ #glcdkxrcbq .gt_col_headings { border-top-style: solid; border-top-width: 2px; border-top-color: #D3D3D3; border-bottom-style: solid; border-bottom-width: 2px; border-bottom-color: #D3D3D3; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; }
+ #glcdkxrcbq .gt_col_heading { color: #333333; background-color: #FFFFFF; font-size: 100%; font-weight: normal; text-transform: inherit; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: bottom; padding-top: 5px; padding-bottom: 5px; padding-left: 5px; padding-right: 5px; overflow-x: hidden; }
+ #glcdkxrcbq .gt_column_spanner_outer { color: #333333; background-color: #FFFFFF; font-size: 100%; font-weight: normal; text-transform: inherit; padding-top: 0; padding-bottom: 0; padding-left: 4px; padding-right: 4px; }
+ #glcdkxrcbq .gt_column_spanner_outer:first-child { padding-left: 0; }
+ #glcdkxrcbq .gt_column_spanner_outer:last-child { padding-right: 0; }
+ #glcdkxrcbq .gt_column_spanner { border-bottom-style: solid; border-bottom-width: 2px; border-bottom-color: #D3D3D3; vertical-align: bottom; padding-top: 5px; padding-bottom: 5px; overflow-x: hidden; display: inline-block; width: 100%; }
+ #glcdkxrcbq .gt_spanner_row { border-bottom-style: hidden; }
+ #glcdkxrcbq .gt_group_heading { padding-top: 8px; padding-bottom: 8px; padding-left: 5px; padding-right: 5px; color: #333333; background-color: #FFFFFF; font-size: 100%; font-weight: initial; text-transform: inherit; border-top-style: solid; border-top-width: 2px; border-top-color: #D3D3D3; border-bottom-style: solid; border-bottom-width: 2px; border-bottom-color: #D3D3D3; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; text-align: left; }
+ #glcdkxrcbq .gt_empty_group_heading { padding: 0.5px; color: #333333; background-color: #FFFFFF; font-size: 100%; font-weight: initial; border-top-style: solid; border-top-width: 2px; border-top-color: #D3D3D3; border-bottom-style: solid; border-bottom-width: 2px; border-bottom-color: #D3D3D3; vertical-align: middle; }
+ #glcdkxrcbq .gt_from_md> :first-child { margin-top: 0; }
+ #glcdkxrcbq .gt_from_md> :last-child { margin-bottom: 0; }
+ #glcdkxrcbq .gt_row { padding-top: 8px; padding-bottom: 8px; padding-left: 5px; padding-right: 5px; margin: 10px; border-top-style: solid; border-top-width: 1px; border-top-color: #D3D3D3; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; overflow-x: hidden; }
+ #glcdkxrcbq .gt_stub { color: #333333; background-color: #FFFFFF; font-size: 100%; font-weight: initial; text-transform: inherit; border-right-style: solid; border-right-width: 2px; border-right-color: #D3D3D3; padding-left: 5px; padding-right: 5px; }
+ #glcdkxrcbq .gt_stub_row_group { color: #333333; background-color: #FFFFFF; font-size: 100%; font-weight: initial; text-transform: inherit; border-right-style: solid; border-right-width: 2px; border-right-color: #D3D3D3; padding-left: 5px; padding-right: 5px; vertical-align: top; }
+ #glcdkxrcbq .gt_row_group_first td { border-top-width: 2px; }
+ #glcdkxrcbq .gt_row_group_first th { border-top-width: 2px; }
+ #glcdkxrcbq .gt_striped { color: #333333; background-color: #F4F4F4; }
+ #glcdkxrcbq .gt_table_body { border-top-style: solid; border-top-width: 2px; border-top-color: #D3D3D3; border-bottom-style: solid; border-bottom-width: 2px; border-bottom-color: #D3D3D3; }
+ #glcdkxrcbq .gt_grand_summary_row { color: #333333; background-color: #FFFFFF; text-transform: inherit; padding-top: 8px; padding-bottom: 8px; padding-left: 5px; padding-right: 5px; }
+ #glcdkxrcbq .gt_first_grand_summary_row_bottom { border-top-style: double; border-top-width: 6px; border-top-color: #D3D3D3; }
+ #glcdkxrcbq .gt_last_grand_summary_row_top { border-bottom-style: double; border-bottom-width: 6px; border-bottom-color: #D3D3D3; }
+ #glcdkxrcbq .gt_sourcenotes { color: #333333; background-color: #FFFFFF; border-bottom-style: none; border-bottom-width: 2px; border-bottom-color: #D3D3D3; border-left-style: none; border-left-width: 2px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 2px; border-right-color: #D3D3D3; }
+ #glcdkxrcbq .gt_sourcenote { font-size: 90%; padding-top: 4px; padding-bottom: 4px; padding-left: 5px; padding-right: 5px; text-align: left; }
+ #glcdkxrcbq .gt_left { text-align: left; }
+ #glcdkxrcbq .gt_center { text-align: center; }
+ #glcdkxrcbq .gt_right { text-align: right; font-variant-numeric: tabular-nums; }
+ #glcdkxrcbq .gt_font_normal { font-weight: normal; }
+ #glcdkxrcbq .gt_font_bold { font-weight: bold; }
+ #glcdkxrcbq .gt_font_italic { font-style: italic; }
+ #glcdkxrcbq .gt_super { font-size: 65%; }
+ #glcdkxrcbq .gt_footnote_marks { font-size: 75%; vertical-align: 0.4em; position: initial; }
+ #glcdkxrcbq .gt_asterisk { font-size: 100%; vertical-align: 0; }
+ 
+</style>
+
+<table class="gt_table caption-top" data-quarto-bootstrap="false">
+<thead>
+<tr class="gt_heading header">
+<td colspan="3" class="gt_heading gt_title gt_font_normal">Student Proficiency</td>
+</tr>
+<tr class="gt_col_headings even">
+<th id="attr1" class="gt_col_heading gt_columns_bottom_border gt_right" data-quarto-table-cell-role="th" scope="col">attr1</th>
+<th id="attr2" class="gt_col_heading gt_columns_bottom_border gt_right" data-quarto-table-cell-role="th" scope="col">attr2</th>
+<th id="attr3" class="gt_col_heading gt_columns_bottom_border gt_right" data-quarto-table-cell-role="th" scope="col">attr3</th>
+</tr>
+</thead>
+<tbody class="gt_table_body">
+<tr class="odd">
+<td class="gt_row gt_right">1</td>
+<td class="gt_row gt_right">0</td>
+<td class="gt_row gt_right">1</td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_right">0</td>
+<td class="gt_row gt_right">0</td>
+<td class="gt_row gt_right">0</td>
+</tr>
+<tr class="odd">
+<td class="gt_row gt_right">0</td>
+<td class="gt_row gt_right">0</td>
+<td class="gt_row gt_right">0</td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_right">0</td>
+<td class="gt_row gt_right">1</td>
+<td class="gt_row gt_right">1</td>
+</tr>
+<tr class="odd">
+<td class="gt_row gt_right">0</td>
+<td class="gt_row gt_right">0</td>
+<td class="gt_row gt_right">0</td>
+</tr>
+</tbody>
+</table>
+
+
+</div>
+</div>
+</div>
+</div><div class="column" style="width:50%;">
+<ul>
+<li><p>We decide on a threshold</p>
+<ul>
+<li>A .8 probability threshold seems good to reduce Type I error, which is most important</li>
+</ul></li>
+<li><p>For something as low stakes as a quiz, we feel more confident accidentally sending too many emails rather than not enough</p></li>
+<li><p>Here we see the proficiency values for the first 5 students in our simulated data</p></li>
+</ul>
+</div></div>
+</section>
+<section id="emails" class="slide level2">
+<h2>Emails</h2>
+<div id="9244b963" class="cell" data-execution_count="34">
+<div class="cell-output cell-output-display">
+<div id="odawidslhw" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>
+#odawidslhw table {
+          font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif;
+          -webkit-font-smoothing: antialiased;
+          -moz-osx-font-smoothing: grayscale;
+        }
+
+#odawidslhw thead, tbody, tfoot, tr, td, th { border-style: none; }
+ tr { background-color: transparent; }
+#odawidslhw p { margin: 0; padding: 0; }
+ #odawidslhw .gt_table { display: table; border-collapse: collapse; line-height: normal; margin-left: auto; margin-right: auto; color: #333333; font-size: 16px; font-weight: normal; font-style: normal; background-color: #FFFFFF; width: auto; border-top-style: solid; border-top-width: 2px; border-top-color: #A8A8A8; border-right-style: none; border-right-width: 2px; border-right-color: #D3D3D3; border-bottom-style: solid; border-bottom-width: 2px; border-bottom-color: #A8A8A8; border-left-style: none; border-left-width: 2px; border-left-color: #D3D3D3; }
+ #odawidslhw .gt_caption { padding-top: 4px; padding-bottom: 4px; }
+ #odawidslhw .gt_title { color: #333333; font-size: 125%; font-weight: initial; padding-top: 4px; padding-bottom: 4px; padding-left: 5px; padding-right: 5px; border-bottom-color: #FFFFFF; border-bottom-width: 0; }
+ #odawidslhw .gt_subtitle { color: #333333; font-size: 85%; font-weight: initial; padding-top: 3px; padding-bottom: 5px; padding-left: 5px; padding-right: 5px; border-top-color: #FFFFFF; border-top-width: 0; }
+ #odawidslhw .gt_heading { background-color: #FFFFFF; text-align: center; border-bottom-color: #FFFFFF; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; }
+ #odawidslhw .gt_bottom_border { border-bottom-style: solid; border-bottom-width: 2px; border-bottom-color: #D3D3D3; }
+ #odawidslhw .gt_col_headings { border-top-style: solid; border-top-width: 2px; border-top-color: #D3D3D3; border-bottom-style: solid; border-bottom-width: 2px; border-bottom-color: #D3D3D3; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; }
+ #odawidslhw .gt_col_heading { color: #333333; background-color: #FFFFFF; font-size: 100%; font-weight: normal; text-transform: inherit; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: bottom; padding-top: 5px; padding-bottom: 5px; padding-left: 5px; padding-right: 5px; overflow-x: hidden; }
+ #odawidslhw .gt_column_spanner_outer { color: #333333; background-color: #FFFFFF; font-size: 100%; font-weight: normal; text-transform: inherit; padding-top: 0; padding-bottom: 0; padding-left: 4px; padding-right: 4px; }
+ #odawidslhw .gt_column_spanner_outer:first-child { padding-left: 0; }
+ #odawidslhw .gt_column_spanner_outer:last-child { padding-right: 0; }
+ #odawidslhw .gt_column_spanner { border-bottom-style: solid; border-bottom-width: 2px; border-bottom-color: #D3D3D3; vertical-align: bottom; padding-top: 5px; padding-bottom: 5px; overflow-x: hidden; display: inline-block; width: 100%; }
+ #odawidslhw .gt_spanner_row { border-bottom-style: hidden; }
+ #odawidslhw .gt_group_heading { padding-top: 8px; padding-bottom: 8px; padding-left: 5px; padding-right: 5px; color: #333333; background-color: #FFFFFF; font-size: 100%; font-weight: initial; text-transform: inherit; border-top-style: solid; border-top-width: 2px; border-top-color: #D3D3D3; border-bottom-style: solid; border-bottom-width: 2px; border-bottom-color: #D3D3D3; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; text-align: left; }
+ #odawidslhw .gt_empty_group_heading { padding: 0.5px; color: #333333; background-color: #FFFFFF; font-size: 100%; font-weight: initial; border-top-style: solid; border-top-width: 2px; border-top-color: #D3D3D3; border-bottom-style: solid; border-bottom-width: 2px; border-bottom-color: #D3D3D3; vertical-align: middle; }
+ #odawidslhw .gt_from_md> :first-child { margin-top: 0; }
+ #odawidslhw .gt_from_md> :last-child { margin-bottom: 0; }
+ #odawidslhw .gt_row { padding-top: 8px; padding-bottom: 8px; padding-left: 5px; padding-right: 5px; margin: 10px; border-top-style: solid; border-top-width: 1px; border-top-color: #D3D3D3; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; overflow-x: hidden; }
+ #odawidslhw .gt_stub { color: #333333; background-color: #FFFFFF; font-size: 100%; font-weight: initial; text-transform: inherit; border-right-style: solid; border-right-width: 2px; border-right-color: #D3D3D3; padding-left: 5px; padding-right: 5px; }
+ #odawidslhw .gt_stub_row_group { color: #333333; background-color: #FFFFFF; font-size: 100%; font-weight: initial; text-transform: inherit; border-right-style: solid; border-right-width: 2px; border-right-color: #D3D3D3; padding-left: 5px; padding-right: 5px; vertical-align: top; }
+ #odawidslhw .gt_row_group_first td { border-top-width: 2px; }
+ #odawidslhw .gt_row_group_first th { border-top-width: 2px; }
+ #odawidslhw .gt_striped { color: #333333; background-color: #F4F4F4; }
+ #odawidslhw .gt_table_body { border-top-style: solid; border-top-width: 2px; border-top-color: #D3D3D3; border-bottom-style: solid; border-bottom-width: 2px; border-bottom-color: #D3D3D3; }
+ #odawidslhw .gt_grand_summary_row { color: #333333; background-color: #FFFFFF; text-transform: inherit; padding-top: 8px; padding-bottom: 8px; padding-left: 5px; padding-right: 5px; }
+ #odawidslhw .gt_first_grand_summary_row_bottom { border-top-style: double; border-top-width: 6px; border-top-color: #D3D3D3; }
+ #odawidslhw .gt_last_grand_summary_row_top { border-bottom-style: double; border-bottom-width: 6px; border-bottom-color: #D3D3D3; }
+ #odawidslhw .gt_sourcenotes { color: #333333; background-color: #FFFFFF; border-bottom-style: none; border-bottom-width: 2px; border-bottom-color: #D3D3D3; border-left-style: none; border-left-width: 2px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 2px; border-right-color: #D3D3D3; }
+ #odawidslhw .gt_sourcenote { font-size: 90%; padding-top: 4px; padding-bottom: 4px; padding-left: 5px; padding-right: 5px; text-align: left; }
+ #odawidslhw .gt_left { text-align: left; }
+ #odawidslhw .gt_center { text-align: center; }
+ #odawidslhw .gt_right { text-align: right; font-variant-numeric: tabular-nums; }
+ #odawidslhw .gt_font_normal { font-weight: normal; }
+ #odawidslhw .gt_font_bold { font-weight: bold; }
+ #odawidslhw .gt_font_italic { font-style: italic; }
+ #odawidslhw .gt_super { font-size: 65%; }
+ #odawidslhw .gt_footnote_marks { font-size: 75%; vertical-align: 0.4em; position: initial; }
+ #odawidslhw .gt_asterisk { font-size: 100%; vertical-align: 0; }
+ 
+</style>
+
+<table class="gt_table caption-top" data-quarto-bootstrap="false">
+<thead>
+<tr class="gt_heading header">
+<td colspan="3" class="gt_heading gt_title gt_font_normal">Included in Email</td>
+</tr>
+<tr class="gt_col_headings even">
+<th id="attr1" class="gt_col_heading gt_columns_bottom_border gt_left" data-quarto-table-cell-role="th" scope="col">attr1</th>
+<th id="attr2" class="gt_col_heading gt_columns_bottom_border gt_left" data-quarto-table-cell-role="th" scope="col">attr2</th>
+<th id="attr3" class="gt_col_heading gt_columns_bottom_border gt_left" data-quarto-table-cell-role="th" scope="col">attr3</th>
+</tr>
+</thead>
+<tbody class="gt_table_body">
+<tr class="odd">
+<td class="gt_row gt_left">Proficient in Attribute 1</td>
+<td class="gt_row gt_left">Did not meet proficiency of Attribute 2</td>
+<td class="gt_row gt_left">Proficient in Attribute 3</td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_left">Did not meet proficiency of Attribute 1</td>
+<td class="gt_row gt_left">Did not meet proficiency of Attribute 2</td>
+<td class="gt_row gt_left">Did not meet proficiency of Attribute 3</td>
+</tr>
+<tr class="odd">
+<td class="gt_row gt_left">Did not meet proficiency of Attribute 1</td>
+<td class="gt_row gt_left">Did not meet proficiency of Attribute 2</td>
+<td class="gt_row gt_left">Did not meet proficiency of Attribute 3</td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_left">Did not meet proficiency of Attribute 1</td>
+<td class="gt_row gt_left">Proficient in Attribute 2</td>
+<td class="gt_row gt_left">Proficient in Attribute 3</td>
+</tr>
+<tr class="odd">
+<td class="gt_row gt_left">Did not meet proficiency of Attribute 1</td>
+<td class="gt_row gt_left">Did not meet proficiency of Attribute 2</td>
+<td class="gt_row gt_left">Did not meet proficiency of Attribute 3</td>
+</tr>
+</tbody>
+</table>
+
+
+</div>
+</div>
+</div>
+<ul>
+<li><p>From here we print out messages to save into a csv to be put into an email template that highlights which areas students may not have met proficiency in</p></li>
+<li><p>Students with proficiency in all attributes do not receive an email</p></li>
+<li><p>We also highlight what sections in the book should be reviewed to get a better understanding of the attribute</p></li>
+</ul>
+</section>
+<section id="but-is-our-model-reliable" class="slide level2">
+<h2>But Is Our Model Reliable?</h2>
+<div id="884e47fb" class="cell" data-execution_count="35">
+<div class="cell-output cell-output-display">
+<div id="ngejtvzvds" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>
+#ngejtvzvds table {
+          font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif;
+          -webkit-font-smoothing: antialiased;
+          -moz-osx-font-smoothing: grayscale;
+        }
+
+#ngejtvzvds thead, tbody, tfoot, tr, td, th { border-style: none; }
+ tr { background-color: transparent; }
+#ngejtvzvds p { margin: 0; padding: 0; }
+ #ngejtvzvds .gt_table { display: table; border-collapse: collapse; line-height: normal; margin-left: auto; margin-right: auto; color: #333333; font-size: 16px; font-weight: normal; font-style: normal; background-color: #FFFFFF; width: auto; border-top-style: solid; border-top-width: 2px; border-top-color: #A8A8A8; border-right-style: none; border-right-width: 2px; border-right-color: #D3D3D3; border-bottom-style: solid; border-bottom-width: 2px; border-bottom-color: #A8A8A8; border-left-style: none; border-left-width: 2px; border-left-color: #D3D3D3; }
+ #ngejtvzvds .gt_caption { padding-top: 4px; padding-bottom: 4px; }
+ #ngejtvzvds .gt_title { color: #333333; font-size: 125%; font-weight: initial; padding-top: 4px; padding-bottom: 4px; padding-left: 5px; padding-right: 5px; border-bottom-color: #FFFFFF; border-bottom-width: 0; }
+ #ngejtvzvds .gt_subtitle { color: #333333; font-size: 85%; font-weight: initial; padding-top: 3px; padding-bottom: 5px; padding-left: 5px; padding-right: 5px; border-top-color: #FFFFFF; border-top-width: 0; }
+ #ngejtvzvds .gt_heading { background-color: #FFFFFF; text-align: center; border-bottom-color: #FFFFFF; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; }
+ #ngejtvzvds .gt_bottom_border { border-bottom-style: solid; border-bottom-width: 2px; border-bottom-color: #D3D3D3; }
+ #ngejtvzvds .gt_col_headings { border-top-style: solid; border-top-width: 2px; border-top-color: #D3D3D3; border-bottom-style: solid; border-bottom-width: 2px; border-bottom-color: #D3D3D3; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; }
+ #ngejtvzvds .gt_col_heading { color: #333333; background-color: #FFFFFF; font-size: 100%; font-weight: normal; text-transform: inherit; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: bottom; padding-top: 5px; padding-bottom: 5px; padding-left: 5px; padding-right: 5px; overflow-x: hidden; }
+ #ngejtvzvds .gt_column_spanner_outer { color: #333333; background-color: #FFFFFF; font-size: 100%; font-weight: normal; text-transform: inherit; padding-top: 0; padding-bottom: 0; padding-left: 4px; padding-right: 4px; }
+ #ngejtvzvds .gt_column_spanner_outer:first-child { padding-left: 0; }
+ #ngejtvzvds .gt_column_spanner_outer:last-child { padding-right: 0; }
+ #ngejtvzvds .gt_column_spanner { border-bottom-style: solid; border-bottom-width: 2px; border-bottom-color: #D3D3D3; vertical-align: bottom; padding-top: 5px; padding-bottom: 5px; overflow-x: hidden; display: inline-block; width: 100%; }
+ #ngejtvzvds .gt_spanner_row { border-bottom-style: hidden; }
+ #ngejtvzvds .gt_group_heading { padding-top: 8px; padding-bottom: 8px; padding-left: 5px; padding-right: 5px; color: #333333; background-color: #FFFFFF; font-size: 100%; font-weight: initial; text-transform: inherit; border-top-style: solid; border-top-width: 2px; border-top-color: #D3D3D3; border-bottom-style: solid; border-bottom-width: 2px; border-bottom-color: #D3D3D3; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; text-align: left; }
+ #ngejtvzvds .gt_empty_group_heading { padding: 0.5px; color: #333333; background-color: #FFFFFF; font-size: 100%; font-weight: initial; border-top-style: solid; border-top-width: 2px; border-top-color: #D3D3D3; border-bottom-style: solid; border-bottom-width: 2px; border-bottom-color: #D3D3D3; vertical-align: middle; }
+ #ngejtvzvds .gt_from_md> :first-child { margin-top: 0; }
+ #ngejtvzvds .gt_from_md> :last-child { margin-bottom: 0; }
+ #ngejtvzvds .gt_row { padding-top: 8px; padding-bottom: 8px; padding-left: 5px; padding-right: 5px; margin: 10px; border-top-style: solid; border-top-width: 1px; border-top-color: #D3D3D3; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; overflow-x: hidden; }
+ #ngejtvzvds .gt_stub { color: #333333; background-color: #FFFFFF; font-size: 100%; font-weight: initial; text-transform: inherit; border-right-style: solid; border-right-width: 2px; border-right-color: #D3D3D3; padding-left: 5px; padding-right: 5px; }
+ #ngejtvzvds .gt_stub_row_group { color: #333333; background-color: #FFFFFF; font-size: 100%; font-weight: initial; text-transform: inherit; border-right-style: solid; border-right-width: 2px; border-right-color: #D3D3D3; padding-left: 5px; padding-right: 5px; vertical-align: top; }
+ #ngejtvzvds .gt_row_group_first td { border-top-width: 2px; }
+ #ngejtvzvds .gt_row_group_first th { border-top-width: 2px; }
+ #ngejtvzvds .gt_striped { color: #333333; background-color: #F4F4F4; }
+ #ngejtvzvds .gt_table_body { border-top-style: solid; border-top-width: 2px; border-top-color: #D3D3D3; border-bottom-style: solid; border-bottom-width: 2px; border-bottom-color: #D3D3D3; }
+ #ngejtvzvds .gt_grand_summary_row { color: #333333; background-color: #FFFFFF; text-transform: inherit; padding-top: 8px; padding-bottom: 8px; padding-left: 5px; padding-right: 5px; }
+ #ngejtvzvds .gt_first_grand_summary_row_bottom { border-top-style: double; border-top-width: 6px; border-top-color: #D3D3D3; }
+ #ngejtvzvds .gt_last_grand_summary_row_top { border-bottom-style: double; border-bottom-width: 6px; border-bottom-color: #D3D3D3; }
+ #ngejtvzvds .gt_sourcenotes { color: #333333; background-color: #FFFFFF; border-bottom-style: none; border-bottom-width: 2px; border-bottom-color: #D3D3D3; border-left-style: none; border-left-width: 2px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 2px; border-right-color: #D3D3D3; }
+ #ngejtvzvds .gt_sourcenote { font-size: 90%; padding-top: 4px; padding-bottom: 4px; padding-left: 5px; padding-right: 5px; text-align: left; }
+ #ngejtvzvds .gt_left { text-align: left; }
+ #ngejtvzvds .gt_center { text-align: center; }
+ #ngejtvzvds .gt_right { text-align: right; font-variant-numeric: tabular-nums; }
+ #ngejtvzvds .gt_font_normal { font-weight: normal; }
+ #ngejtvzvds .gt_font_bold { font-weight: bold; }
+ #ngejtvzvds .gt_font_italic { font-style: italic; }
+ #ngejtvzvds .gt_super { font-size: 65%; }
+ #ngejtvzvds .gt_footnote_marks { font-size: 75%; vertical-align: 0.4em; position: initial; }
+ #ngejtvzvds .gt_asterisk { font-size: 100%; vertical-align: 0; }
+ 
+</style>
+
+<table class="gt_table caption-top" data-quarto-bootstrap="false">
+<thead>
+<tr class="gt_heading header">
+<td colspan="3" class="gt_heading gt_title gt_font_normal">Reliability For Assigning Proficiency</td>
+</tr>
+<tr class="gt_col_headings even">
+<th id="attr" class="gt_col_heading gt_columns_bottom_border gt_right" data-quarto-table-cell-role="th" scope="col">attr</th>
+<th id="accuracy" class="gt_col_heading gt_columns_bottom_border gt_right" data-quarto-table-cell-role="th" scope="col">accuracy</th>
+<th id="consistency" class="gt_col_heading gt_columns_bottom_border gt_right" data-quarto-table-cell-role="th" scope="col">consistency</th>
+</tr>
+</thead>
+<tbody class="gt_table_body">
+<tr class="odd">
+<td class="gt_row gt_right">1</td>
+<td class="gt_row gt_right">0.874</td>
+<td class="gt_row gt_right">0.814</td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_right">2</td>
+<td class="gt_row gt_right">0.637</td>
+<td class="gt_row gt_right">0.575</td>
+</tr>
+<tr class="odd">
+<td class="gt_row gt_right">3</td>
+<td class="gt_row gt_right">0.864</td>
+<td class="gt_row gt_right">0.804</td>
+</tr>
+</tbody>
+</table>
+
+
+</div>
+</div>
+</div>
+<ul>
+<li><p>Accuracy is how well does the model predict whether this matches students “true” proficiency</p></li>
+<li><p>Consistency is if they got measured again for these skills, would they be proficient in the same skills</p></li>
+</ul>
+<aside class="notes">
+<ul>
+<li><p>The issue with attribute 2 is that only 1 item measures the attribute</p></li>
+<li><p>Our real model was tested with 2 and 3 attributes to help alleviate that</p></li>
+<li><p>In our real data, separating into 3 attributes resulted in a better fitting model</p>
+<ul>
+<li>Most likely due to the q-matrix being better specified</li>
+</ul></li>
+</ul>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="next-steps-things-to-address" class="slide level2">
+<h2>Next Steps &amp; Things to Address</h2>
+<ul>
+<li><p>We have to still model quiz retakes to see if students improve in proficiency</p></li>
+<li><p>Challenges include:</p>
+<ul>
+<li><p>TAs are helping with providing me anonymized data</p></li>
+<li><p>Also helping with sending out the emails</p>
+<ul>
+<li>Not their responsibility</li>
+</ul></li>
+<li><p>Parameterizing/Automating in the future</p></li>
+<li><p>Defining Structural Model Edges</p></li>
+</ul></li>
+</ul>
+
+</section>
+    </div>
+  <div class="quarto-auto-generated-content" style="display: none;">
+<div class="footer footer-default">
+
+</div>
+</div></div>
+
+  <script>window.backupDefine = window.define; window.define = undefined;</script>
+  <script src="index_files/libs/revealjs/dist/reveal.js"></script>
+  <!-- reveal.js plugins -->
+  <script src="index_files/libs/revealjs/plugin/quarto-line-highlight/line-highlight.js"></script>
+  <script src="index_files/libs/revealjs/plugin/pdf-export/pdfexport.js"></script>
+  <script src="index_files/libs/revealjs/plugin/reveal-menu/menu.js"></script>
+  <script src="index_files/libs/revealjs/plugin/reveal-menu/quarto-menu.js"></script>
+  <script src="index_files/libs/revealjs/plugin/quarto-support/support.js"></script>
+  
+
+  <script src="index_files/libs/revealjs/plugin/notes/notes.js"></script>
+  <script src="index_files/libs/revealjs/plugin/search/search.js"></script>
+  <script src="index_files/libs/revealjs/plugin/zoom/zoom.js"></script>
+  <script src="index_files/libs/revealjs/plugin/math/math.js"></script>
+  <script>window.define = window.backupDefine; window.backupDefine = undefined;</script>
+
+  <script>
+
+      // Full list of configuration options available at:
+      // https://revealjs.com/config/
+      Reveal.initialize({
+'controlsAuto': true,
+'previewLinksAuto': false,
+'pdfSeparateFragments': false,
+'autoAnimateEasing': "ease",
+'autoAnimateDuration': 1,
+'autoAnimateUnmatched': true,
+'jumpToSlide': true,
+'menu': {"side":"left","useTextContentForMissingTitles":true,"markers":false,"loadIcons":false,"custom":[{"title":"Tools","icon":"<i class=\"fas fa-gear\"></i>","content":"<ul class=\"slide-menu-items\">\n<li class=\"slide-tool-item active\" data-item=\"0\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.fullscreen(event)\"><kbd>f</kbd> Fullscreen</a></li>\n<li class=\"slide-tool-item\" data-item=\"1\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.speakerMode(event)\"><kbd>s</kbd> Speaker View</a></li>\n<li class=\"slide-tool-item\" data-item=\"2\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.overview(event)\"><kbd>o</kbd> Slide Overview</a></li>\n<li class=\"slide-tool-item\" data-item=\"3\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.togglePdfExport(event)\"><kbd>e</kbd> PDF Export Mode</a></li>\n<li class=\"slide-tool-item\" data-item=\"4\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.toggleScrollView(event)\"><kbd>r</kbd> Scroll View Mode</a></li>\n<li class=\"slide-tool-item\" data-item=\"5\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.keyboardHelp(event)\"><kbd>?</kbd> Keyboard Help</a></li>\n</ul>"}],"openButton":true},
+'smaller': true,
+ 
+        // Display controls in the bottom right corner
+        controls: false,
+
+        // Help the user learn the controls by providing hints, for example by
+        // bouncing the down arrow when they first encounter a vertical slide
+        controlsTutorial: false,
+
+        // Determines where controls appear, "edges" or "bottom-right"
+        controlsLayout: 'edges',
+
+        // Visibility rule for backwards navigation arrows; "faded", "hidden"
+        // or "visible"
+        controlsBackArrows: 'faded',
+
+        // Display a presentation progress bar
+        progress: true,
+
+        // Display the page number of the current slide
+        slideNumber: 'c/t',
+
+        // 'all', 'print', or 'speaker'
+        showSlideNumber: 'all',
+
+        // Add the current slide number to the URL hash so that reloading the
+        // page/copying the URL will return you to the same slide
+        hash: true,
+
+        // Start with 1 for the hash rather than 0
+        hashOneBasedIndex: false,
+
+        // Flags if we should monitor the hash and change slides accordingly
+        respondToHashChanges: true,
+
+        // Push each slide change to the browser history
+        history: true,
+
+        // Enable keyboard shortcuts for navigation
+        keyboard: true,
+
+        // Enable the slide overview mode
+        overview: true,
+
+        // Disables the default reveal.js slide layout (scaling and centering)
+        // so that you can use custom CSS layout
+        disableLayout: false,
+
+        // Vertical centering of slides
+        center: false,
+
+        // Enables touch navigation on devices with touch input
+        touch: true,
+
+        // Loop the presentation
+        loop: false,
+
+        // Change the presentation direction to be RTL
+        rtl: false,
+
+        // see https://revealjs.com/vertical-slides/#navigation-mode
+        navigationMode: 'linear',
+
+        // Randomizes the order of slides each time the presentation loads
+        shuffle: false,
+
+        // Turns fragments on and off globally
+        fragments: true,
+
+        // Flags whether to include the current fragment in the URL,
+        // so that reloading brings you to the same fragment position
+        fragmentInURL: false,
+
+        // Flags if the presentation is running in an embedded mode,
+        // i.e. contained within a limited portion of the screen
+        embedded: false,
+
+        // Flags if we should show a help overlay when the questionmark
+        // key is pressed
+        help: true,
+
+        // Flags if it should be possible to pause the presentation (blackout)
+        pause: true,
+
+        // Flags if speaker notes should be visible to all viewers
+        showNotes: false,
+
+        // Global override for autoplaying embedded media (null/true/false)
+        autoPlayMedia: null,
+
+        // Global override for preloading lazy-loaded iframes (null/true/false)
+        preloadIframes: null,
+
+        // Number of milliseconds between automatically proceeding to the
+        // next slide, disabled when set to 0, this value can be overwritten
+        // by using a data-autoslide attribute on your slides
+        autoSlide: 0,
+
+        // Stop auto-sliding after user input
+        autoSlideStoppable: true,
+
+        // Use this method for navigation when auto-sliding
+        autoSlideMethod: null,
+
+        // Specify the average time in seconds that you think you will spend
+        // presenting each slide. This is used to show a pacing timer in the
+        // speaker view
+        defaultTiming: null,
+
+        // Enable slide navigation via mouse wheel
+        mouseWheel: false,
+
+        // The display mode that will be used to show slides
+        display: 'block',
+
+        // Hide cursor if inactive
+        hideInactiveCursor: true,
+
+        // Time before the cursor is hidden (in ms)
+        hideCursorTime: 5000,
+
+        // Opens links in an iframe preview overlay
+        previewLinks: false,
+
+        // Transition style (none/fade/slide/convex/concave/zoom)
+        transition: 'none',
+
+        // Transition speed (default/fast/slow)
+        transitionSpeed: 'default',
+
+        // Transition style for full page slide backgrounds
+        // (none/fade/slide/convex/concave/zoom)
+        backgroundTransition: 'none',
+
+        // Number of slides away from the current that are visible
+        viewDistance: 3,
+
+        // Number of slides away from the current that are visible on mobile
+        // devices. It is advisable to set this to a lower number than
+        // viewDistance in order to save resources.
+        mobileViewDistance: 2,
+
+        // The "normal" size of the presentation, aspect ratio will be preserved
+        // when the presentation is scaled to fit different resolutions. Can be
+        // specified using percentage units.
+        width: 1200,
+
+        height: 700,
+
+        // Factor of the display size that should remain empty around the content
+        margin: 0,
+
+        math: {
+          mathjax: 'https://cdn.jsdelivr.net/npm/mathjax@2.7.9/MathJax.js',
+          config: 'TeX-AMS_HTML-full',
+          tex2jax: {
+            inlineMath: [['\\(','\\)']],
+            displayMath: [['\\[','\\]']],
+            balanceBraces: true,
+            processEscapes: false,
+            processRefs: true,
+            processEnvironments: true,
+            preview: 'TeX',
+            skipTags: ['script','noscript','style','textarea','pre','code'],
+            ignoreClass: 'tex2jax_ignore',
+            processClass: 'tex2jax_process'
+          },
+        },
+
+        // reveal.js plugins
+        plugins: [QuartoLineHighlight, PdfExport, RevealMenu, QuartoSupport,
+
+          RevealMath,
+          RevealNotes,
+          RevealSearch,
+          RevealZoom
+        ]
+      });
+    </script>
+    <script id="quarto-html-after-body" type="application/javascript">
+      window.document.addEventListener("DOMContentLoaded", function (event) {
+        const tabsets =  window.document.querySelectorAll(".panel-tabset-tabby")
+        tabsets.forEach(function(tabset) {
+          const tabby = new Tabby('#' + tabset.id);
+        });
+        const isCodeAnnotation = (el) => {
+          for (const clz of el.classList) {
+            if (clz.startsWith('code-annotation-')) {                     
+              return true;
+            }
+          }
+          return false;
+        }
+        const onCopySuccess = function(e) {
+          // button target
+          const button = e.trigger;
+          // don't keep focus
+          button.blur();
+          // flash "checked"
+          button.classList.add('code-copy-button-checked');
+          var currentTitle = button.getAttribute("title");
+          button.setAttribute("title", "Copied!");
+          let tooltip;
+          if (window.bootstrap) {
+            button.setAttribute("data-bs-toggle", "tooltip");
+            button.setAttribute("data-bs-placement", "left");
+            button.setAttribute("data-bs-title", "Copied!");
+            tooltip = new bootstrap.Tooltip(button, 
+              { trigger: "manual", 
+                customClass: "code-copy-button-tooltip",
+                offset: [0, -8]});
+            tooltip.show();    
+          }
+          setTimeout(function() {
+            if (tooltip) {
+              tooltip.hide();
+              button.removeAttribute("data-bs-title");
+              button.removeAttribute("data-bs-toggle");
+              button.removeAttribute("data-bs-placement");
+            }
+            button.setAttribute("title", currentTitle);
+            button.classList.remove('code-copy-button-checked');
+          }, 1000);
+          // clear code selection
+          e.clearSelection();
+        }
+        const getTextToCopy = function(trigger) {
+          const outerScaffold = trigger.parentElement.cloneNode(true);
+          const codeEl = outerScaffold.querySelector('code');
+          for (const childEl of codeEl.children) {
+            if (isCodeAnnotation(childEl)) {
+              childEl.remove();
+            }
+          }
+          return codeEl.innerText;
+        }
+        const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+          text: getTextToCopy
+        });
+        clipboard.on('success', onCopySuccess);
+        if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+          const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+            text: getTextToCopy,
+            container: window.document.getElementById('quarto-embedded-source-code-modal')
+          });
+          clipboardModal.on('success', onCopySuccess);
+        }
+          var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+          var mailtoRegex = new RegExp(/^mailto:/);
+            var filterRegex = new RegExp('/' + window.location.host + '/');
+          var isInternal = (href) => {
+              return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+          }
+          // Inspect non-navigation links and adorn them if external
+         var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+          for (var i=0; i<links.length; i++) {
+            const link = links[i];
+            if (!isInternal(link.href)) {
+              // undo the damage that might have been done by quarto-nav.js in the case of
+              // links that we want to consider external
+              if (link.dataset.originalHref !== undefined) {
+                link.href = link.dataset.originalHref;
+              }
+            }
+          }
+        function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+          const config = {
+            allowHTML: true,
+            maxWidth: 500,
+            delay: 100,
+            arrow: false,
+            appendTo: function(el) {
+                return el.closest('section.slide') || el.parentElement;
+            },
+            interactive: true,
+            interactiveBorder: 10,
+            theme: 'light-border',
+            placement: 'bottom-start',
+          };
+          if (contentFn) {
+            config.content = contentFn;
+          }
+          if (onTriggerFn) {
+            config.onTrigger = onTriggerFn;
+          }
+          if (onUntriggerFn) {
+            config.onUntrigger = onUntriggerFn;
+          }
+            config['offset'] = [0,0];
+            config['maxWidth'] = 700;
+          window.tippy(el, config); 
+        }
+        const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+        for (var i=0; i<noterefs.length; i++) {
+          const ref = noterefs[i];
+          tippyHover(ref, function() {
+            // use id or data attribute instead here
+            let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+            try { href = new URL(href).hash; } catch {}
+            const id = href.replace(/^#\/?/, "");
+            const note = window.document.getElementById(id);
+            if (note) {
+              return note.innerHTML;
+            } else {
+              return "";
+            }
+          });
+        }
+        const findCites = (el) => {
+          const parentEl = el.parentElement;
+          if (parentEl) {
+            const cites = parentEl.dataset.cites;
+            if (cites) {
+              return {
+                el,
+                cites: cites.split(' ')
+              };
+            } else {
+              return findCites(el.parentElement)
+            }
+          } else {
+            return undefined;
+          }
+        };
+        var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+        for (var i=0; i<bibliorefs.length; i++) {
+          const ref = bibliorefs[i];
+          const citeInfo = findCites(ref);
+          if (citeInfo) {
+            tippyHover(citeInfo.el, function() {
+              var popup = window.document.createElement('div');
+              citeInfo.cites.forEach(function(cite) {
+                var citeDiv = window.document.createElement('div');
+                citeDiv.classList.add('hanging-indent');
+                citeDiv.classList.add('csl-entry');
+                var biblioDiv = window.document.getElementById('ref-' + cite);
+                if (biblioDiv) {
+                  citeDiv.innerHTML = biblioDiv.innerHTML;
+                }
+                popup.appendChild(citeDiv);
+              });
+              return popup.innerHTML;
+            });
+          }
+        }
+      });
+      </script>
+    
+
+</body></html>

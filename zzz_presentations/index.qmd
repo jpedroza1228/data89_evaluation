@@ -1,0 +1,1410 @@
+---
+author: Jonathan A. Pedroza, PhD
+title: Introduction to Bayesian Analyses & Stan
+subtitle: By Examining Student Proficiency on Statistical Concepts
+date: today
+format:
+  revealjs:
+    slide-number: true
+    # transition: slide
+    # incremental: true
+    width: 1200
+    margin: 0.0 
+    scrollable: true
+    smaller: true
+    theme: solarized
+jupyter: python3
+execute:
+  freeze: auto
+  warning: false
+  message: false
+  echo: false
+  eval: true
+---
+
+## My Useful Resource(s)
+
+:::: {.columns}
+
+::: {.column width="55%"}
+- I found [the Distribution Explorer site](https://distribution-explorer.github.io/continuous/halfnormal.html) and have been using it constantly
+
+  - Constant need for visualizing distributions
+
+    - Priors    
+
+- [Stan Documentation](https://mc-stan.org/docs/stan-users-guide/)
+
+- [Dagitty](https://www.dagitty.net/) for building Directed Acyclic Graphs (DAGs)
+:::
+
+::: {.column width="45%"}
+![Photo by [Nastya Kvokka](https://unsplash.com/@nastya_kvokka?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText) on [Unsplash](https://unsplash.com/photos/half-moon-photography-Ifk3WssHNRw?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText)](/images/half_moon.jpg){fig-alt="Image where only the right half of the moon is visible." fig-align="left" width="5in" height="4in"}
+:::
+
+::::
+
+::: {.notes}
+
+:::
+
+## Feedback
+
+- Feedback on additional considerations to think about
+
+  - Bi-monthly check-in surveys (level of understanding)
+
+  - Pre- & Post-test considerations
+
+- Next Steps
+
+  - Include more measures for pre-/post-test & check ins
+  
+  - Interviews/Focus Groups
+
+  - Assessing Instructor Effectiveness
+
+  - Parameterizing and automating models and check ins
+
+::: {.notes}
+Speaker Notes here
+:::
+
+## Before We Begin Begin
+
+- Terminology
+
+  - Latent = Hidden/Unknown/Not seen in our data
+
+  - Attribute = Latent Variable/Skill/Concept
+
+  - (Latent) Class = Group based on which items/questions get correct
+
+  - Node(s) = Variable in Bayesian Network (Bayes Net) terminology
+
+  - Edges = Relationships/Associations in Bayes Net terminology
+
+::: {.notes}
+- Latent thinking
+
+- Know tuberculosis is a bacteria infection; deadly if left untreated
+
+  - Now you get a blood test; before you would check for the bump
+
+  - Latent tuberculosis: you have the bacteria in your system FOREVER, but it remains dormant; no symptoms no illness
+:::
+
+## Before We Actually Begin
+
+:::: {.columns}
+
+::: {.column width="50%"}
+![Photo by [Jon Tyson](https://unsplash.com/@jontyson?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText) on [Unsplash](https://unsplash.com/photos/yellow-and-black-caution-wet-floor-sign-u7xG81ob0HE?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText)](/images/slow_down.jpg){fig-alt="Image of yellow sign that states 'Please Slow Down'." fig-align="left" width="5in" height="4in"}
+:::
+
+::: {.column width="50%"}
+- This is a quick dive into Diagnostic Classification Models (DCM) and Item Response Theory (IRT) models
+
+  - There is vast world of psychometric models, including Mixture IRT models, Multidimensional IRT (more than 1 latent skill), IRT Factor Analysis (polychoric correlation matrix)
+
+- I'll provide enough information to follow along and share a little about models I think are interesting to use
+
+- Really interested in the design/questions to ask students
+:::
+
+::::
+
+::: {.notes}
+- To confuse you immediately, these are also called Cognitive Diagnostic Models (CDM)
+
+- I'll stick to DCMs
+
+- The models are only as strong as the design
+:::
+
+## Why Bayesian Statistics
+
+- Why not?
+
+  - We have the computing power
+
+- Can use prior information to update our beliefs
+
+  - How many students do we think would/should know the skill
+
+    - Previous course performance
+
+    - Previous quizzes
+
+    - Instructor expectations
+
+- no p-values
+
+- Credible Intervals > Confidence Intervals
+
+$$ Pr(A|B) = \frac{Pr(B|A)Pr(A)}{Pr(B)}$$
+
+::: {.notes}
+- Both Frequentist and Bayesian approaches have their pros and cons
+
+  - Interested in probability and uncertainty
+
+- Bayesian statistics provides a distribution as the estimate (posterior distribution) compared to Frequentists having point estimates & p-values
+
+  - **Bootstrapping** is resampling from data (may be overlap in resamples) randomly from the point estimate, Markov Chain Monte Carlo (MCMC) is a random walk that moves across space
+
+- Credible intervals are interpreted as having 95% probability a value is within the intervals
+
+- Confidence intervals are interpreted as: if we ran this analysis a bunch of times, 95% of the time our true parameter would be in between the intervals
+
+- Probability of A happening given B happened; $Pr(A|B)$
+
+- Probability of B given A; $Pr(B|A)$; or our likelihood; how likely to get answer correct given our prior information
+
+- Probability of A; $Pr(A)$ is our prior information; how many students should/would know this concept
+
+- Probability of B; $Pr(B)$ is how likely a student got an item correct
+:::
+
+## Markov Chain Monte Carlo (MCMC) - Hamiltonian Monte Carlo (HMC)
+
+- We explore the parameter space for each parameter to get our posterior distribution
+
+  - We do this with thousands of samples/draws with a predetermined number of chains/simulations
+
+- We also want to only use the meaningful measurements
+
+  - Burn in with a number of draws to get started
+
+::: {.notes}
+- We are focused on getting distributions, not point estimates
+
+- I've read about going around a lake on a boat and measuring the depth at thousands of differnt points
+
+  - We would also need multiple boats starting at different points going around measuring points
+:::
+
+## Psychometric Models vs Classifical Test Theory
+
+:::: {.columns}
+
+::: {.column width="60%"}
+- Various types of psychometrics models
+
+  - (M)IRT
+
+    - Umbrella term for models where our latent skill(s) is/are continuous
+
+  - DCM
+
+    - Umbrella term for models where our latent skill(s) is/are categorical
+
+      - Most focus on binary latent skills (proficient vs not proficient)
+
+- Classical Test Theory
+
+  - Get an average/total and error
+  
+  - No focus on items or individuals 
+:::
+
+::: {.column width="40%"}
+![Photo by [Ian Keefe](https://unsplash.com/@iankeefe?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText) on [Unsplash](https://unsplash.com/photos/person-hiding-on-white-curtain-gV7l2YslRS4?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText)](/images/hidden.jpg){fig-alt="Image of Someone hiding behind a thin curtain that shows the outline of their body and face." fig-align="left" width="5in" height="4in"}
+:::
+
+::::
+
+::: {.notes}
+- MIRT = multidimensional item response theory
+
+
+:::
+
+## Why DCMs
+
+- Interested in binary outcomes for skills (proficient vs not proficient)
+
+- Two major components
+
+  - Probabilistically putting individuals into classes
+
+  - Identifying individuals who are proficient in skills assessed
+
+- Allows for specific research questions
+
+  - How many students know the skills? --> Should I teach this differently?
+
+  - How likely is it for students to guess and get items correctly?
+
+- Takes into consideration expert opinion (Q-Matrix)
+
+  - **Different experts may have different opinions**
+
+::: {.notes}
+- Extension from Latent Class Analysis
+
+- These models do not put individuals on a continuum 
+
+- Can be used for various fields, not just education
+
+  - Assess many skills/attributes
+
+  - Quiz/exam proficiency, intervention materials covered, large assessment system (Duolingo), observational/evaluation (Did they welcome person at door? , Did they smile? , Did they engage in small talk? --> Customer Service)
+:::
+
+## Q-Matrix
+
+:::: {.columns}
+
+::: {.column width="60%"}
+
+- Matrix with items (rows) and skills (columns)
+
+- Items can assess a single attribute or multiple attributes
+
+- Handled differently based on the model (we'll discuss this)
+
+:::
+
+::: {.column width="40%"}
+```{python}
+import pandas as pd
+import numpy as np
+import os
+import joblib
+from great_tables import GT as gt
+
+q = pd.DataFrame({'Item': ['2 + 3', '2 + 3 - 1', '3 x 2', 
+                           '10(6 + 2)', '(4 + 5) + 2(10 - 7)', '2(5)'],
+                  'Addition': [1, 1, 0, 1, 1, 0],
+                  'Subtraction': [0, 1, 0, 0, 1, 0],
+                  'Multiplication': [0, 0, 1, 1, 1, 1]})
+gt.show(gt(q).tab_header(title = 'Q Matrix'))
+```
+:::
+
+::::
+
+::: {.notes}
+- Multiple attributes are handled differently by different DCMs
+
+- This leads to panic time OR theory/empirical evidence
+:::
+
+## More Matrices
+
+- Attribute Profile Matrix (Latent Class x Attribute)
+
+  - Creating a matrix based on the number of possible classes based on binary skills, or $2^x$
+
+  - With 1 skill, you can only have 0 or 1
+
+  - 2 skills allow for 4 classes, 00, 10, 01, 11
+
+```{python}
+alpha = pd.DataFrame([(a, b, c) for a in np.arange(2) for b in np.arange(2) for c in np.arange(2)])
+alpha = alpha.rename(columns = {0: 'Addition',
+                                1: 'Subtraction',
+                                2: 'Multiplication'})
+gt.show(gt(alpha).tab_header(title = 'Attribute Profile Matrix'))
+```
+
+## (Some) Types of DCMs
+
+- DINO = Deterministic Inputs, Noisy **Or** Gate
+
+  - To get an item correct, you must have **at least** one skill required for that item
+
+- DINA = Deterministic Inputs, Noisy **And** Gate
+
+  - Stricter model
+
+  - To get an item correct, you must have **all** the skills required for that item
+
+- LCDM = Loglinear Cognitive Diagnostic Model
+
+  - General DCM = computationally expensive
+
+  - models every combination of skills 
+
+::: {.notes}
+- DINO & DINA models explicitly model slipping (silly mistake): get answer wrong even though you know the concept & guessing (that worked): choosing an answer and it being right
+
+- slipping and guessing are implicit in LCDM
+:::
+
+## Please Move on JP, We're Tired
+
+:::: {.columns}
+
+::: {.column width="50%"}
+![Photo by [Alvan Nee](https://unsplash.com/@alvannee?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText) on [Unsplash](https://unsplash.com/photos/a-corgi-dog-looking-up-with-its-tongue-out-NVvq634BljM?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText)](/images/tired_dog.jpg){fig-alt="Image of corgi facing the camera panting." fig-align="left" width="5in" height="5in"}
+:::
+
+::: {.column width="50%"}
+- I'm almost done with providing information
+
+- I promise this is important because
+
+  - This was an 100% "trust the process" learning opportunity
+
+- I'm also going to try and walk through this without a bunch of formulas
+
+:::
+
+::::
+
+::: {.notes}
+- Nu = Prounounced Ne
+
+- We're going to break down what each section means because
+:::
+
+## Structural/Proficiency Model
+
+- Different literature calls this different names
+
+  - **This is the relationship between skills**
+
+- $\nu_{c}$ is the proportion of students that are in each class
+
+  - It **has** to add up to 1 or 100%
+
+```{python}
+alpha['prop'] = pd.Series(np.random.dirichlet(np.ones(8), size = 1)[0]).round(2)
+gt.show(gt(alpha).tab_header(title = 'Attribute Profile Matrix'))
+```
+
+## Structural/Proficiency Model
+
+:::: {.columns}
+
+::: {.column width="60%"}
+- **Skills are not Classes**
+
+  - Skills are shown visually
+
+  - We can think of classes as the combination of the skills (e.g., 000, 111, etc.)
+
+- For most DCMs, the two most common structural models are unconstrained or independent
+
+  - Unconstrained --> We allow attributes to be correlated
+
+  - Independent --> Belief that attributes are not correlated
+:::
+
+::: {.column width="40%"}
+
+```{python}
+gt.show(gt(q).tab_header(title = 'Q Matrix'))
+```
+
+![](images/dcm_structural.png)
+:::
+
+::::
+
+::: {.notes}
+- Independent attributes must be supported theoretically/empirically
+
+- Also, if you are asking yourself "JP did you really put all that work into getting random images for your presentation but could not make another DAG for the latent skills? Really?"
+
+  - Yeah that is really the case
+:::
+
+## Psss...There Are Other Structural Models
+
+:::: {.columns}
+
+::: {.column width="50%"}
+- There can be hierarchies between skills (Hiearchical DCM)
+
+  - All the skills in our Q-matrix are related to arithmetic
+
+![](images/hdcm_structural.png){width="3in" height="3in"}
+:::
+
+::: {.column width="50%"}
+- We might think students learn addition --> Subtraction --> Multiplication (linear)
+
+![](images/linear.png){width="3in" height="3in"}
+:::
+
+::::
+
+## Um...We're Not Done Yet
+
+:::: {.columns}
+
+::: {.column width="50%"}
+- We might think that addition and subtraction converge at multiplication (convergent)
+
+![](images/convergent.png){width="3in" height="3in"}
+:::
+
+::: {.column width="50%"}
+- Or we might think that subtraction and multiplication diverge from addition (divergent)
+
+![](images/divergent.png){width="3in" height="3in"}
+:::
+
+::::
+
+## Structural Models
+
+- Bayesian Networks (Bayes Net)
+
+  - Modeling relationships between skills
+
+- Linear, convergent, and divergent edges are calculated to get class proportions ($\nu_{c}$)
+
+  - Proficiency for skills at the end of --> are conditional based on the node's parents
+
+  - Addition --> Subtraction --> Multiplication
+
+    - Addition is the parent to subtraction, but not multiplication
+
+::: {.notes}
+- Technically all of the previous examples that have edges/relationships between skills are bayesian networks
+
+- There are more specific rules for DAGs and bayes nets, but I've already gone into the weeds enough
+:::
+
+## Measurement/Evidence Model
+
+- Our $pi_{ic}$ matrix is the probability of getting an item correct based on each of the classes
+
+- The $pi_{ic}$ matrix is created differently for each DCM
+
+  - I'm only going to focus on the matrix through a DINO model framework
+
+  - Some use another matrix (global attribute mastery indicator (product of alpha^q-element))
+
+    - I use something similar but base it on probabilities rather than hard coded values (0s and 1s)
+
+::: {.notes}
+- My actual Q-matrix has items measuring single attributes, so DINO and DINA models would result in similar answers
+:::
+
+## Let's Apply Everything We've Covered
+
+- We'll use a DINO model for the measurement model
+
+- We'll use unconstrained structural model
+
+::: {.notes}
+Speaker Notes here
+:::
+
+## Background
+
+- Interest is growing in data science
+
+  - Diverse groups of students are majoring in DS
+
+- Leads to issues of students being at different levels of math and computing
+
+- Currently instructor-led assessments may focus on reaching out to students after the first exam
+
+- How can we reach students early in an attempt to stop students from falling behind?
+
+  - Do alternative methods of grading help students pass a statistics course?
+
+  - Do emails recommending what skills to focus on help with grade improvement? Do they help with students knowing what to focus on?
+
+::: {.notes}
+- Speaker notes here
+:::
+
+## Data89
+
+- Students in Data89 (Probability Course)
+
+  - Course is designed to be more introductory than traditional statistics courses on probability
+
+- The design of the course has more weight on homework (seen as practice), quizzes (seen as measures of proficiency), and exams (seen as mastery)
+
+  - To help students pass by practicing and showing proficiency
+
+    - Students have the opportunity to retake each quiz based on their grade and/or DCM findings
+
+  - Those with mastery will still pass the class
+
+  - Those with proficiency will be able to pass 
+
+    - Knowing the course content is enough for some students
+
+::: {.notes}
+- Focus is mainly on students in the middle third of the class
+
+  - Not directly focused on those that are most likely to not pass the course 
+:::
+
+## Data89
+
+- Ways we are measuring proficiency
+
+  - DCMs to model proficiency of each skill from items correct
+
+    - Modeling retakes with dynamic bayes nets that look at skills for the original quiz and the retake
+
+  - Check-in surveys that assess self-reported understanding of the content
+
+    - Slider items (1 - 10) on rating level of understanding
+
+      - Please rate your level of understanding for each concept, with 1 being "I do not understand anything about this concept." to 10 being "I understand this concept completely and could teach others about the concept."
+    
+    - Two Likert scale items (Strongly Disagree to Strongly Agree)
+
+      - I know what I would need to do in order to stay on track to succeed in the course
+
+      - I am capable of doing what I need to do in order to stay on track to succeed in the course
+
+## Data89
+
+- Also collecting data on pre- & post-test
+
+  - Would love thoughts on what might be important to collect from students
+
+  - Currently have math anxiety and self-efficacy measure
+
+::: {.notes}
+- We are going to change the wording of the anxiety and self-efficacy measure because it comes off very negative
+
+  - We'll most likely change the wording and get psychometrics from that
+
+- We also are only looking at the models currently because this is more passion project than it is my job
+:::
+
+## Let's Talk About Stan
+
+:::: {.columns}
+
+::: {.column width="60%"}
+- Stan is judgey
+
+- He does not like discrete parameters
+
+  - Especially latent parameters
+
+- It gets him so upset, he starts breaking things
+
+- We try our hardest to be on Stan's good side
+
+- Stan also loves the log scale, so we will have to make changes sometimes
+:::
+
+::: {.column width="40%"}
+![Photo by [HamZa NOUASRIA](https://unsplash.com/@hamza01nsr?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText) on [Unsplash](https://unsplash.com/photos/man-in-white-dress-shirt-and-black-pants-standing-beside-black-and-white-wall-DsIftC2M3co?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText)](/images/stan.jpg){fig-alt="Image of a posing guy smoking in a button down shirt and sunglasses." fig-align="left" width="5in" height="5in"}
+      
+:::
+
+::::
+
+::: {.notes}
+- Speaker notes here
+:::
+
+## Stan Code - Data
+
+:::: {.columns}
+
+::: {.column width="50%"}
+
+```{stan}
+#| echo: true
+#| eval: false
+
+data{
+  int<lower=1> J; // Number of students
+  int<lower=1> I; // Number of items
+  int<lower=1> C; // Number of classes
+  int<lower=1> K; // Number of Attributes/Skills
+  matrix<lower=0,upper=1> [J,I] Y; // Observed Data [student x item]
+  matrix<lower=0,upper=1> [I,K] Q; // Q-matrix [item x attribute]
+  matrix<lower=0,upper=1> [C,K] alpha; // Attribute mastery profile [class x attribute]
+}
+```
+
+:::
+
+::: {.column width="50%"}
+
+```{python}
+#| eval: false
+#| echo: true
+
+stan_dict = {
+  'J': y.shape[0],
+  'I': y.shape[1],
+  'C': alpha.shape[0],
+  'K': qmatrix.shape[1],
+  'Y': np.array(y),
+  'Q': np.array(qmatrix),
+  'alpha': np.array(alpha)
+}
+```
+
+:::
+
+::::
+
+::: {.notes}
+- Speaker Notes
+:::
+
+## Parameters
+
+```{stan}
+#| echo: true
+#| eval: false
+
+parameters{ //  parameters here are what get sampled/can have priors
+  simplex[C] nu; // class proprtions (simplex makes it sum up to be 1)
+  vector<lower=0, upper=1>[I] tp; // True positive/Did not slip (Know the answer but got it wrong [1 - tp])
+  vector<lower=0, upper=1>[I] fp; // False positive/Guss and got answer right
+}
+```
+
+## Unconstrained
+
+```{stan}
+#| echo: true
+#| eval: false
+
+transformed parameters{ //  used for calculations/are derived from calculatinos
+  matrix[I,C] delta;  //  global attribute mastery indicator (product of alpha ** Q-matrix) 
+  matrix[I,C] pi;     //  probabilities of getting items correct based on latent class
+
+  vector[C] log_nu = log(nu);
+
+  for(c in 1:C){{
+    for(i in 1:I){
+      delta[i, c] = 1 - (pow(1 - alpha[c,1], Q[i,1]) * pow(1 - alpha[c,2], Q[i,2]) * pow(1 - alpha[c,3], Q[i,3]));  
+    }
+  }}
+
+  for (c in 1:C){
+    for (i in 1:I){
+      pi[i,c] = pow(tp[i], delta[i,c]) * pow(fp[i], (1 - delta[i,c]));
+    }
+  }
+} 
+```
+
+## Model
+
+```{stan}
+#| eval: false
+#| echo: true
+
+model{
+  array[C] real ps;
+  array[I] real eta;
+   
+  // Prior for class membership
+  nu ~ dirichlet(rep_vector(1.0, C)); // uniform prior for the number of classes
+
+  for (i in 1:I){{
+    tp[i] ~ beta(20, 5);
+    fp[i] ~ beta(5, 20);
+  }}
+
+  // likelihood
+  for (j in 1:J) {
+    for (c in 1:C){
+      for (i in 1:I){
+        real p = fmin(fmax(pi[i,c], 1e-9), 1 - 1e-9);
+        eta[i] = Y[j,i] * log(p) + (1 - Y[j,i]) * log1m(p);
+      }
+      ps[c] = log_nu[c] + sum(eta); 
+    }
+    target += log_sum_exp(ps);
+  }
+}
+```
+
+## Generated Quantities
+
+```{stan}
+generated quantities {
+  matrix[J,C] prob_resp_class;      // posterior probabilities of respondent j being in latent class c 
+  matrix[J,K] prob_resp_attr;       // posterior probabilities of respondent j being a master of attribute k 
+  array[I] real eta;
+  row_vector[C] prob_joint;
+  array[C] real prob_attr_class;
+  matrix[J,I] y_rep;
+
+  // likelihood
+  for (j in 1:J){{
+    for (c in 1:C){{
+      for (i in 1:I){{
+        real p = fmin(fmax(pi[i,c], 1e-9), 1 - 1e-9);
+        eta[i] = Y[j,i] * log(p) + (1 - Y[j,i]) * log1m(p);
+      }}
+      prob_joint[c] = exp(log_nu[c]) * exp(sum(eta));
+    }}
+    prob_resp_class[j] = prob_joint/sum(prob_joint);
+  }}
+  for (j in 1:J){{
+    for (k in 1:K){{
+      for (c in 1:C){{
+        prob_attr_class[c] = prob_resp_class[j,c] * alpha[c,k];
+      }}
+      prob_resp_attr[j,k] = sum(prob_attr_class);
+    }}
+  }}
+  
+  for (j in 1:J) {{
+    int z = categorical_rng(nu);  // sample class for person j
+    for (i in 1:I) {{
+      y_rep[j, i] = bernoulli_rng(pi[i, z]);  // generate response from item-by-class probability
+    }}
+  }}
+}
+```
+
+## Let's Look At Some (Simulated) Data
+
+```{python}
+#| eval: true
+#| echo: false
+
+import plotnine as pn
+import matplotlib
+import matplotlib.pyplot as plt
+import arviz as az
+from cmdstanpy import CmdStanModel
+from pyhere import here
+from janitor import clean_names
+
+os.environ['QT_API'] = 'PyQt6'
+pd.set_option('display.max_columns', None)
+matplotlib.rcParams.update({'savefig.bbox': 'tight'})
+pn.theme_set(pn.theme_light())
+
+def q_lower(x):
+    return x.quantile(.025)
+  
+def q_upper(x):
+    return x.quantile(.975)
+
+def acceptable_fit_stat(inference_data, func_name = ['waic', 'loo']):
+  if func_name == 'waic':
+    est = np.abs(az.waic(inference_data).iloc[0])
+    se = az.waic(inference_data).iloc[1]
+    
+    if est > se * 2.5:
+      print('Absolute difference is greater than 2.5 x the standard error of the difference. Model is acceptable.')
+      
+    else:
+      print('Absolute difference is not greater than 2.5 x the standard error of the difference. Model is not acceptable.')
+  elif func_name == 'loo':
+    est = np.abs(az.loo(inference_data).iloc[0])
+    se = az.loo(inference_data).iloc[1]
+    
+    if est > se * 2.5:
+      print('Absolute difference is greater than 2.5 x the standard error of the difference. Model is acceptable.')
+      
+    else:
+      print('Absolute difference is not greater than 2.5 x the standard error of the difference. Model is not acceptable.')
+
+alpha = alpha.drop(columns = 'prop')
+qmatrix = pd.read_csv(here('zzz_presentations/q1_7item_3att.csv')).drop(columns = 'Unnamed: 0')
+y = pd.read_csv(here('zzz_presentations/simulated_df.csv')).drop(columns = 'Unnamed: 0')
+y.columns = ['item1', 'item2', 'item3', 'item4', 'item5', 'item6', 'item7']
+
+name_mapping = {'y_rep': 'Y'}
+
+stan_dict = {
+  'J': y.shape[0],
+  'I': y.shape[1],
+  'C': alpha.shape[0],
+  'K': qmatrix.shape[1],
+  'Y': np.array(y),
+  'Q': np.array(qmatrix),
+  'alpha': np.array(alpha)
+}
+
+y_describe = y.filter(regex = 'item').agg(['mean', 'std']).reset_index()
+```
+
+```{python}
+#| eval: false
+#| echo: true
+
+stan_dict = {
+  'J': y.shape[0], # rows/students
+  'I': y.shape[1], # columnts/items
+  'C': alpha.shape[0], # number of rows/classes
+  'K': qmatrix.shape[1], # number of attributes/skills
+  'Y': np.array(y), # our observed data/students x items
+  'Q': np.array(qmatrix), # our q-matrix/items x attributes
+  'alpha': np.array(alpha) # our attribute mastery profile/class x attribute
+}
+```
+
+- Our data is simulated so this is more a proof of concept
+
+## Quick Look at Data
+
+```{python}
+gt.show(gt(y.head()).tab_header(title = 'First 5 rows of observed data'))
+```
+
+## Running Our Stan Model
+
+```{python}
+#| echo: true
+#| eval: false
+
+dcm_file = os.path.join(here('zzz_presentations/model.stan'))
+dcm_model = CmdStanModel(stan_file = dcm_file,
+                         cpp_options={'STAN_THREADS': 'TRUE'})
+
+np.random.seed(12345)
+dcm_fit = dcm_model.sample(data = stan_dict,
+                        show_console = True,
+                        chains = 4,
+                        # adapt_delta = .90,
+                        iter_warmup = 2000,
+                        iter_sampling = 2000)
+
+dcm_diagnose = pd.DataFrame(dcm_fit.summary())
+
+dcmdf = dino_fit.draws_pd()
+```
+
+- We can then run our model from a stan file and then I like to save the diagnostics to share
+
+- For ease of use, I also make my draws/samples into a pandas dataframe
+
+## Running Our Prior Only Stan Model
+
+```{python}
+#| echo: true
+#| eval: false
+
+dcm_prior_file = os.path.join(here('zzz_presentations/prior.stan'))
+dcm_prior_model = CmdStanModel(stan_file = dcm_prior_file,
+                         cpp_options={'STAN_THREADS': 'TRUE'})
+
+np.random.seed(12345)
+dcm_prior_fit = dcm_prior_model.sample(data = stan_dict,
+                        show_console = True,
+                        chains = 4,
+                        # adapt_delta = .90,
+                        iter_warmup = 2000,
+                        iter_sampling = 2000)
+
+dcm_prior_diagnose = pd.DataFrame(dcm_prior_fit.summary())
+```
+
+- I also run a prior only model (no likelihood calculations) to compare prior to posterior distributions
+
+## Save the Model for Later
+
+```{python}
+#| echo: true
+#| eval: false
+
+import joblib
+
+dcm_diagnose.to_csv(here('zzz_presentations/diagnose.csv'))
+(
+  joblib.dump([dcm_model, dcm_fit],
+              here('zzz_presentations/modfit.joblib'),
+              compress = 3)
+)
+
+dcm_prior_diagnose.to_csv(here('zzz_presentations/diagnose_prior_only.csv'))
+(
+  joblib.dump([dcm_prior_model, dcm_prior_fit],
+              here('zzz_presentations/modfit_prior_only.joblib'),
+              compress = 3)
+)
+```
+
+```{python}
+#| eval: true
+#| echo: false
+
+dino_model, dino_fit = joblib.load(here('zzz_presentations/modfit.joblib'))
+dino_prior, dino_fit_prior = joblib.load(here('zzz_presentations/modfit_prior_only.joblib'))
+diagnose = pd.read_csv(here('zzz_presentations/diagnose.csv'))
+prior_diagnose = pd.read_csv(here('zzz_presentations/diagnose_prior_only.csv'))
+
+dcmdf = dino_fit.draws_pd()
+```
+
+## Quick Diagnostics
+
+:::: {.columns}
+
+::: {.column width="50%"}
+```{python}
+print(prior_diagnose['R_hat'].sort_values(ascending = False).head())
+print('\n\n')
+print(diagnose['R_hat'].sort_values(ascending = False).head())
+```
+:::
+
+::: {.column width="50%"}
+- There are other diagnostics, but we want Rhat values under 1.1
+
+  - Checks between- and within-chain variation to make sure the 4 chains converge to the same target distribution
+
+  - A lot of reasons this could be bad; most come down to bad Stan code
+:::
+
+::::
+
+```{python}
+#| eval: true
+#| echo: false
+
+idino = az.from_cmdstanpy(
+    posterior = dino_fit,
+    posterior_predictive = ['y_rep'],
+    observed_data = {'Y': y},
+    log_likelihood = {'Y': 'eta'}
+    )
+
+idino = idino.rename(name_dict = name_mapping, groups = ["posterior_predictive"])
+
+idino_prior = az.from_cmdstanpy(prior = dino_fit_prior,
+prior_predictive = ['y_rep'])
+
+idino_prior = idino_prior.rename(
+    name_dict = name_mapping,
+    groups = ['prior_predictive']
+)
+
+idino.extend(idino_prior)
+```
+
+## Plotting Helps Everything (True Positives/No Slipping)
+
+```{python}
+# did students not slip/true positive (get answer correct and knowing content)
+az.plot_dist_comparison(idino, var_names = ['tp'])
+plt.show()
+```
+
+::: {.notes}
+- We can compare our estimates of 80% correctly getting each item correct
+
+- Posteriors are how our data actually looked
+:::
+
+## More Prior vs Posterior Plots (Guessing)
+
+```{python}
+# did students guess and get answers correct
+az.plot_dist_comparison(idino, var_names = ['fp'])
+plt.show()
+```
+
+## Trace Plots - How Did Our Boats Do?
+
+```{python}
+az.plot_trace(idino, var_names = 'tp')
+plt.show()
+```
+
+```{python}
+az.plot_trace(idino, var_names = 'fp')
+plt.show()
+```
+
+::: {.notes}
+- Squiggly lines are good
+
+- Straight lines are bad
+:::
+
+## What Class Did Students Probabilistically Belong To
+
+```{python}
+az.plot_forest(idino.posterior["prob_resp_class"].isel(prob_resp_class_dim_0 = slice(0, 1),
+                                                    prob_resp_class_dim_1 = slice(None)
+                                                    ),
+               var_names = 'prob_resp_class',
+               colors = 'seagreen')
+plt.show()
+```
+
+::: {.notes}
+- This doesn't give us much confidence in what class this first student belongs to
+
+- These credible intervals should be a lot smaller to make more accurate diagnostic decisions
+:::
+
+## What About Attribute Mastery Per Student
+
+```{python}
+az.plot_forest(idino.posterior["prob_resp_attr"].isel(prob_resp_attr_dim_0 = slice(0, 10),
+                                                    prob_resp_attr_dim_1 = slice(None)
+                                                    ),
+               var_names = 'prob_resp_attr',
+               colors = 'seagreen')
+plt.show()
+```
+
+::: {.notes}
+- Same can be stated here
+
+- This is a little easier because we know our threshold for proficiency is at .8
+
+- So if the entire distribution is under .8 then they did not master even if the credible intervals are wide
+:::
+
+## Does Our Model Fit our Data
+
+```{python}
+az.plot_ppc(idino,
+            data_pairs = {'Y': 'Y'},
+            num_pp_samples = 100)
+plt.show()
+```
+
+::: {.notes}
+- This is only 100 samples, but you'd probably want to see more to make sure it is matching the observed data overall
+:::
+
+## Does Our Model Fit our Data
+
+```{python}
+az.plot_ppc(idino,
+            data_pairs = {'Y': 'Y'},
+            num_pp_samples = 100,
+            kind = 'cumulative')
+plt.show()
+```
+
+::: {.notes}
+- This is just a different method of viewing the comparison between our posterior replicated data and our observed data
+:::
+
+## Bayesian Posterior Predictive p-values
+
+```{python}
+az.plot_bpv(idino,
+            kind = 't_stat', 
+            t_stat = 'mean')
+plt.show()
+```
+
+::: {.notes}
+- This is a t-test that compares the a t-value of our observed data to each draw
+
+- Then you see what the percentage of the average t-value from all the draws are compared to the observed t-value
+
+  - The best would be .5 because that means half are over and half and under
+:::
+
+## Bayesian PPP values
+
+```{python}
+az.plot_bpv(idino,
+            kind = 't_stat', 
+            t_stat = 'std')
+plt.show()
+```
+
+::: {.notes}
+- Only relying on one value can end with problematic conclusions about how your replicated data fits your observed data
+
+- It is recommended having multiple statistics to compare on
+
+- Here this is a t-test with standard deviation
+:::
+
+## Guessing/Slipping
+
+```{python}
+#| eval: true
+#| echo: false
+
+slip_guess = dcmdf.filter(regex = 'tp|fp').reset_index()
+slip_guess = slip_guess.rename(columns = {'index': 'draw'})
+
+sg_long = slip_guess.melt(id_vars = 'draw')
+sg_long['variable'] = sg_long['variable'].str.replace('[', '')
+sg_long['variable'] = sg_long['variable'].str.replace(']', '')
+sg_long['type'] = sg_long['variable'].str.slice(start = 0, stop = 2)
+sg_long['item'] = sg_long['variable'].str.slice(start = 2) 
+sg_long = sg_long[['draw', 'type', 'item', 'value']]
+sg_long[['draw', 'item']] = sg_long[['draw', 'item']].astype(int)
+
+sg_avg = sg_long.groupby(['item', 'type'])
+
+sg_avg = pd.DataFrame({
+  'mean': sg_avg['value'].mean(),
+  'std': sg_avg['value'].std(),
+  'q_lower': q_lower(sg_avg['value']),
+  'q_upper': q_upper(sg_avg['value'])
+}).reset_index()
+```
+
+```{python}
+pn.ggplot.show(
+  pn.ggplot(sg_avg,
+    pn.aes('item', 'mean'))
+  + pn.geom_errorbar(pn.aes(ymin = 'q_lower', ymax = 'q_upper'),
+  linetype = 'dashed',
+  alpha = .7)
+  + pn.geom_point(pn.aes(color = 'type'),
+                  alpha = .7)
+  + pn.facet_wrap('type')
+  + pn.scale_color_brewer('qual', 'Dark2')
+  + pn.labs(title = 'Probability Guessing/Slipping',
+            x = 'Item',
+            y = 'Probability',
+            caption = 'tp = No slipping. Actually got answer correct.\nfp = Guessed and got answer correct')
+  + pn.theme(legend_position = 'none')
+)
+```
+
+::: {.notes}
+- This is visualizing that there was a ~.4 probability of students guessing for item 5
+
+  - We should look into that and assess how that is taught
+
+  - We'll focus on this for the retake as well
+
+- Item 4 seems to have slightly more slipping, even though students may know the content
+:::
+
+## Now We Can Look At Classes & Items They Got Correct
+
+```{python}
+#| eval: true
+#| echo: false
+
+pidf = dcmdf.filter(regex = 'pi').reset_index()
+pidf = pidf.rename(columns = {'index': 'draw'})
+pilong = pidf.melt(id_vars = 'draw')
+pilong['variable'] = pilong['variable'].str.replace('pi[', '')
+pilong['variable'] = pilong['variable'].str.replace(']', '')
+pilong[['item', 'latclass']] = pilong['variable'].str.split(',', expand = True)
+pilong = pilong[['draw', 'item', 'latclass', 'value']]
+pilong[['draw', 'item', 'latclass']] = pilong[['draw', 'item', 'latclass']].astype(int)
+
+pilong_avg = pilong.groupby(['item', 'latclass'])['value'].agg(['mean', 'std', q_lower, q_upper]).reset_index()
+```
+
+```{python}
+pn.ggplot.show(
+  pn.ggplot(pilong_avg,
+            pn.aes('item',
+                   'mean'))
+  + pn.geom_errorbar(pn.aes(ymin = 'q_lower', ymax = 'q_upper'),
+                     color = 'seagreen')
+  + pn.geom_point(alpha = .7,
+                  color = 'seagreen')
+  + pn.geom_hline(yintercept = .5,
+  color = 'black',
+  linetype = 'dashed')
+  + pn.scale_x_continuous(limits = [1, 7],
+                          breaks = [1, 2, 3, 4, 5, 6, 7])
+  + pn.facet_wrap('latclass')
+  + pn.labs(title = 'Probability of Getting Items Correct',
+  subtitle = 'By Latent Class')
+  + pn.theme(legend_position = 'none')
+)
+```
+
+::: {.notes}
+- The focus for me here is our class that should know each attribute (class 8 [1, 1, 1]) is not past the threshold of .5 for getting those items correct
+
+- Why is that?
+
+  - What is wrong with item 5?
+
+  - None of the classes were likely to get that answer correct
+:::
+
+## Let's See How Many Students Are in Each Class
+
+```{python}
+#| eval: true
+#| echo: false
+
+attr_class = dcmdf.filter(regex = '^prob_resp_class').reset_index()
+attr_class = attr_class.rename(columns = {'index': 'draw'})
+class_long = attr_class.melt(id_vars = 'draw')
+
+class_long['variable'] = class_long['variable'].str.replace('prob_resp_class[', '')
+class_long['variable'] = class_long['variable'].str.replace(']', '')
+class_long[['stu', 'latclass']] = class_long['variable'].str.split(',', expand = True)
+class_long[['draw', 'stu', 'latclass']] = class_long[['draw', 'stu', 'latclass']].astype(int)
+class_long = class_long[['draw', 'stu', 'latclass', 'value']]
+
+class_avg = class_long.groupby(['stu', 'latclass'])['value'].mean().reset_index()
+
+class_stu_max = class_avg.groupby('stu')['value'].max().reset_index()
+
+class_max = class_avg.merge(class_stu_max, 'inner')
+
+class_cond = [(class_max['latclass'] == 0),
+(class_max['latclass'] == 1),
+(class_max['latclass'] == 2),
+(class_max['latclass'] == 3),
+(class_max['latclass'] == 4),
+(class_max['latclass'] == 5),
+(class_max['latclass'] == 6),
+(class_max['latclass'] == 7)]
+class_choice = ['000', '001', '010', '011', '100', '101', '110', '111']
+
+class_max['class_mastery'] = np.select(class_cond, class_choice, default = '000')
+```
+
+```{python}
+gt.show(gt(class_max['class_mastery'].value_counts().reset_index()).tab_header(title = 'Latent Classes Counts'))
+```
+
+::: {.notes}
+- We can also report the proportions of each class, we can see that there are more than have no proficiency, as well as those that are proficient in the first and last attribute, but not the second attribute
+:::
+
+## Attribute Proficiency
+
+```{python}
+#| eval: true
+#| echo: false
+
+attr_df = dcmdf.filter(regex = '^prob_resp_attr').reset_index()
+attr_df = attr_df.rename(columns = {'index': 'draw'})
+attr_long = attr_df.melt(id_vars = 'draw')
+
+attr_long['variable'] = attr_long['variable'].str.replace('prob_resp_attr[', '')
+attr_long['variable'] = attr_long['variable'].str.replace(']', '')
+attr_long[['stu', 'attr']] = attr_long['variable'].str.split(',', expand = True)
+attr_long[['draw', 'stu', 'attr']] = attr_long[['draw', 'stu', 'attr']].astype(int)
+attr_long = attr_long[['draw', 'stu', 'attr', 'value']]
+
+attr_avg = attr_long.groupby(['stu', 'attr'])['value'].agg(['mean', 'std', q_lower, q_upper]).reset_index()
+```
+
+```{python}
+pn.ggplot.show(
+  pn.ggplot(attr_avg,
+            pn.aes('stu',
+                   'mean'))
+  + pn.geom_errorbar(pn.aes(ymin = 'q_lower', ymax = 'q_upper'),
+                     color = 'seagreen',
+                     alpha = .1)
+  + pn.geom_point(alpha = .3,
+                  color = 'seagreen')
+  + pn.geom_hline(yintercept = .8,
+                  color = 'black',
+                  linetype = 'dashed')
+  + pn.facet_wrap('attr')
+  + pn.theme(legend_position = 'none',
+             axis_text_x = pn.element_blank())
+)
+```
+
+::: {.notes}
+- Here is a plot that shows the proficiency for each attribute
+
+- We can see that most are not proficient in the second attribute
+:::
+
+## Setting A Threshold For Proficiency
+
+:::: {.columns}
+
+::: {.column width="50%"}
+```{python}
+attr_avg['mastery'] = np.where(attr_avg['mean'] > .8, 1, 0)
+
+attr_avg_wide = attr_avg.pivot(index = 'stu', columns = 'attr', values = 'mastery')
+attr_avg_wide = attr_avg_wide.rename(columns = {1: 'attr1',
+                                                2: 'attr2',
+                                                3: 'attr3'})
+
+gt.show(gt(attr_avg_wide.head()).tab_header(title = 'Student Proficiency'))
+```
+:::
+
+::: {.column width="50%"}
+- We decide on a threshold
+
+  - A .8 probability threshold seems good to reduce Type I error, which is most important
+
+- For something as low stakes as a quiz, we feel more confident accidentally sending too many emails rather than not enough
+
+- Here we see the proficiency values for the first 5 students in our simulated data
+:::
+
+::::
+
+## Emails
+
+```{python}
+att1_name = 'Attribute 1'
+att2_name = 'Attribute 2'
+att3_name = 'Attribute 3'
+
+attr_avg_wide['attr1'] = np.where(attr_avg_wide['attr1'] == 1, f'Proficient in {att1_name}', f'Did not meet proficiency of {att1_name}')
+
+attr_avg_wide['attr2'] = np.where(attr_avg_wide['attr2'] == 1, f'Proficient in {att2_name}', f'Did not meet proficiency of {att2_name}')
+
+attr_avg_wide['attr3'] = np.where(attr_avg_wide['attr3'] == 1, f'Proficient in {att3_name}', f'Did not meet proficiency of {att3_name}')
+
+gt.show(gt(attr_avg_wide.head()).tab_header(title = 'Included in Email'))
+# attr_mastery.to_csv(here(f'attr_mastery_{quiz_num}.csv'))
+# this then gets filtered to remove those with full proficiency
+```
+
+- From here we print out messages to save into a csv to be put into an email template that highlights which areas students may not have met proficiency in
+
+- Students with proficiency in all attributes do not receive an email
+
+- We also highlight what sections in the book should be reviewed to get a better understanding of the attribute
+
+## But Is Our Model Reliable?
+
+```{python}
+attr_avg['acc_comp'] = attr_avg['mean'].apply(lambda p: max(p, 1 - p))
+attr_avg['cons_comp'] = attr_avg['mean'].apply(lambda p: p**2 + (1 - p)**2)
+
+reliability_metrics = attr_avg.groupby('attr').agg(
+    accuracy=('acc_comp', 'mean'),
+    consistency=('cons_comp', 'mean')
+).reset_index()
+
+gt.show(gt(reliability_metrics.round(3)).tab_header(title = 'Reliability For Assigning Proficiency'))
+```
+
+- Accuracy is how well does the model predict whether this matches students "true" proficiency
+
+- Consistency is if they got measured again for these skills, would they be proficient in the same skills
+
+::: {.notes}
+- The issue with attribute 2 is that only 1 item measures the attribute
+
+- Our real model was tested with 2 and 3 attributes to help alleviate that
+
+- In our real data, separating into 3 attributes resulted in a better fitting model
+
+  -  Most likely due to the q-matrix being better specified
+:::
+
+## Next Steps & Things to Address
+
+- We have to still model quiz retakes to see if students improve in proficiency
+
+- Challenges include:
+
+  - TAs are helping with providing me anonymized data
+
+  - Also helping with sending out the emails
+
+    - Not their responsibility
+
+  - Parameterizing/Automating in the future
+
+  - Defining Structural Model Edges
