@@ -40,12 +40,12 @@ quiz_num = 'quiz1'
 # irt_num = '1'
 # lcdm #bayes_net_lcdm_linear # dina_bn # bayes_net_dina_linear
 # stan file name
-dcm_type = 'quiz1_model' 
+dcm_type = 'quiz1_model_attr3' 
 mastery_prob = .8
 prof_prob = .5
 att1_name = 'Rules, Logic, & Bounds'
-att2_name = 'Calculating & Probability'
-# att3_name = 'Probability & Computations'
+att2_name = 'Relating Joint, Marginal, & Conditional'
+att3_name = 'Probability Computations'
 # att1_name = att_names.loc[0, 'attribute']
 # att2_name = att_names.loc[1, 'attribute']
 # att3_name = att_names.loc[2, 'attribute']
@@ -54,8 +54,8 @@ att2_name = 'Calculating & Probability'
 data_path = 'data/quiz_data/q1_scores_anonymized.csv'
 
 # qmatrix_path = 'data/q_matrix/q1_7item.csv'
-# qmatrix_path = 'data/q_matrix/q1_7item_3att.csv'
-qmatrix_path = 'data/q_matrix/q1_7item_2att.csv'
+qmatrix_path = 'data/q_matrix/q1_7item_3att.csv'
+# qmatrix_path = 'data/q_matrix/q1_7item_2att.csv'
 ```
 
 ```{python}
@@ -117,9 +117,10 @@ def acceptable_fit_stat(inference_data, func_name = ['waic', 'loo']):
 
 ```{python}
 # attribute mastery matrix
-alpha = pd.DataFrame([(a, b) for a in np.arange(2) for b in np.arange(2)])
+alpha = pd.DataFrame([(a, b, c) for a in np.arange(2) for b in np.arange(2) for c in np.arange(2)])
 alpha = alpha.rename(columns = {0: att1_name,
-                                1: att2_name}).clean_names(case_type = 'snake')
+                                1: att2_name,
+                                2: att3_name}).clean_names(case_type = 'snake')
 
 # alpha = pd.DataFrame([(a, b, c, d, e) for a in np.arange(2) for b in np.arange(2) for c in np.arange(2) for d in np.arange(2) for e in np.arange(2)])
 # alpha = alpha.rename(columns = {0: att1_name,
@@ -189,7 +190,7 @@ y_item.head()
 
 ```{python}
 q = pd.read_csv(here(f'{qmatrix_path}')).clean_names(case_type = 'snake')
-q.columns = ['row', 'attr1', 'attr2']
+q.columns = ['row', 'attr1', 'attr2', 'attr3']
 # q.columns = ['row', 'attr1', 'attr2', 'attr3', 'attr4', 'attr5']
 q = q.drop(columns = 'row')
 q
@@ -334,7 +335,7 @@ plt.show()
 ```
 
 ```{python}
-# did students not slip/true positive (get answer correct without knowing content)
+# did students not slip/true positive (get answer correct and knowing content)
 az.plot_dist_comparison(idcm, var_names = ['tp'])
 plt.show()
 ```
@@ -585,7 +586,7 @@ pn.ggplot.show(
   + pn.facet_wrap('latclass')
   + pn.labs(title = 'Probability of Getting Items Correct',
   subtitle = 'By Latent Class',
-  caption = '1 = Neither Mastered,\n2 = Calculating & Probability Mastered,\n3 = Rules, Logic & Bounds Mastered,\n4 = Both Mastered')
+  caption = '1 = None Mastered,\n2 = Probability Computations Mastered,\n3 = Relating Joint, Marginal, & Conditional,\n4 = Relating & Computing,\n5 = Rules, Logic & Bounds Mastered,\n6 = Rules & Computing,\n7 = Rules & Relating,\n8 = All Attributes Mastered')
   + pn.theme(legend_position = 'none')
 )
 ```
@@ -654,13 +655,16 @@ attr_avg['mastery'] = np.where(attr_avg['mean'] > mastery_prob, 1, 0)
 
 attr_avg_wide = attr_avg.pivot(index = 'stu', columns = 'attr', values = 'mastery')
 attr_avg_wide = attr_avg_wide.rename(columns = {1: 'attr1',
-                                                2: 'attr2'})
+                                                2: 'attr2',
+                                                3: 'attr3'})
 ```
 
 ```{python}
 attr_avg_wide['attr1'] = np.where(attr_avg_wide['attr1'] == 1, f'Proficient in {att1_name}', f'Did not meet proficiency of {att1_name}')
 
 attr_avg_wide['attr2'] = np.where(attr_avg_wide['attr2'] == 1, f'Proficient in {att2_name}', f'Did not meet proficiency of {att2_name}')
+
+attr_avg_wide['attr3'] = np.where(attr_avg_wide['attr3'] == 1, f'Proficient in {att3_name}', f'Did not meet proficiency of {att3_name}')
 ```
 
 ```{python}
@@ -668,11 +672,11 @@ attr_mastery = attr_avg_wide.join(y['anon_id'])
 ```
 
 ```{python}
-attr_mastery[['attr1', 'attr2']].value_counts().reset_index()
+attr_mastery[['attr1', 'attr2', 'attr3']].value_counts().reset_index()
 ```
 
 ```{python}
-attr_mastery.to_csv(here(f'student_data/attr_mastery_{quiz_num}.csv'))
+attr_mastery.to_csv(here(f'student_data/attr_mastery_{quiz_num}_3att.csv'))
 ```
 
 ```{python}
@@ -867,7 +871,7 @@ pn.ggplot.show(
 ```
 
 ```{python}
-
+#| eval: false
 
 # 1. Define a function for the statistic (the "T-score")
 # This measures how far the mean is from a reference point (e.g., 0) 
@@ -935,4 +939,41 @@ dcm_prior_diagnose.to_csv(here(f'diagnostics/{dcm_type}_prior_only.csv'))
 #               here(f'joblib_models/{dcm_type}_bayesnet_modfit_prior_only.joblib'),
 #               compress = 3)
 # )
+```
+
+
+```{python}
+dino_model, dino_fit = joblib.load(here('joblib_models/quiz1_model_modfit.joblib'))
+dino_model_prior, dino_fit_prior = joblib.load(here('joblib_models/quiz1_model_modfit_prior_only.joblib'))
+```
+
+```{python}
+idino = az.from_cmdstanpy(
+    posterior = dino_fit,
+    posterior_predictive = ['y_rep'],
+    observed_data = {'Y': y_item.filter(regex = 'item')},
+    log_likelihood = {'Y': 'eta'}
+    )
+
+idino = idino.rename(name_dict = name_mapping, groups = ["posterior_predictive"])
+
+idino_prior = az.from_cmdstanpy(prior = dino_fit_prior,
+prior_predictive = ['y_rep'])
+
+idino_prior = idino_prior.rename(
+    name_dict = name_mapping,
+    groups = ['prior_predictive']
+)
+
+idino.extend(idino_prior)
+```
+
+```{python}
+model_compare = az.compare({'attr2': idino,
+                            'attr3': idcm})
+model_compare
+```
+
+```{python}
+az.plot_compare(model_compare)
 ```

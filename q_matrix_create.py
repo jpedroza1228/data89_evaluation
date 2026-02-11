@@ -19,6 +19,7 @@ pd.options.mode.copy_on_write = True
 matplotlib.rcParams.update({'savefig.bbox': 'tight'})
 
 q1_names = pd.read_csv(here('data/q_matrix/Latent Attributes/quiz1_att_names.csv'))
+q2_names = ['Random Variables & Distributions', 'Computing & Visualizing Distributions', 'Specific Models', 'Continuous Models']
 
 # q1 = pd.DataFrame({q1_names.loc[0, 'attribute']: [1, 0, 0, 1, 1, 1, 0, 0, 1, 0, 0],
 #                    q1_names.loc[1, 'attribute']: [1, 0, 0, 1, 1, 0, 0, 1, 0, 0, 0],
@@ -53,8 +54,10 @@ q1_7item_2att.to_csv(here('data/q_matrix/q1_7item_2att.csv'))
 
 q2 = (
   pd
-  .DataFrame({'hold1': [],
-              'hold2': []})
+  .DataFrame({q2_names[0]: [0, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 1, 1, 0, 0],
+              q2_names[1]: [1, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 1, 1, 1, 1],
+              q2_names[2]: [1, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 0, 0, 1, 1],
+              q2_names[3]: [0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]})
   .to_csv(here('data/q_matrix/q2.csv'))
 )
 
