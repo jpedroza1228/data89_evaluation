@@ -445,6 +445,21 @@ wheels = [
 ]
 
 [[package]]
+name = "copulas"
+version = "0.14.1"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "numpy" },
+    { name = "pandas" },
+    { name = "plotly" },
+    { name = "scipy" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/3d/a8/f15432ee5a691eafb7ecc5637c01843df92c0801aa83151c35d0fb190c92/copulas-0.14.1.tar.gz", hash = "sha256:adec8f65c98f16816bde5a03e9e7e7b3df91f3fb22ef9fd5023ebba8dd1628c8", size = 45007, upload-time = "2026-02-05T18:52:41.019Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/50/2c/7984ead5c59c7d3066d6c7b6a7839991a317ecfb3ab1f963900e14f3c339/copulas-0.14.1-py3-none-any.whl", hash = "sha256:6f010444385a304274e7587b45f56b860ca38b621529ad0f9bbd4024de91dd1d", size = 52663, upload-time = "2026-02-05T18:52:39.263Z" },
+]
+
+[[package]]
 name = "cycler"
 version = "0.12.1"
 source = { registry = "https://pypi.org/simple" }
@@ -478,6 +493,7 @@ dependencies = [
     { name = "py-irt" },
     { name = "pyhere" },
     { name = "pyjanitor" },
+    { name = "python-synthpop" },
     { name = "requests" },
     { name = "scipy" },
     { name = "semopy" },
@@ -507,6 +523,7 @@ requires-dist = [
     { name = "py-irt", specifier = ">=0.6.6" },
     { name = "pyhere", specifier = ">=1.0.3" },
     { name = "pyjanitor", specifier = ">=0.32.3" },
+    { name = "python-synthpop", specifier = ">=0.1.2" },
     { name = "requests", specifier = ">=2.32.5" },
     { name = "scipy", specifier = ">=1.16.3" },
     { name = "semopy", specifier = ">=2.3.11" },
@@ -2268,6 +2285,21 @@ source = { registry = "https://pypi.org/simple" }
 sdist = { url = "https://files.pythonhosted.org/packages/29/bf/eca6a3d43db1dae7070f70e160ab20b807627ba953663ba07928cdd3dc58/python_json_logger-4.0.0.tar.gz", hash = "sha256:f58e68eb46e1faed27e0f574a55a0455eecd7b8a5b88b85a784519ba3cff047f", size = 17683, upload-time = "2025-10-06T04:15:18.984Z" }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/51/e5/fecf13f06e5e5f67e8837d777d1bc43fac0ed2b77a676804df5c34744727/python_json_logger-4.0.0-py3-none-any.whl", hash = "sha256:af09c9daf6a813aa4cc7180395f50f2a9e5fa056034c9953aec92e381c5ba1e2", size = 15548, upload-time = "2025-10-06T04:15:17.553Z" },
+]
+
+[[package]]
+name = "python-synthpop"
+version = "0.1.2"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "copulas" },
+    { name = "numpy" },
+    { name = "pandas" },
+    { name = "scikit-learn" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/73/9c/5e50de75200c7787fcda0985a08ec500f56ac1562418b92d9b4e208689c9/python_synthpop-0.1.2.tar.gz", hash = "sha256:2bf39a3e80a9ea73a721b661b3dba86af49031c3034174b7ed856cada9d19504", size = 612580, upload-time = "2025-05-25T10:39:24.768Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/90/93/7f90be134b58e1efb92461d709ebad78d13b366fc1ee458d401c9cbd7f17/python_synthpop-0.1.2-py3-none-any.whl", hash = "sha256:83a52a01cb06937e1d9cc3a09cceb015e3d7eaf65a739b1a1e240c24fa0b1692", size = 558130, upload-time = "2025-05-25T10:39:22.913Z" },
 ]
 
 [[package]]

@@ -58,203 +58,30 @@ alpha = alpha.rename(columns = {0: q2_names[0],
                                 }).clean_names(case_type = 'snake')
 alpha.head()
 
-y = pd.read_csv(here('data/quiz_data/q2_scores_anonymized.csv')).clean_names(case_type = 'snake')
-y.head()
+# y_item = pd.read_csv(here('zzz_presentations/quiz2_synthetic_data.csv')).clean_names(case_type = 'snake').drop(columns = 'unnamed_0')
+y_item = pd.read_csv(here('zzz_presentations/quiz2_retake_synthetic_data.csv')).clean_names(case_type = 'snake').drop(columns = 'unnamed_0')
+y_item.head()
 
-# true answers
-y.columns.tolist()
+# q = pd.DataFrame({'rv_dist': [1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 1, 1],
+#                   'comp_vis_dist': [0, 0, 0, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 1, 0, 0],
+#                   'specific_mod': [0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 0, 0],
+#                   'cont_mod': [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1]})
 
-# item1
-y[['drop1',
-   'def_true1',
-   'def_true2',
-   'def_true3']] = y['quiz_2_definitions_true_answer'].str.split('"key":"', expand = True)
-y['def_true1'] = y['def_true1'].str[0]
-y['def_true2'] = y['def_true2'].str[0]
-y['def_true3'] = y['def_true3'].str[0]
-
-# item2
-y[['drop2',
-   'min2_true1',
-   'min2_true2']] = y['quiz_2_minimum_of_two_rolls_true_answer'].str.split('"key":"', expand = True)
-y['min2_true1'] = y['min2_true1'].str[0]
-y['min2_true2'] = y['min2_true2'].str[0]
-
-# item3
-y[['drop3',
-   'disttable_true1']] = y['quiz_2_distribution_tables_true_answer'].str.split('"key":"', expand = True)
-y[['disttable_true1',
-  'disttable_true2']] = y['disttable_true1'].str.split('"ans_interval":', expand = True)
-y['disttable_true1'] = y['disttable_true1'].str[0]
-y['disttable_true2'] = y['disttable_true2'].str.replace('}', '')
-
-# item4
-y[['drop4',
-   'vispmf_true1',
-   'vispmf_true2']] = y['quiz_2_visualizing_pmfs_true_answer'].str.split('"key":"', expand = True)
-y['vispmf_true1'] = y['vispmf_true1'].str[0]
-y['vispmf_true2'] = y['vispmf_true2'].str[0]
-
-# item5
-y[['drop5',
-   'iddist_true1',
-   'iddist_true2',
-   'iddist_true3',
-   'iddist_true4']] = y['quiz_2_identifying_distributions_true_answer'].str.split('"key":"', expand = True)
-y['iddist_true1'] = y['iddist_true1'].str[0]
-y['iddist_true2'] = y['iddist_true2'].str[0]
-y['iddist_true3'] = y['iddist_true3'].str[0]
-y['iddist_true4'] = y['iddist_true4'].str[0]
-
-# item6
-y[['drop6',
-   'alice_true1']] = y['quiz_2_alice_lottery_true_answer'].str.split('"key":"', expand = True)
-y['alice_true1'] = y['alice_true1'].str[0]
-
-# item7
-y[['drop7',
-   'denscomp_true1',
-   'denscomp_true2']] = y['quiz_2_density_computations_true_answer'].str.split('":"', expand = True)
-y['denscomp_true1'] = y['denscomp_true1'].str.replace('","part_b_ans', '')
-y['denscomp_true2'] = y['denscomp_true2'].str.replace('"}', '')
-
-y.filter(regex = r'true[1234]')
-
-# submitted answers
-y.columns.tolist()
-
-# item1
-y['quiz_2_definitions_submitted_answer'][0]
-y[['drop8',
-   'def_submit1',
-   'def_submit2',
-   'def_submit3']] = y['quiz_2_definitions_submitted_answer'].str.split('":"', expand = True)
-y['def_submit1'] = y['def_submit1'].str[0]
-y['def_submit2'] = y['def_submit2'].str[0]
-y['def_submit3'] = y['def_submit3'].str[0]
-
-# item2
-y[['drop9',
-   'min2_submit1',
-   'min2_submit2']] = y['quiz_2_minimum_of_two_rolls_submitted_answer'].str.split('":"', expand = True)
-y['min2_submit1'] = y['min2_submit1'].str[0]
-y['min2_submit2'] = y['min2_submit2'].str[0]
-
-# item3
-y[['drop10',
-   'disttable_submit1',
-   'disttable_submit2']] = y['quiz_2_distribution_tables_submitted_answer'].str.split(':', expand = True)
-y['disttable_submit1'] = y['disttable_submit1'].str.replace('"', '')
-y['disttable_submit1'] = y['disttable_submit1'].str[0]
-y['disttable_submit2'] = y['disttable_submit2'].str.replace('}', '')
-
-# item4
-y[['drop11',
-   'vispmf_submit1',
-   'vispmf_submit2']] = y['quiz_2_visualizing_pmfs_submitted_answer'].str.split('":"', expand = True)
-y['vispmf_submit1'] = y['vispmf_submit1'].str[0]
-y['vispmf_submit2'] = y['vispmf_submit2'].str.replace('"}', '')
-
-# item5
-y[['drop12',
-   'iddist_submit1',
-   'iddist_submit2',
-   'iddist_submit3',
-   'iddist_submit4']] = y['quiz_2_identifying_distributions_submitted_answer'].str.split('":"', expand = True)
-y['iddist_submit1'] = y['iddist_submit1'].str[0]
-y['iddist_submit2'] = y['iddist_submit2'].str[0]
-y['iddist_submit3'] = y['iddist_submit3'].str[0]
-y['iddist_submit4'] = y['iddist_submit4'].str[0]
-
-
-# item6
-y[['drop13',
-   'alice_submit1']] = y['quiz_2_alice_lottery_submitted_answer'].str.split('":"', expand = True)
-y['alice_submit1'] = y['alice_submit1'].str.replace('"}', '')
-
-# item7
-y[['drop14',
-   'denscomp_submit1',
-   'denscomp_submit2']] = y['quiz_2_density_computations_submitted_answer'].str.split('":', expand = True)
-y['denscomp_submit1'] = y['denscomp_submit1'].str.replace(',"part_b_ans', '')
-y['denscomp_submit2'] = y['denscomp_submit2'].str.replace('}', '')
-
-y.filter(regex = r'submit[1234]')
-
-
-# true and submitted answers
-true_col = y.filter(regex = r'true[1234]').columns.tolist()
-submit_col = y.filter(regex = r'submit[1234]').columns.tolist()
-
-y_sub = y[['anon_id'] + true_col + submit_col]
-
-# cleaning
-y_sub['disttable_true2'] = y_sub['disttable_true2'].astype(float)
-y_sub['denscomp_true1'] = y_sub['denscomp_true1'].astype(float)
-y_sub['denscomp_true2'] = y_sub['denscomp_true2'].astype(float)
-
-y_sub['denscomp_submit1'] = np.where(y_sub['denscomp_submit1'] == 'null', -99, y_sub['denscomp_submit1'])
-y_sub['denscomp_submit2'] = np.where(y_sub['denscomp_submit2'] == 'null', -99, y_sub['denscomp_submit2'])
-
-y_sub['disttable_submit2'] = y_sub['disttable_submit2'].astype(float)
-y_sub['denscomp_submit1'] = y_sub['denscomp_submit1'].astype(float).round(2)
-y_sub['denscomp_submit2'] = y_sub['denscomp_submit2'].astype(float).round(2)
-
-y_item = y_sub.drop(columns = 'anon_id')
-y_sub.filter(regex = r'(denscomp).*1$')
-
-# y_sub.to_csv(here('data/quiz_data/quiz2_ready_irt.csv'))
-
-y_item = y_sub.drop(columns = 'anon_id')
-
-# making items binary
-
-# y_item.filter(regex = 'def')
-y_item['item1'] = np.where(y_item['def_submit1'] == y_item['def_true1'], 1, 0)
-y_item['item2'] = np.where(y_item['def_submit2'] == y_item['def_true2'], 1, 0)
-y_item['item3'] = np.where(y_item['def_submit3'] == y_item['def_true3'], 1, 0)
-
-# y_item.filter(regex = 'min2')
-y_item['item4'] = np.where(y_item['min2_submit1'] == y_item['min2_true1'], 1, 0)
-y_item['item5'] = np.where(y_item['min2_submit2'] == y_item['min2_true2'], 1, 0)
-
-# y_item.filter(regex = 'disttable')
-y_item['item6'] = np.where(y_item['disttable_submit1'] == y_item['disttable_true1'], 1, 0)
-y_item['item7'] = np.where(y_item['disttable_submit2'] == y_item['disttable_true2'], 1, 0)
-
-# y_item.filter(regex = 'vispmf')
-y_item['item8'] = np.where(y_item['vispmf_submit1'] == y_item['vispmf_true1'], 1, 0)
-y_item['item9'] = np.where(y_item['vispmf_submit2'] == y_item['vispmf_true2'], 1, 0)
-
-# y_item.filter(regex = 'iddist')
-y_item['item10'] = np.where(y_item['iddist_submit1'] == y_item['iddist_true1'], 1, 0)
-y_item['item11'] = np.where(y_item['iddist_submit2'] == y_item['iddist_true2'], 1, 0)
-y_item['item12'] = np.where(y_item['iddist_submit3'] == y_item['iddist_true3'], 1, 0)
-y_item['item13'] = np.where(y_item['iddist_submit4'] == y_item['iddist_true4'], 1, 0)
-
-# y_item.filter(regex = 'alice')
-y_item['item14'] = np.where(y_item['alice_submit1'] == y_item['alice_true1'], 1, 0)
-
-# y_item.filter(regex = 'denscomp')
-y_item['item15'] = np.where(y_item['denscomp_submit1'] == y_item['denscomp_true1'], 1, 0)
-y_item['item16'] = np.where(y_item['denscomp_submit2'] == y_item['denscomp_true2'], 1, 0)
-
-y_item = y_item.filter(regex = 'item')
-
-q = pd.DataFrame({'rv_dist': [1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 1, 1],
-                  'comp_vis_dist': [0, 0, 0, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 1, 0, 0],
-                  'specific_mod': [0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 0, 0],
-                  'cont_mod': [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1]})
-# q.to_csv(here('data/q_matrix/q2_granular.csv'))
+q_retake = pd.DataFrame({'rv_dist': [1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1],
+                  'comp_vis_dist': [0, 0, 0, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 1, 1, 0, 0],
+                  'specific_mod': [0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0],
+                  'cont_mod': [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1]})
 
 # only using retake data for 
 stan_dict = {
   'J': y_item.shape[0],
   'I': y_item.shape[1],
   'C': alpha.shape[0],
-  'K': q.shape[1],
+  # 'K': q.shape[1],
+  'K': q_retake.shape[1],
   'Y': np.array(y_item),
-  'Q': np.array(q),
+  # 'Q': np.array(q),
+  'Q': np.array(q_retake),
   'alpha': np.array(alpha)
 }
 
@@ -267,7 +94,7 @@ dcm_model = CmdStanModel(stan_file = dcm_file,
 np.random.seed(12345)
 dcm_fit = dcm_model.sample(data = stan_dict,
                         show_console = True,
-                        chains = 4,
+                        chains = 2,
                         # adapt_delta = .95,
                         iter_warmup = 2000,
                         iter_sampling = 2000)
@@ -281,8 +108,8 @@ dcm_prior_model = CmdStanModel(stan_file = dcm_prior_file,
 np.random.seed(12345)
 dcm_prior_fit = dcm_prior_model.sample(data = stan_dict,
                         show_console = True,
-                        chains = 4,
-                        adapt_delta = .95,
+                        chains = 2,
+                        # adapt_delta = .95,
                         iter_warmup = 2000,
                         iter_sampling = 2000)
 dcm_prior_diagnose = pd.DataFrame(dcm_prior_fit.summary())
@@ -329,8 +156,8 @@ idcm.extend(idcm_prior)
 
 # plots
 az.plot_dist_comparison(idcm, var_names = ['nu'])
-az.plot_dist_comparison(idcm, var_names = ['tp'])
-az.plot_dist_comparison(idcm, var_names = ['fp'])
+az.plot_dist_comparison(idcm, var_names = ['slip'])
+az.plot_dist_comparison(idcm, var_names = ['guess'])
 
 az.plot_dist_comparison(idcm, var_names = ['lambda1'])
 az.plot_dist_comparison(idcm, var_names = ['lambda2'])
@@ -338,16 +165,16 @@ az.plot_dist_comparison(idcm, var_names = ['lambda3'])
 az.plot_dist_comparison(idcm, var_names = ['lambda4'])
 
 az.plot_trace(idcm, var_names = ['nu'])
-az.plot_trace(idcm, var_names = ['tp'])
-az.plot_trace(idcm, var_names = ['fp'])
+az.plot_trace(idcm, var_names = ['slip'])
+az.plot_trace(idcm, var_names = ['guess'])
 
-az.plot_forest(idcm.posterior["prob_resp_class"].isel(prob_resp_class_dim_0 = slice(0, 2),
+az.plot_forest(idcm.posterior["prob_resp_class"].isel(prob_resp_class_dim_0 = slice(0, 1),
                                                     prob_resp_class_dim_1 = slice(None)
                                                     ),
                var_names = 'prob_resp_class',
                colors = jpcolor)
 
-az.plot_forest(idcm.posterior["prob_resp_attr"].isel(prob_resp_attr_dim_0 = slice(0, 10),
+az.plot_forest(idcm.posterior["prob_resp_attr"].isel(prob_resp_attr_dim_0 = slice(0, 1),
                                                     prob_resp_attr_dim_1 = slice(None)
                                                     ),
                var_names = 'prob_resp_attr',
@@ -372,17 +199,16 @@ az.plot_bpv(idcm,
             kind = 't_stat', 
             t_stat = 'std')
 
+
 dcmdf = dcm_fit.draws_pd()
 
-
-sg = dcmdf.filter(regex = 'tp|fp').reset_index()
+sg = dcmdf.filter(regex = 'guess|slip').reset_index()
 sg = sg.rename(columns = {'index': 'draw'})
 
 sglong = sg.melt(id_vars = 'draw')
-sglong['variable'] = sglong['variable'].str.replace('[', '')
+# sglong['variable'] = sglong['variable'].str.replace('[', '')
 sglong['variable'] = sglong['variable'].str.replace(']', '')
-sglong['type'] = sglong['variable'].str.slice(start = 0, stop = 2)
-sglong['item'] = sglong['variable'].str.slice(start = 2) 
+sglong[['type', 'item']] = sglong['variable'].str.split('[', expand = True)
 sglong = sglong[['draw', 'type', 'item', 'value']]
 sglong[['draw', 'item']] = sglong[['draw', 'item']].astype(int)
 
@@ -408,7 +234,7 @@ pn.ggplot.show(
   + pn.labs(title = 'Probability Guessing/Slipping',
             x = 'Item',
             y = 'Probability',
-            caption = 'fp = Guessed and got answer correct\ntp = No slipping. Actually got answer correct')
+            caption = 'Guess = Guessed and got answer correct\nSlip = Knew the answer, but got it incorrect')
   + pn.theme(legend_position = 'none')
 )
 
@@ -446,6 +272,7 @@ pn.ggplot.show(
   # caption = '1 = 00\n2 = 01\n3 = 10\n4 = 11')
   + pn.theme(legend_position = 'none')
 )
+
 # breakdown of latent classes
 pn.ggplot.show(
   pn.ggplot(piavg.loc[piavg['latclass'].isin([1, 2, 3, 4])],
@@ -535,6 +362,31 @@ pn.ggplot.show(
   + pn.theme(legend_position = 'none')
 )
 
+pn.ggplot.show(
+  pn.ggplot(piavg.loc[piavg['latclass'].isin([16])],
+            pn.aes('item',
+                   'mean'))
+  + pn.geom_errorbar(pn.aes(ymin = 'q_lower', ymax = 'q_upper'),
+                     color = jpcolor)
+  + pn.geom_point(alpha = .7,
+                  color = jpcolor)
+  + pn.geom_hline(yintercept = .5,
+  color = 'black',
+  linetype = 'dashed')
+  + pn.scale_x_continuous(limits = [1, 17],
+                          breaks = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11,
+                                    12, 13, 14, 15, 16, 17])
+  # + pn.coord_flip()
+  # + pn.facet_wrap('latclass')
+  + pn.labs(title = 'Probability of Getting Items Correct',
+  subtitle = 'For Latent Class With Proficiency in All Skills',
+  x = 'Item',
+  y = "Posterior Mean")
+  + pn.theme(legend_position = 'none')
+)
+
+
+
 
 attrdf = dcmdf.filter(regex = '^prob_resp_attr').reset_index()
 attrdf = attrdf.rename(columns = {'index': 'draw'})
@@ -561,6 +413,10 @@ pn.ggplot.show(
                   color = 'black',
                   linetype = 'dashed')
   + pn.facet_wrap('attr')
+  + pn.labs(title = 'Proficiency in Attributes/Skills',
+       x = 'Student',
+       y = 'Posterior Mean',
+       caption = '95% Credible Intervals shown')
   + pn.theme(legend_position = 'none',
              axis_text_x = pn.element_blank())
 )
@@ -576,7 +432,7 @@ attravg_w.columns = ['attr1',
                      'attr2_avg',
                      'attr3_avg',
                      'attr4_avg']
-attr_mast = pd.concat([attravg_w, y_sub], axis = 1)
+attr_mast = pd.concat([attravg_w, y_item], axis = 1)
 
 attr_mast['attr1_name'] = np.where(attr_mast['attr1'] == 1, f'Proficient in {q2_names[0]}', f'Did not meet proficiency of {q2_names[0]}')
 
@@ -587,12 +443,13 @@ attr_mast['attr3_name'] = np.where(attr_mast['attr3'] == 1, f'Proficient in {q2_
 attr_mast['attr4_name'] = np.where(attr_mast['attr4'] == 1, f'Proficient in {q2_names[3]}', f'Did not meet proficiency of {q2_names[3]}')
 
 attr_col = attr_mast.filter(regex = 'attr').columns.tolist()
-attr_mast = attr_mast[['anon_id'] + attr_col]
+attr_mast = attr_mast[attr_col]
 
-# attr_mast.to_csv(here('student_data/attr_mastery_quiz2.csv'))
+# attr_mast
+# attr_mast.to_csv(here('zzz_presentations/synthetic_attr_mastery_quiz2.csv'))
 
 
-y_sub.loc[~y_sub['anon_id'].isin(attr_mast['anon_id'])]
+# y_sub.loc[~y_sub['anon_id'].isin(attr_mast['anon_id'])]
 
 gt.show(gt(attr_mast[['attr1', 'attr2', 'attr3', 'attr4']].value_counts().reset_index()))
 
@@ -624,7 +481,24 @@ class_stu_max = class_avg.groupby('stu')['value'].max().reset_index()
 class_max = class_avg.merge(class_stu_max, 'inner')
 
 class_max_df = class_max['latclass'].value_counts().reset_index()
-class_max_df
+class_max_df = class_max_df.sort_values('latclass')
+class_max_df['latclass'] = ['0000', #1
+                            '0001', #2
+                            '0011', #3
+                            # '0010', #4
+                            '0100', #5
+                            '0101', #6
+                            '0110', #7
+                            '0111', #8
+                            '1000', #9
+                            '1001', #10
+                            # '1010', #11
+                            # '1011', #12
+                            # '1100', #13
+                            '1101', #14
+                            # '1110', #15
+                            '1111'] #16
+gt.show(gt(class_max_df).tab_header(title = 'Latent Class Frequencies'))
 
 
 ydcm = dcmdf.filter(regex = '^y_rep')
@@ -641,7 +515,8 @@ ydcm_long['draw'] = ydcm_long.groupby(['stu', 'item']).cumcount()
 
 ydcm_wide = ydcm_long.pivot(index = ['stu', 'draw'], columns = 'item', values = 'value')
 ydcm_wide = ydcm_wide.reset_index()
-ydcm_wide.columns = ['stu', 'draw', 'item1', 'item2', 'item3', 'item4', 'item5', 'item6', 'item7', 'item8', 'item9', 'item10', 'item11', 'item12', 'item13', 'item14', 'item15', 'item16']
+# ydcm_wide.columns = ['stu', 'draw', 'item1', 'item2', 'item3', 'item4', 'item5', 'item6', 'item7', 'item8', 'item9', 'item10', 'item11', 'item12', 'item13', 'item14', 'item15', 'item16']
+ydcm_wide.columns = ['stu', 'draw', 'item1', 'item2', 'item3', 'item4', 'item5', 'item6', 'item7', 'item8', 'item9', 'item10', 'item11', 'item12', 'item13', 'item14', 'item15', 'item16', 'item17']
 
 ydcm_wide['total'] = ydcm_wide.filter(regex = 'item').sum(axis = 1)
 ydcm_wide_count = ydcm_wide.groupby('draw')['total'].value_counts().reset_index()
@@ -677,8 +552,14 @@ pn.ggplot.show(
                      linetype = 'dashed')
   + pn.geom_point(pn.aes(color = 'type'))
   + pn.scale_color_brewer('qual', 'Dark2')
+  + pn.labs(title = 'Comparison Between Actual Counts and Posterior Average Counts',
+            # subtitle = 'For Total Scores on Quiz',
+            subtitle = 'For Total Scores on Quiz Retake',
+            x = 'Total Score',
+            y = 'Counts')
   + pn.scale_x_continuous(limits = [0, 16],
                           breaks = np.arange(0, 17))
+  + pn.theme(legend_title = pn.element_blank())
 )
 
 y_describe = y_item.filter(regex = 'item').agg(['mean', 'std']).reset_index()
@@ -740,3 +621,23 @@ pn.ggplot.show(
 
 # pd.DataFrame({'item': np.arange(17),
 #               't_prop_over': t_compare_list}).to_csv(here('diagnostics/quiz2_ppmc_item_level.csv'))
+
+
+# Need comparison between 
+
+post_mast = pd.read_csv(here('zzz_presentations/synthetic_attr_mastery_quiz2_retake.csv'))
+
+attr_mast
+
+# pre_actual = pd.read_csv(here('data/quiz_data/q2_scores_anonymized.csv')).clean_names(case_type = 'snake')
+# post_actual = pd.read_csv(here('data/quiz_data/q2_retake_scores_anonymized.csv')).clean_names(case_type = 'snake')
+
+# pre = pd.concat([pre_actual['anon_id'], attr_mast], axis = 1)
+# post = pd.concat([post_actual['anon_id'], post_mast], axis = 1)
+
+synth = pre.merge(post, 'inner', on = 'anon_id')
+
+synth[['attr1_x', 'attr1_y']].value_counts().reset_index()
+synth[['attr2_x', 'attr2_y']].value_counts().reset_index()
+synth[['attr3_x', 'attr3_y']].value_counts().reset_index()
+synth[['attr4_x', 'attr4_y']].value_counts().reset_index()

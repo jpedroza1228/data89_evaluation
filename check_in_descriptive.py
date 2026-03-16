@@ -23,7 +23,7 @@ matplotlib.rcParams.update({'savefig.bbox': 'tight'})
 pn.theme_set(pn.theme_light())
 # pio.templates.default = 'simple_white' # 'plotly_white'
 
-pre = pd.read_csv(here('data/pre/pre_label.csv'), skiprows = 2).clean_names(case_type = 'snake')
+pre = pd.read_csv(here('data/checkin/pre_label.csv'), skiprows = 2).clean_names(case_type = 'snake')
 
 pre.columns = ['start_date', 'end_date', 'status', 'ip_address', 'progress', 'duration', 'finished', 'record_date', 'record_id', 'drop1', 'drop2', 'drop3', 'drop4', 'drop5', 'drop6', 'drop7', 'drop8', 'to_do_success', 'capable_do_success', 'understand_logic', 'understand_rules', 'understand_bounds', 'understand_prob_types', 'understand_compute', 'mseaq1', 'mseaq2', 'mseaq3', 'mseaq4', 'mseaq5', 'mseaq6', 'mseaq7', 'mseaq8', 'mseaq9', 'mseaq10', 'mseaq11', 'mseaq12', 'mseaq13', 'mseaq14', 'maeaq15']
 

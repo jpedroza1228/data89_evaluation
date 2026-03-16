@@ -23,7 +23,7 @@ model {
   // Priors
   theta ~ normal(0, 1);              // standard normal prior for abilities
   for (i in 1:I){
-    a[i] ~ lognormal(0.5, 1);               // lognormal prior for discrimination
+    a[i] ~ lognormal(0, .5);               // lognormal prior for discrimination
     b[i] ~ normal(0, 2);                  // normal prior for difficulty
   }
 

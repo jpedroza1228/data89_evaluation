@@ -18,7 +18,8 @@ transformed parameters{
 }
 model {
   // Priors
-  theta ~ normal(0, 1);              // standard normal prior for abilities
+  theta ~ std_normal();
+  // theta ~ normal(0, 1);              // standard normal prior for abilities
   for (i in 1:I){
     b[i] ~ normal(0, 2);                  // normal prior for difficulty
   }

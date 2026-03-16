@@ -586,7 +586,7 @@ pn.ggplot.show(
   + pn.facet_wrap('latclass')
   + pn.labs(title = 'Probability of Getting Items Correct',
   subtitle = 'By Latent Class',
-  caption = '1 = None Mastered,\n2 = Probability Computations Mastered,\n3 = Relating Joint, Marginal, & Conditional,\n4 = Relating & Computing,\n5 = Rules, Logic & Bounds Mastered,\n6 = Rules & Computing,\n7 = Rules & Relating,\n8 = All Attributes Mastered')
+  caption = '1 = 00,\n2 = 01,\n3 = 10,\n4 = 11')
   + pn.theme(legend_position = 'none')
 )
 ```

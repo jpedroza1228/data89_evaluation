@@ -47,42 +47,44 @@ def acceptable_fit_stat(inference_data, func_name = ['waic', 'loo']):
     else:
       print('Absolute difference is not greater than 2.5 x the standard error of the difference. Model is not acceptable.')
 
-q2_names = ['Random Variables & Distributions', 'Computing & Visualizing Distributions', 'Specific Models', 'Continuous Models']      
+q2_names = ['Random Variables & Distributions', 'Computing & Visualizing Distributions', 'Specific Models', 'Continuous Models']
 
 # attribute mastery matrix
 alpha = pd.DataFrame([(a, b, c, d) for a in np.arange(2) for b in np.arange(2) for c in np.arange(2) for d in np.arange(2)])
 alpha = alpha.rename(columns = {0: q2_names[0],
                                 1: q2_names[1],
                                 2: q2_names[2],
-                                3: q2_names[3]
-                                }).clean_names(case_type = 'snake')
+                                3: q2_names[3]}).clean_names(case_type = 'snake')
 alpha.head()
 
-y = pd.read_csv(here('data/quiz_data/q2_scores_anonymized.csv')).clean_names(case_type = 'snake')
+
+y = pd.read_csv(here('data/quiz_data/q2_retake_scores_anonymized.csv')).clean_names(case_type = 'snake')
 y.head()
 
 # true answers
 y.columns.tolist()
+y.shape
 
 # item1
 y[['drop1',
    'def_true1',
    'def_true2',
    'def_true3']] = y['quiz_2_definitions_true_answer'].str.split('"key":"', expand = True)
+
 y['def_true1'] = y['def_true1'].str[0]
 y['def_true2'] = y['def_true2'].str[0]
 y['def_true3'] = y['def_true3'].str[0]
 
 # item2
 y[['drop2',
-   'min2_true1',
-   'min2_true2']] = y['quiz_2_minimum_of_two_rolls_true_answer'].str.split('"key":"', expand = True)
-y['min2_true1'] = y['min2_true1'].str[0]
-y['min2_true2'] = y['min2_true2'].str[0]
+   'sum2_true1',
+   'sum2_true2']] = y['quiz_2_retake_sum_of_two_rolls_true_answer'].str.split('"key":"', expand = True)
+y['sum2_true1'] = y['sum2_true1'].str[0]
+y['sum2_true2'] = y['sum2_true2'].str[0]
 
 # item3
 y[['drop3',
-   'disttable_true1']] = y['quiz_2_distribution_tables_true_answer'].str.split('"key":"', expand = True)
+   'disttable_true1']] = y['quiz_2_retake_distribution_tables_true_answer'].str.split('"key":"', expand = True)
 y[['disttable_true1',
   'disttable_true2']] = y['disttable_true1'].str.split('"ans_interval":', expand = True)
 y['disttable_true1'] = y['disttable_true1'].str[0]
@@ -91,30 +93,32 @@ y['disttable_true2'] = y['disttable_true2'].str.replace('}', '')
 # item4
 y[['drop4',
    'vispmf_true1',
-   'vispmf_true2']] = y['quiz_2_visualizing_pmfs_true_answer'].str.split('"key":"', expand = True)
+   'vispmf_true2']] = y['quiz_2_retake_visualizing_pmfs_true_answer'].str.split('"key":"', expand = True)
 y['vispmf_true1'] = y['vispmf_true1'].str[0]
 y['vispmf_true2'] = y['vispmf_true2'].str[0]
 
 # item5
 y[['drop5',
-   'iddist_true1',
-   'iddist_true2',
-   'iddist_true3',
-   'iddist_true4']] = y['quiz_2_identifying_distributions_true_answer'].str.split('"key":"', expand = True)
-y['iddist_true1'] = y['iddist_true1'].str[0]
-y['iddist_true2'] = y['iddist_true2'].str[0]
-y['iddist_true3'] = y['iddist_true3'].str[0]
-y['iddist_true4'] = y['iddist_true4'].str[0]
+   'dice_true1',
+   'dice_true2',
+   'dice_true3']] = y['quiz_2_retake_dice_roll_game_true_answer'].str.split('"key":"', expand = True)
+y['dice_true1'] = y['dice_true1'].str[0]
+y['dice_true2'] = y['dice_true2'].str[0]
+y[['dice_true3', 'dice_true4']] = y['dice_true3'].str.split('"part_d_ans":"', expand = True)
+y['dice_true3'] = y['dice_true3'].str[0]
+y['dice_true4'] = y['dice_true4'].str.replace('"}', '')
 
 # item6
 y[['drop6',
-   'alice_true1']] = y['quiz_2_alice_lottery_true_answer'].str.split('"key":"', expand = True)
-y['alice_true1'] = y['alice_true1'].str[0]
+   'marathon_true1',
+   'marathon_true2']] = y['quiz_2_retake_marathon_true_answer'].str.split('"key":"', expand = True)
+y['marathon_true1'] = y['marathon_true1'].str[0]
+y['marathon_true2'] = y['marathon_true2'].str[0]
 
 # item7
 y[['drop7',
    'denscomp_true1',
-   'denscomp_true2']] = y['quiz_2_density_computations_true_answer'].str.split('":"', expand = True)
+   'denscomp_true2']] = y['quiz_2_retake_density_computations_true_answer'].str.split('":"', expand = True)
 y['denscomp_true1'] = y['denscomp_true1'].str.replace('","part_b_ans', '')
 y['denscomp_true2'] = y['denscomp_true2'].str.replace('"}', '')
 
@@ -135,15 +139,15 @@ y['def_submit3'] = y['def_submit3'].str[0]
 
 # item2
 y[['drop9',
-   'min2_submit1',
-   'min2_submit2']] = y['quiz_2_minimum_of_two_rolls_submitted_answer'].str.split('":"', expand = True)
-y['min2_submit1'] = y['min2_submit1'].str[0]
-y['min2_submit2'] = y['min2_submit2'].str[0]
+   'sum2_submit1', 
+   'sum2_submit2']] = y['quiz_2_retake_sum_of_two_rolls_submitted_answer'].str.split('":"', expand = True)
+y['sum2_submit1'] = y['sum2_submit1'].str[0]
+y['sum2_submit2'] = y['sum2_submit2'].str[0]
 
 # item3
 y[['drop10',
    'disttable_submit1',
-   'disttable_submit2']] = y['quiz_2_distribution_tables_submitted_answer'].str.split(':', expand = True)
+   'disttable_submit2']] = y['quiz_2_retake_distribution_tables_submitted_answer'].str.split(':', expand = True)
 y['disttable_submit1'] = y['disttable_submit1'].str.replace('"', '')
 y['disttable_submit1'] = y['disttable_submit1'].str[0]
 y['disttable_submit2'] = y['disttable_submit2'].str.replace('}', '')
@@ -151,36 +155,37 @@ y['disttable_submit2'] = y['disttable_submit2'].str.replace('}', '')
 # item4
 y[['drop11',
    'vispmf_submit1',
-   'vispmf_submit2']] = y['quiz_2_visualizing_pmfs_submitted_answer'].str.split('":"', expand = True)
+   'vispmf_submit2']] = y['quiz_2_retake_visualizing_pmfs_submitted_answer'].str.split('":"', expand = True)
 y['vispmf_submit1'] = y['vispmf_submit1'].str[0]
 y['vispmf_submit2'] = y['vispmf_submit2'].str.replace('"}', '')
 
 # item5
 y[['drop12',
-   'iddist_submit1',
-   'iddist_submit2',
-   'iddist_submit3',
-   'iddist_submit4']] = y['quiz_2_identifying_distributions_submitted_answer'].str.split('":"', expand = True)
-y['iddist_submit1'] = y['iddist_submit1'].str[0]
-y['iddist_submit2'] = y['iddist_submit2'].str[0]
-y['iddist_submit3'] = y['iddist_submit3'].str[0]
-y['iddist_submit4'] = y['iddist_submit4'].str[0]
-
+   'dice_submit1',
+   'dice_submit2',
+   'dice_submit3']] = y['quiz_2_retake_dice_roll_game_submitted_answer'].str.split('":"', expand = True)
+y['dice_submit1'] = y['dice_submit1'].str[0]
+y['dice_submit2'] = y['dice_submit2'].str[0]
+y[['dice_submit3',
+   'dice_submit4']] = y['dice_submit3'].str.split('"part_d_ans":', expand = True)
+y['dice_submit3'] = y['dice_submit3'].str[0]
+y['dice_submit4'] = y['dice_submit4'].str.replace('}', '')
 
 # item6
 y[['drop13',
-   'alice_submit1']] = y['quiz_2_alice_lottery_submitted_answer'].str.split('":"', expand = True)
-y['alice_submit1'] = y['alice_submit1'].str.replace('"}', '')
+   'marathon_submit1',
+   'marathon_submit2']] = y['quiz_2_retake_marathon_submitted_answer'].str.split('":"', expand = True)
+y['marathon_submit1'] = y['marathon_submit1'].str[0]
+y['marathon_submit2'] = y['marathon_submit2'].str.replace('"}', '')
 
 # item7
 y[['drop14',
    'denscomp_submit1',
-   'denscomp_submit2']] = y['quiz_2_density_computations_submitted_answer'].str.split('":', expand = True)
+   'denscomp_submit2']] = y['quiz_2_retake_density_computations_submitted_answer'].str.split('":', expand = True)
 y['denscomp_submit1'] = y['denscomp_submit1'].str.replace(',"part_b_ans', '')
 y['denscomp_submit2'] = y['denscomp_submit2'].str.replace('}', '')
 
 y.filter(regex = r'submit[1234]')
-
 
 # true and submitted answers
 true_col = y.filter(regex = r'true[1234]').columns.tolist()
@@ -188,7 +193,6 @@ submit_col = y.filter(regex = r'submit[1234]').columns.tolist()
 
 y_sub = y[['anon_id'] + true_col + submit_col]
 
-# cleaning
 y_sub['disttable_true2'] = y_sub['disttable_true2'].astype(float)
 y_sub['denscomp_true1'] = y_sub['denscomp_true1'].astype(float)
 y_sub['denscomp_true2'] = y_sub['denscomp_true2'].astype(float)
@@ -196,18 +200,15 @@ y_sub['denscomp_true2'] = y_sub['denscomp_true2'].astype(float)
 y_sub['denscomp_submit1'] = np.where(y_sub['denscomp_submit1'] == 'null', -99, y_sub['denscomp_submit1'])
 y_sub['denscomp_submit2'] = np.where(y_sub['denscomp_submit2'] == 'null', -99, y_sub['denscomp_submit2'])
 
-y_sub['disttable_submit2'] = y_sub['disttable_submit2'].astype(float)
+y_sub['disttable_submit2'] = y_sub['disttable_submit2'].astype(float).round(2)
 y_sub['denscomp_submit1'] = y_sub['denscomp_submit1'].astype(float).round(2)
 y_sub['denscomp_submit2'] = y_sub['denscomp_submit2'].astype(float).round(2)
 
-y_item = y_sub.drop(columns = 'anon_id')
-y_sub.filter(regex = r'(denscomp).*1$')
-
-# y_sub.to_csv(here('data/quiz_data/quiz2_ready_irt.csv'))
+# y_sub.to_csv(here('data/quiz_data/quiz2_retake_ready_irt.csv'))
 
 y_item = y_sub.drop(columns = 'anon_id')
 
-# making items binary
+y_item.columns.tolist()
 
 # y_item.filter(regex = 'def')
 y_item['item1'] = np.where(y_item['def_submit1'] == y_item['def_true1'], 1, 0)
@@ -215,8 +216,8 @@ y_item['item2'] = np.where(y_item['def_submit2'] == y_item['def_true2'], 1, 0)
 y_item['item3'] = np.where(y_item['def_submit3'] == y_item['def_true3'], 1, 0)
 
 # y_item.filter(regex = 'min2')
-y_item['item4'] = np.where(y_item['min2_submit1'] == y_item['min2_true1'], 1, 0)
-y_item['item5'] = np.where(y_item['min2_submit2'] == y_item['min2_true2'], 1, 0)
+y_item['item4'] = np.where(y_item['sum2_submit1'] == y_item['sum2_true1'], 1, 0)
+y_item['item5'] = np.where(y_item['sum2_submit2'] == y_item['sum2_true2'], 1, 0)
 
 # y_item.filter(regex = 'disttable')
 y_item['item6'] = np.where(y_item['disttable_submit1'] == y_item['disttable_true1'], 1, 0)
@@ -227,38 +228,39 @@ y_item['item8'] = np.where(y_item['vispmf_submit1'] == y_item['vispmf_true1'], 1
 y_item['item9'] = np.where(y_item['vispmf_submit2'] == y_item['vispmf_true2'], 1, 0)
 
 # y_item.filter(regex = 'iddist')
-y_item['item10'] = np.where(y_item['iddist_submit1'] == y_item['iddist_true1'], 1, 0)
-y_item['item11'] = np.where(y_item['iddist_submit2'] == y_item['iddist_true2'], 1, 0)
-y_item['item12'] = np.where(y_item['iddist_submit3'] == y_item['iddist_true3'], 1, 0)
-y_item['item13'] = np.where(y_item['iddist_submit4'] == y_item['iddist_true4'], 1, 0)
+y_item['item10'] = np.where(y_item['dice_submit1'] == y_item['dice_true1'], 1, 0)
+y_item['item11'] = np.where(y_item['dice_submit2'] == y_item['dice_true2'], 1, 0)
+y_item['item12'] = np.where(y_item['dice_submit3'] == y_item['dice_true3'], 1, 0)
+y_item['item13'] = np.where(y_item['dice_submit4'] == y_item['dice_true4'], 1, 0)
 
 # y_item.filter(regex = 'alice')
-y_item['item14'] = np.where(y_item['alice_submit1'] == y_item['alice_true1'], 1, 0)
+y_item['item14'] = np.where(y_item['marathon_submit1'] == y_item['marathon_true1'], 1, 0)
+y_item['item15'] = np.where(y_item['marathon_submit2'] == y_item['marathon_true2'], 1, 0)
 
 # y_item.filter(regex = 'denscomp')
-y_item['item15'] = np.where(y_item['denscomp_submit1'] == y_item['denscomp_true1'], 1, 0)
-y_item['item16'] = np.where(y_item['denscomp_submit2'] == y_item['denscomp_true2'], 1, 0)
+y_item['item16'] = np.where(y_item['denscomp_submit1'] == y_item['denscomp_true1'], 1, 0)
+y_item['item17'] = np.where(y_item['denscomp_submit2'] == y_item['denscomp_true2'], 1, 0)
 
 y_item = y_item.filter(regex = 'item')
 
-q = pd.DataFrame({'rv_dist': [1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 1, 1],
-                  'comp_vis_dist': [0, 0, 0, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 1, 0, 0],
-                  'specific_mod': [0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 0, 0],
-                  'cont_mod': [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1]})
-# q.to_csv(here('data/q_matrix/q2_granular.csv'))
+q_retake = pd.DataFrame({'rv_dist': [1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1],
+                  'comp_vis_dist': [0, 0, 0, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 1, 1, 0, 0],
+                  'specific_mod': [0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0],
+                  'cont_mod': [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1]})
+# q_retake.to_csv(here('data/q_matrix/q2_retake_granular.csv'))
+
+# np.mean(np.random.beta(2, 1, 100))
 
 # only using retake data for 
 stan_dict = {
   'J': y_item.shape[0],
   'I': y_item.shape[1],
   'C': alpha.shape[0],
-  'K': q.shape[1],
+  'K': q_retake.shape[1],
   'Y': np.array(y_item),
-  'Q': np.array(q),
+  'Q': np.array(q_retake),
   'alpha': np.array(alpha)
 }
-
-# np.mean(np.random.beta(15, 10, 200))
 
 dcm_file = os.path.join(here(f'quiz_models/quiz2_model.stan'))
 dcm_model = CmdStanModel(stan_file = dcm_file,
@@ -292,20 +294,19 @@ print(dcm_diagnose['R_hat'].sort_values(ascending = False).head())
 print(dcm_prior_diagnose['R_hat'].sort_values(ascending = False).head())
 
 
-# dcm_diagnose.to_csv(here(f'diagnostics/quiz2_model.csv'))
-# (
-#   joblib.dump([dcm_model, dcm_fit],
-#               here(f'joblib_models/quiz2_modfit.joblib'),
-#               compress = 3)
-# )
+dcm_diagnose.to_csv(here(f'diagnostics/quiz2_retake_model.csv'))
+(
+  joblib.dump([dcm_model, dcm_fit],
+              here(f'joblib_models/quiz2_retake_modfit.joblib'),
+              compress = 3)
+)
 
-# dcm_prior_diagnose.to_csv(here(f'diagnostics/quiz2_model_prior_only.csv'))
-# (
-#   joblib.dump([dcm_prior_model, dcm_prior_fit],
-#               here(f'joblib_models/quiz2_modfit_prior_only.joblib'),
-#               compress = 3)
-# )
-
+dcm_prior_diagnose.to_csv(here(f'diagnostics/quiz2_retake_model_prior_only.csv'))
+(
+  joblib.dump([dcm_prior_model, dcm_prior_fit],
+              here(f'joblib_models/quiz2_retake_modfit_prior_only.joblib'),
+              compress = 3)
+)
 
 idcm = az.from_cmdstanpy(
     posterior = dcm_fit,
@@ -337,7 +338,7 @@ az.plot_dist_comparison(idcm, var_names = ['lambda2'])
 az.plot_dist_comparison(idcm, var_names = ['lambda3'])
 az.plot_dist_comparison(idcm, var_names = ['lambda4'])
 
-az.plot_trace(idcm, var_names = ['nu'])
+az.plot_trace(idcm, var_names = 'nu')
 az.plot_trace(idcm, var_names = ['tp'])
 az.plot_trace(idcm, var_names = ['fp'])
 
@@ -404,6 +405,8 @@ pn.ggplot.show(
   + pn.geom_point(pn.aes(color = 'type'),
                   alpha = .7)
   + pn.facet_wrap('type')
+  + pn.scale_x_continuous(limits = [1, 17],
+                          breaks = np.arange(1, 18, 1))
   + pn.scale_color_brewer('qual', 'Dark2')
   + pn.labs(title = 'Probability Guessing/Slipping',
             x = 'Item',
@@ -589,9 +592,10 @@ attr_mast['attr4_name'] = np.where(attr_mast['attr4'] == 1, f'Proficient in {q2_
 attr_col = attr_mast.filter(regex = 'attr').columns.tolist()
 attr_mast = attr_mast[['anon_id'] + attr_col]
 
-# attr_mast.to_csv(here('student_data/attr_mastery_quiz2.csv'))
+attr_mast.to_csv(here('student_data/attr_mastery_quiz2_retake.csv'))
 
-
+# these are students who only took the retake
+# they 
 y_sub.loc[~y_sub['anon_id'].isin(attr_mast['anon_id'])]
 
 gt.show(gt(attr_mast[['attr1', 'attr2', 'attr3', 'attr4']].value_counts().reset_index()))
@@ -641,7 +645,7 @@ ydcm_long['draw'] = ydcm_long.groupby(['stu', 'item']).cumcount()
 
 ydcm_wide = ydcm_long.pivot(index = ['stu', 'draw'], columns = 'item', values = 'value')
 ydcm_wide = ydcm_wide.reset_index()
-ydcm_wide.columns = ['stu', 'draw', 'item1', 'item2', 'item3', 'item4', 'item5', 'item6', 'item7', 'item8', 'item9', 'item10', 'item11', 'item12', 'item13', 'item14', 'item15', 'item16']
+ydcm_wide.columns = ['stu', 'draw', 'item1', 'item2', 'item3', 'item4', 'item5', 'item6', 'item7', 'item8', 'item9', 'item10', 'item11', 'item12', 'item13', 'item14', 'item15', 'item16', 'item17']
 
 ydcm_wide['total'] = ydcm_wide.filter(regex = 'item').sum(axis = 1)
 ydcm_wide_count = ydcm_wide.groupby('draw')['total'].value_counts().reset_index()
@@ -689,7 +693,7 @@ stu_n = y_item.shape[0]
 t_stats_dict = {}
 
 # Loop from 1 to 7
-for i in range(1, 16 + 1):
+for i in range(1, 17):
     item_name = f"item{i}"
     
     # Extract mean and std for the specific item
@@ -727,16 +731,26 @@ t_compare_list = [np.mean(y_long_avg.loc[(y_long_avg['item'] == i), 't_draw'] > 
 pd.DataFrame({'item': np.arange(17),
               't_prop_over': t_compare_list})
 
-pn.ggplot.show(
-  pn.ggplot(y_long_avg.loc[y_long_avg['item'] == 11],
-            pn.aes('t_draw'))
-  + pn.geom_density(color = 'black',
-                      fill = jpcolor,
-                      alpha = .5)
-  + pn.geom_vline(pn.aes(xintercept = 'observed_t'),
-                  color = 'red',
-                  linetype = 'dashed')
-)
-
 # pd.DataFrame({'item': np.arange(17),
-#               't_prop_over': t_compare_list}).to_csv(here('diagnostics/quiz2_ppmc_item_level.csv'))
+#               't_prop_over': t_compare_list}).to_csv(here('diagnostics/quiz2_retake_ppmc_item_level.csv'))
+
+
+# Comparison
+og_mast = pd.read_csv(here('student_data/attr_mastery_quiz2.csv')).drop(columns = 'Unnamed: 0')
+
+og_mast = og_mast.loc[:, 'anon_id':'attr4']
+og_mast.columns = ['anon_id',
+                   'attr1_og',
+                   'attr2_og',
+                   'attr3_og',
+                   'attr4_og']
+attr_mast = attr_mast.loc[:, 'anon_id':'attr4']
+
+# 104 took the retake
+combo = og_mast.merge(attr_mast, 'inner', 'anon_id')
+combo.shape
+
+combo[['attr1_og', 'attr1']].value_counts().reset_index()
+combo[['attr2_og', 'attr2']].value_counts().reset_index()
+combo[['attr3_og', 'attr3']].value_counts().reset_index()
+combo[['attr4_og', 'attr4']].value_counts().reset_index()

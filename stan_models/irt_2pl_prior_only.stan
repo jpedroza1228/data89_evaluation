@@ -18,37 +18,17 @@ transformed parameters{
   }
 }
 model {
-  array[J] real log_lik;
-
   // Priors
   theta ~ normal(0, 1);              // standard normal prior for abilities
   for (i in 1:I){
-    a[i] ~ lognormal(0.5, 1);               // lognormal prior for discrimination
+    a[i] ~ lognormal(0, .5);               // lognormal prior for discrimination
     b[i] ~ normal(0, 2);                  // normal prior for difficulty
-  }
-
-  // Likelihood
-  for (j in 1:J) {
-    log_lik[j] = 0;
-    for (i in 1:I) {
-      real p = fmin(fmax(eta[j,i], 1e-9), 1 - 1e-9);
-      log_lik[j] += Y[j,i] * log(p) + (1 - Y[j,i]) * log1m(p);
-    }
   }
 }
 
 generated quantities {
-  array[J] real log_lik;
   matrix[J,I] prob_correct;         // probability of correct response
   matrix[J,I] y_rep;             // expected total score for each student
-
-  for (j in 1:J) {
-    log_lik[j] = 0;
-    for (i in 1:I) {
-      real p = fmin(fmax(eta[j,i], 1e-9), 1 - 1e-9);
-      log_lik[j] += Y[j,i] * log(p) + (1 - Y[j,i]) * log1m(p);
-    }
-  }
   
   for (j in 1:J) {
     for (i in 1:I) {

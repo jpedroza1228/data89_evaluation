@@ -18,8 +18,10 @@ pd.set_option('display.max_columns', None)
 pd.options.mode.copy_on_write = True
 matplotlib.rcParams.update({'savefig.bbox': 'tight'})
 
-q1_names = pd.read_csv(here('data/q_matrix/Latent Attributes/quiz1_att_names.csv'))
-q2_names = ['Random Variables & Distributions', 'Computing & Visualizing Distributions', 'Specific Models', 'Continuous Models']
+# q1_names = pd.read_csv(here('data/q_matrix/Latent Attributes/quiz1_att_names.csv'))
+# q2_names = ['Random Variables & Distributions', 'Computing & Visualizing Distributions', 'Specific Models', 'Continuous Models']
+q3_names = ['Visualizations & Functions',  'Modes', 'Computation Expectations', 'Expectation Concepts']
+q4_names = ['Standard Deviation & Variance', 'Convergence Rates', 'Series' , 'Runction Approximation']
 
 # q1 = pd.DataFrame({q1_names.loc[0, 'attribute']: [1, 0, 0, 1, 1, 1, 0, 0, 1, 0, 0],
 #                    q1_names.loc[1, 'attribute']: [1, 0, 0, 1, 1, 0, 0, 1, 0, 0, 0],
@@ -48,32 +50,37 @@ q2_names = ['Random Variables & Distributions', 'Computing & Visualizing Distrib
 # Probability Types & Calculations
 # Bounding Chances
 # Rules, Logic, & Sets
-q1_7item_2att = pd.DataFrame({'probability_type_calc': [0, 1, 0, 1, 0, 0, 1],
-                              'rules_logic_set_bounds': [1, 0, 1, 1, 1, 1, 0]})
-q1_7item_2att.to_csv(here('data/q_matrix/q1_7item_2att.csv'))
+# q1_7item_2att = pd.DataFrame({'probability_type_calc': [0, 1, 0, 1, 0, 0, 1],
+                              # 'rules_logic_set_bounds': [1, 0, 1, 1, 1, 1, 0]})
+# q1_7item_2att.to_csv(here('data/q_matrix/q1_7item_2att.csv'))
 
-q2 = (
-  pd
-  .DataFrame({q2_names[0]: [0, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 1, 1, 0, 0],
-              q2_names[1]: [1, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 1, 1, 1, 1],
-              q2_names[2]: [1, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 0, 0, 1, 1],
-              q2_names[3]: [0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]})
-  .to_csv(here('data/q_matrix/q2.csv'))
-)
+# q2 = (
+#   pd
+#   .DataFrame({q2_names[0]: [0, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 1, 1, 0, 0],
+#               q2_names[1]: [1, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 1, 1, 1, 1],
+#               q2_names[2]: [1, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 0, 0, 1, 1],
+#               q2_names[3]: [0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]})
+#   .to_csv(here('data/q_matrix/q2.csv'))
+# )
 
-q3 = (
-  pd
-  .DataFrame({'hold1': [],
-              'hold2': []})
-  .to_csv(here('data/q_matrix/q3.csv'))
-)
+# q3 = (
+#   pd
+#   .DataFrame({q3_names[0]: [1, 1, 1, 0, 0, 0], #items pertaining to Q3 may be 0
+#               q3_names[1]: [0, 0, 1, 0, 0, 0],
+#               q3_names[2]: [0, 0 ,0, 0, 1, 1],
+#               q3_names[3]: [0, 0, 0, 1, 1, 1]})
+#   .to_csv(here('data/q_matrix/q3_granular.csv'))
+# )
 
-q4 = (
-  pd
-  .DataFrame({'hold1': [],
-              'hold2': []})
-  .to_csv(here('data/q_matrix/q4.csv'))
-)
+# q4 = 
+# (
+#   pd
+#   .DataFrame({q4_names[0]: [1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+#               q4_names[1]: [0, 0, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 1, 1],
+#               q4_names[2]: [0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 1, 1],
+#               q4_names[3]: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 0]})
+#   .to_csv(here('data/q_matrix/q4_granular.csv'))
+# )
 
 q5 = (
   pd

@@ -1,104 +1,170 @@
-data {
-  int<lower=1> J;
-  int<lower=1> I;
-  int<lower=1> C;
-  int<lower=1> K;
-  matrix<lower=0,upper=1> [J,I] Y;
+data{
+  int<lower=1> J; // students
+  int<lower=1> I; // items per time
+  int<lower=1> T; // time points
+  int<lower=1> K; // attributes
+  int<lower=1> C; // latent classes
+  matrix<lower=0, upper=1> [J, I] Y_t1;
+  matrix<lower=0, upper=1> [J, I] Y_t2;
   matrix<lower=0,upper=1> [I,K] Q;
   matrix<lower=0,upper=1> [C,K] alpha;
 }
 parameters {
-  vector<lower=0, upper=1>[I] tp; //slip (1 - tp)
-  vector<lower=0, upper=1>[I] fp; //guess
-  real<lower=0, upper=1> lambda1;
-  real<lower=0, upper=1> lambda20;
-  // real<lower=0, upper=1> lambda21;
-  real<lower=0, upper=1> lambda22;
-  real<lower=0, upper=1> lambda30;
-  // real<lower=0, upper=1> lambda31;
-  real<lower=0, upper=1> lambda32;
-  // real<lower=0, upper=1> lambda4;
-  // real<lower=0, upper=1> lambda5;
+  simplex[C] nu_t1;
+
+  vector<lower=0, upper=1>[I] tp_t1; //slip (1 - tp)
+  vector<lower=0, upper=1>[I] fp_t1; //guess
+  vector<lower=0, upper=1>[I] tp_t2; //slip (1 - tp)
+  vector<lower=0, upper=1>[I] fp_t2; //guess
+
+  // transitions from time point 1 to time point 2
+  // dino parameters
+  real<lower=0,upper=1> lambda1_t1;
+  real<lower=0,upper=1> lambda2_t1;
+  real<lower=0,upper=1> lambda3_t1;
+  real<lower=0,upper=1> lambda1_t2;
+  real<lower=0,upper=1> lambda2_t2;
+  real<lower=0,upper=1> lambda3_t2;
+
+  // lcdm parameters
+  // time point 1 parameters
+  // real gamma101; //baseline for attribute 1 
+  // real gamma102; //baseline for attribute 2 
+  // real gamma103; //baseline for attribute 3
+  // real gamma111; //mastery coefficient for time point 1 (att 1)
+  // real gamma121; //mastery coefficient for time point 1 (att 2)
+  // real gamma131; //mastery coefficient for time point 1 (att 3)
+
+  // time point 2 parameters
+  // real gamma201; //baseline for attribute 1 
+  // real gamma202; //baseline for attribute 2 
+  // real gamma203; //baseline for attribute 3
+  // real gamma211; //mastery coefficient for time point 2 (att 1)
+  // real gamma221; //mastery coefficient for time point 2 (att 2)
+  // real gamma231; //mastery coefficient for time point 2 (att 3)
+
+  //item parameters
+  // vector[I] beta0;
+  // vector[I] beta1;
+  // vector[I] beta2;
+  // vector[I] beta12;
+  // vector[I] beta13;
+  // vector[I] beta23;
+  // vector[I] beta123;
 }
 transformed parameters{
-  vector[C] raw_nu;
-  simplex[C] nu;
-  vector[C] theta1;
-  vector[C] theta2;
-  vector[C] theta3;
-  // vector[C] theta4;
-  // vector[C] theta5;
-  matrix[I, C] delta;
-  matrix[I,C] pi;
+  matrix[C, C] trans_mat;
+  vector[C] theta1_t1;
+  vector[C] theta2_t1;
+  vector[C] theta3_t1;
+  vector[C] theta1_t2;
+  vector[C] theta2_t2;
+  vector[C] theta3_t2;
+  matrix[I,C] delta_t1;
+  matrix[I,C] delta_t2;
+  matrix[I,C] pi_t1;
+  matrix[I,C] pi_t2;
 
-  for (c in 1 : C) {
-    theta1[c] = (alpha[c, 1] > 0) ? lambda1 : (1 - lambda1);
-    // theta2[c] = (alpha[c, 2] > 0 && alpha[c, 1] > 0) ? lambda22 : (alpha[c, 2] > 0 || alpha[c, 1] > 0) ? lambda21 : lambda20;
-    // theta3[c] = (alpha[c, 3] > 0 && alpha[c, 2] > 0) ? lambda32 : (alpha[c, 3] > 0 || alpha[c, 2] > 0) ? lambda31 : lambda30;
-    
-    theta2[c] = (alpha[c, 2] > 0) ? lambda22 : lambda20;
-    theta3[c] = (alpha[c, 3] > 0) ? lambda32 : lambda30;
-    // theta4[c] = (alpha[c, 4] > 0) ? lambda4 : (1 - lambda4);
-    // theta5[c] = (alpha[c, 5] > 0) ? lambda5 : (1 - lambda5);
+  for (c in 1:C){
+    for (d in 1:C){
+      // theta1_t1[c] = alpha[c,1] > 0 ? inv_logit(gamma101 + gamma111) : inv_logit(gamma101);
+      // theta2_t1[c] = alpha[c,2] > 0 ? inv_logit(gamma102 + gamma121) : inv_logit(gamma102);
+      // theta3_t1[c] = alpha[c,3] > 0 ? inv_logit(gamma103 + gamma131) : inv_logit(gamma103);
 
-    raw_nu[c] = theta1[c] * theta2[c] * theta3[c];
-    // raw_nu[c] = theta1[c] * theta2[c] * theta3[c] * theta4[c] * theta5[c];
+      theta1_t1[c] = alpha[c,1] > 0 ? lambda1_t1 : (1 - lambda1_t1);
+      theta2_t1[c] = alpha[c,2] > 0 ? lambda2_t1 : (1 - lambda2_t1);
+      theta3_t1[c] = alpha[c,3] > 0 ? lambda3_t1 : (1 - lambda3_t1);
+
+      theta1_t2[d] = alpha[d,1] > 0 ? lambda1_t2 : (1 - lambda1_t2);
+      theta2_t2[d] = alpha[d,2] > 0 ? lambda2_t2 : (1 - lambda2_t2);
+      theta3_t2[d] = alpha[d,3] > 0 ? lambda3_t2 : (1 - lambda3_t2);
+
+      trans_mat[c, d] = theta1_t2[d] * theta2_t2[d] * theta3_t2[d];
+    }
   }
 
-  nu = raw_nu/sum(raw_nu);
-  vector[C] log_nu = log(nu);
-  
+  // nu[1] = (1 - inv_logit(gamma1)) * (1 - inv_logit(gamma2));
+  // nu[2] = inv_logit(gamma1) * (1 - inv_logit(gamma2 + gamma21));
+  // nu[3] = (1 - inv_logit(gamma1)) * inv_logit(gamma2);
+  // nu[4] = inv_logit(gamma1) * inv_logit(gamma2 + gamma21);
+
+  vector[C] log_nu_t1 = log(nu_t1);
+
+  // for (c in 1:C){
+  //   for (i in 1:I){
+  //     pi_t1[i,c] = inv_logit(beta0[i] +
+  //     beta1[i] * alpha[c,1] +
+  //     beta2[i] * alpha[c,2] +
+  //     beta12[i] * alpha[c,1] * alpha[c,2] +
+  //     beta13[i] * alpha[c,1] * alpha[c,3] +
+  //     beta23[i] * alpha[c,2] * alpha[c,3] +
+  //     beta123[i] * alpha[c,1] * alpha[c,2] * alpha[c,3]);
+
+  //     pi_t2[i,c] = inv_logit(beta0[i] +
+  //     beta1[i] * alpha[c,1] +
+  //     beta2[i] * alpha[c,2] +
+  //     beta12[i] * alpha[c,1] * alpha[c,2] +
+  //     beta13[i] * alpha[c,1] * alpha[c,3] +
+  //     beta23[i] * alpha[c,2] * alpha[c,3] +
+  //     beta123[i] * alpha[c,1] * alpha[c,2] * alpha[c,3]);
+  //   }
+  // }
+
   for(c in 1:C){
     for(i in 1:I){
-      delta[i, c] = 1 - (pow(1 - theta1[c], Q[i, 1]) * pow(1 - theta2[c], Q[i, 2]) * pow(1 - theta3[c], Q[i, 3]));
-      // * pow(1 - theta4[c], Q[i,4]) * pow(1 - theta5[c], Q[i,5])); 
+      delta_t1[i, c] = 1 - (pow(1 - theta1_t1[c], Q[i, 1]) * pow(1 - theta2_t1[c], Q[i, 2]) * pow(1 - theta3_t1[c], Q[i, 3]));
+
+      delta_t2[i, c] = 1 - (pow(1 - theta1_t2[c], Q[i, 1]) * pow(1 - theta2_t2[c], Q[i, 2]) * pow(1 - theta3_t2[c], Q[i, 3]));
     }
   }
 
   for (c in 1:C){
     for (i in 1:I){
-      pi[i,c] = pow((tp[i]), delta[i,c]) * pow(fp[i], (1 - delta[i,c]));
+      pi_t1[i,c] = pow((tp_t1[i]), delta_t1[i,c]) * pow(fp_t1[i], (1 - delta_t1[i,c]));
+
+      pi_t2[i,c] = pow((tp_t2[i]), delta_t2[i,c]) * pow(fp_t2[i], (1 - delta_t2[i,c]));
     }
   }
 }
-model {
-  array[C] real ps;
-  array[I] real eta;
-  
-  // Priors
-  lambda1 ~ beta(20, 5);
-  lambda20 ~ beta(5, 20);
-  // lambda21 ~ beta(12.5, 12.5);
-  lambda22 ~ beta(20, 5);
-  lambda30 ~ beta(5, 20);
-  // lambda31 ~ beta(12.5, 12.5);
-  lambda32 ~ beta(20, 5); 
-  // lambda4 ~ beta(20, 5);
-  // lambda5 ~ beta(20, 5);
-  
-  for (i in 1:I){
-    tp[i] ~ beta(1, 1);
-    fp[i] ~ beta(1, 1);
-  }
+model{
+  // priors
+  nu_t1 ~ dirichlet(rep_vector(1.0, C)); // uniform prior for the number of classes
+  lambda1_t1 ~ beta(1, 1);
+  lambda2_t1 ~ beta(1, 1);
+  lambda3_t1 ~ beta(1, 1);
+  lambda1_t2 ~ beta(20, 5);
+  lambda2_t2 ~ beta(20, 5);
+  lambda3_t2 ~ beta(20, 5);
 
-  for (j in 1:J) {
-    for (c in 1:C){
-      for (i in 1:I){
-        real p = fmin(fmax(pi[i,c], 1e-9), 1 - 1e-9);
-        eta[i] = Y[j,i] * log(p) + (1 - Y[j,i]) * log1m(p);
-      }
-      ps[c] = log_nu[c] + sum(eta); 
-    }
-    target += log_sum_exp(ps);
+  for (i in 1:I){
+    tp_t1[i] ~ beta(20, 5);
+    fp_t1[i] ~ beta(5, 20);
+    tp_t2[i] ~ beta(20, 5);
+    fp_t2[i] ~ beta(5, 20);
   }
 }
 generated quantities {
-  matrix[J,I] y_rep;
+  simplex[C] nu_t2; // Predicted population proportions at Time 2
+  matrix[J, I] y_rep_t1;
+  matrix[J, I] y_rep_t2;
   
   for (j in 1:J) {
-    int z = categorical_rng(nu);  // sample class for person j
+    // 1. Sample Time 1 Latent Class
+    // nu_t1 is the population distribution at T1
+    int z1 = categorical_rng(nu_t1);
+    
+    // 2. Sample Time 2 Latent Class based on T1 Class
+    // We extract the row of the transition matrix corresponding to z1
+    vector[C] t2_transition_probs = to_vector(trans_mat[z1, ]);
+    int z2 = categorical_rng(t2_transition_probs);
+    
+    // 3. Generate Replicated Responses
     for (i in 1:I) {
-      y_rep[j, i] = bernoulli_rng(pi[i, z]);  // generate response from item-by-class probability
+      // Response at T1 based on Class z1
+      y_rep_t1[j, i] = bernoulli_rng(pi_t1[i, z1]);
+      
+      // Response at T2 based on Class z2
+      y_rep_t2[j, i] = bernoulli_rng(pi_t2[i, z2]);
     }
   }
 }
